@@ -8,6 +8,7 @@ xcuserdata/
 *.sqlite*
 *.log
 Evidence/*.xcresult/
+Evidence/release-final-xcode-summary.json
 Portable/dist/
 Portable/build/
 *.spec
