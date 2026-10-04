@@ -14,7 +14,8 @@ else if status==errSecItemNotFound {
  guard SecItemAdd(add as CFDictionary,nil)==errSecSuccess else {fatalError("Cannot save signing key in Keychain")}
 }else{fatalError("Keychain unavailable")}
 let publicKey=key.publicKey.rawRepresentation.base64EncodedString()
-let config: [String:Any] = ["schema":1,"analyticsEndpoint":NSNull(),"updatePublicKey":publicKey]
+var config: [String:Any] = (try? Data(contentsOf: URL(fileURLWithPath:"OpenAIUsageSentinel/Resources/ServiceConfig.json"))).flatMap { try? JSONSerialization.jsonObject(with:$0) as? [String:Any] } ?? ["schema":1,"analyticsEndpoint":NSNull()]
+config["updatePublicKey"] = publicKey
 try JSONSerialization.data(withJSONObject:config,options:[.prettyPrinted,.sortedKeys]).write(to:URL(fileURLWithPath:"OpenAIUsageSentinel/Resources/ServiceConfig.json"),options:.atomic)
 let process=Process(), pipe=Pipe();process.executableURL=URL(fileURLWithPath:"/usr/bin/env");process.arguments=["gh","secret","set","UPDATES_ED25519_KEY","--repo","Joe05520/usage-sentinel"];process.standardInput=pipe
 try process.run();try pipe.fileHandleForWriting.write(contentsOf:Data(key.rawRepresentation.base64EncodedString().utf8));try pipe.fileHandleForWriting.close();process.waitUntilExit()
