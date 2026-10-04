@@ -6,7 +6,8 @@ final class WindowCoordinator {
     private var languageObserver: NSObjectProtocol?
     init() {
         languageObserver = NotificationCenter.default.addObserver(forName: .sentinelLanguageChanged, object: nil, queue: .main) { [weak self] _ in
-            Task { @MainActor in self?.refreshTitles() }
+            guard let self else { return }
+            Task { @MainActor in self.refreshTitles() }
         }
     }
     private func refreshTitles() {
