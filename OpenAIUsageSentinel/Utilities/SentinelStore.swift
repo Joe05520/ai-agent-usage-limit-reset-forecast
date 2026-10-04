@@ -116,6 +116,7 @@ final class SentinelStore: ObservableObject {
             updateManifest = try await UpdateService.check(preview: settings.includePreviewUpdates != false)
             let current = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.5.0"
             updateStatus = updateManifest.map { $0.isNewer(than: current) ? L10n.t("Update available") + ": " + $0.version : L10n.t("You are up to date") } ?? L10n.t("No release in this channel")
+            if updateManifest?.isNewer(than: current) != true { updateManifest = nil }
         } catch { updateManifest = nil; updateStatus = error.localizedDescription }
     }
     func downloadUpdate() async {

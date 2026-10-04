@@ -1,6 +1,6 @@
 ## 1.5.1 terminology update
 
-Traditional Chinese reset-signal labels now consistently use 「重置訊號」 in the app, settings, notification text and website. Includes the 1.5 analytics, security and verified-update features below.
+Traditional Chinese reset-signal labels now consistently use 「重置訊號」 in the app, settings, notification text and website. Already current clients no longer offer an unnecessary download button. Includes the 1.5 analytics, security and verified-update features below.
 
 Usage Sentinel 1.5.0 adds consent-based analytics, a private administrator dashboard, and signed update downloads.
 

@@ -129,6 +129,7 @@ class SentinelWindow(QMainWindow):
             if error: self.extension_status=error
             elif name=='Updates':
                 self.manifest=result; self.extension_status=self.t('No release in this channel') if not result else (self.t('Update available')+': '+result['version'] if extensions.version(result['version'])>extensions.version(__version__) else self.t('You are up to date'))
+                if not result or extensions.version(result['version'])<=extensions.version(__version__): self.manifest=None
             elif name=='Update Download': self.extension_status=self.t('Verified download ready · quit the app, replace it and reopen')+' · '+result
             elif name=='Analytics':
                 if result: self.analytics_state['sent']=result['day']; self.db.save('analytics',self.analytics_state)
