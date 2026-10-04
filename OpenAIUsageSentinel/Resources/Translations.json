@@ -1,0 +1,1437 @@
+{
+  "General": {
+    "en": "General",
+    "zh-Hant": "一般",
+    "zh-Hans": "常规",
+    "ja": "一般",
+    "ko": "일반"
+  },
+  "Language": {
+    "en": "Language",
+    "zh-Hant": "語言",
+    "zh-Hans": "语言",
+    "ja": "言語",
+    "ko": "언어"
+  },
+  "Language changes immediately. Source posts remain in their original language.": {
+    "en": "Language changes immediately. Source posts remain in their original language.",
+    "zh-Hant": "語言立即切換，來源貼文保留原文。",
+    "zh-Hans": "语言立即切换，来源帖子保留原文。",
+    "ja": "言語はすぐに切り替わります。出典の投稿は原文のまま表示します。",
+    "ko": "언어가 즉시 변경됩니다. 출처 게시물은 원문으로 유지됩니다."
+  },
+  "Launch at Login": {
+    "en": "Launch at Login",
+    "zh-Hant": "登入時啟動",
+    "zh-Hans": "登录时启动",
+    "ja": "ログイン時に起動",
+    "ko": "로그인 시 실행"
+  },
+  "Menu Bar Appearance": {
+    "en": "Menu Bar Appearance",
+    "zh-Hant": "選單列顯示",
+    "zh-Hans": "菜单栏显示",
+    "ja": "メニューバーの表示",
+    "ko": "메뉴 막대 표시"
+  },
+  "Display style": {
+    "en": "Display style",
+    "zh-Hant": "顯示樣式",
+    "zh-Hans": "显示样式",
+    "ja": "表示スタイル",
+    "ko": "표시 스타일"
+  },
+  "Standard": {
+    "en": "Standard",
+    "zh-Hant": "標準",
+    "zh-Hans": "标准",
+    "ja": "標準",
+    "ko": "표준"
+  },
+  "Compact": {
+    "en": "Compact",
+    "zh-Hant": "緊湊",
+    "zh-Hans": "紧凑",
+    "ja": "コンパクト",
+    "ko": "간결하게"
+  },
+  "Percentages only": {
+    "en": "Percentages only",
+    "zh-Hant": "僅百分比",
+    "zh-Hans": "仅百分比",
+    "ja": "割合のみ",
+    "ko": "백분율만"
+  },
+  "Single quota": {
+    "en": "Single quota",
+    "zh-Hant": "單一額度",
+    "zh-Hans": "单一额度",
+    "ja": "単一の使用枠",
+    "ko": "하나의 사용 한도"
+  },
+  "Icon only": {
+    "en": "Icon only",
+    "zh-Hant": "純圖示",
+    "zh-Hans": "仅图标",
+    "ja": "アイコンのみ",
+    "ko": "아이콘만"
+  },
+  "Displayed quota": {
+    "en": "Displayed quota",
+    "zh-Hant": "顯示的額度",
+    "zh-Hans": "显示的额度",
+    "ja": "表示する使用枠",
+    "ko": "표시할 사용 한도"
+  },
+  "First available quota": {
+    "en": "First available quota",
+    "zh-Hant": "第一個可用額度",
+    "zh-Hans": "第一个可用额度",
+    "ja": "最初の利用可能な使用枠",
+    "ko": "첫 번째 사용 가능한 한도"
+  },
+  "Quota choices will appear after a successful usage refresh.": {
+    "en": "Quota choices will appear after a successful usage refresh.",
+    "zh-Hant": "成功更新 usage 後會顯示額度選項。",
+    "zh-Hans": "成功更新 usage 后会显示额度选项。",
+    "ja": "使用状況の取得後に使用枠を選択できます。",
+    "ko": "사용량을 가져오면 한도를 선택할 수 있습니다."
+  },
+  "Show weekly quota": {
+    "en": "Show weekly quota",
+    "zh-Hant": "顯示每週額度",
+    "zh-Hans": "显示每周额度",
+    "ja": "週間の使用枠を表示",
+    "ko": "주간 한도 표시"
+  },
+  "Show short-window quota": {
+    "en": "Show short-window quota",
+    "zh-Hant": "顯示短期額度",
+    "zh-Hans": "显示短期额度",
+    "ja": "短期間の使用枠を表示",
+    "ko": "단기 한도 표시"
+  },
+  "Show reset signal count in menu bar": {
+    "en": "Show reset signal count in menu bar",
+    "zh-Hant": "在選單列顯示 reset 訊號數",
+    "zh-Hans": "在菜单栏显示重置信号数",
+    "ja": "メニューバーにリセット情報の件数を表示",
+    "ko": "메뉴 막대에 초기화 신호 수 표시"
+  },
+  "Show available banked reset credits in popover": {
+    "en": "Show available banked reset credits in popover",
+    "zh-Hant": "在彈出視窗顯示可用 banked reset 次數",
+    "zh-Hans": "在弹出窗口显示可用 banked reset 次数",
+    "ja": "ポップオーバーに利用可能な保存済みリセット回数を表示",
+    "ko": "팝오버에 사용 가능한 저장된 초기화 횟수 표시"
+  },
+  "Preview": {
+    "en": "Preview",
+    "zh-Hant": "預覽",
+    "zh-Hans": "预览",
+    "ja": "プレビュー",
+    "ko": "미리 보기"
+  },
+  "Order: ": {
+    "en": "Order: ",
+    "zh-Hant": "順序：",
+    "zh-Hans": "顺序：",
+    "ja": "順序：",
+    "ko": "순서: "
+  },
+  "Quota labels and percentages with the status icon.": {
+    "en": "Quota labels and percentages with the status icon.",
+    "zh-Hant": "顯示狀態圖示、額度名稱與百分比。",
+    "zh-Hans": "显示状态图标、额度名称与百分比。",
+    "ja": "状態アイコン、使用枠名、割合を表示します。",
+    "ko": "상태 아이콘, 한도 이름과 백분율을 표시합니다."
+  },
+  "Short labels with tight spacing to save menu bar width.": {
+    "en": "Short labels with tight spacing to save menu bar width.",
+    "zh-Hant": "使用短標籤與緊湊間距，節省選單列空間。",
+    "zh-Hans": "使用短标签与紧凑间距，节省菜单栏空间。",
+    "ja": "短いラベルと狭い間隔で表示幅を抑えます。",
+    "ko": "짧은 이름과 좁은 간격으로 공간을 절약합니다."
+  },
+  "Percentages in the order shown below; hover for quota names.": {
+    "en": "Percentages in the order shown below; hover for quota names.",
+    "zh-Hant": "百分比依下方順序排列；移入游標可查看額度名稱。",
+    "zh-Hans": "百分比按下方顺序排列；悬停可查看额度名称。",
+    "ja": "以下の順序で割合を表示します。カーソルを重ねると使用枠名を確認できます。",
+    "ko": "아래 순서로 백분율을 표시합니다. 마우스를 올리면 한도 이름을 볼 수 있습니다."
+  },
+  "Show just the quota you choose. If it disappears, use the first available quota.": {
+    "en": "Show just the quota you choose. If it disappears, use the first available quota.",
+    "zh-Hant": "只顯示所選額度；若該額度消失，改用第一個可用額度。",
+    "zh-Hans": "只显示所选额度；若该额度消失，改用第一个可用额度。",
+    "ja": "選択した使用枠のみ表示します。取得できなくなった場合は最初の使用枠を表示します。",
+    "ko": "선택한 한도만 표시합니다. 사라지면 첫 번째 사용 가능한 한도를 표시합니다."
+  },
+  "Keep only the status icon; open the popover for usage details.": {
+    "en": "Keep only the status icon; open the popover for usage details.",
+    "zh-Hant": "僅保留狀態圖示，點開彈出視窗查看 usage。",
+    "zh-Hans": "仅保留状态图标，打开弹出窗口查看 usage。",
+    "ja": "状態アイコンのみ表示します。詳細はポップオーバーで確認できます。",
+    "ko": "상태 아이콘만 표시합니다. 자세한 사용량은 팝오버에서 확인할 수 있습니다."
+  },
+  "Preview uses your latest quota. ⚡ counts current signals, not completed resets. These switches do not change detection or notifications.": {
+    "en": "Preview uses your latest quota. ⚡ counts current signals, not completed resets. These switches do not change detection or notifications.",
+    "zh-Hant": "預覽使用最新額度。⚡ 表示目前訊號數，不是已重置次數。顯示開關不影響偵測與通知。",
+    "zh-Hans": "预览使用最新额度。⚡ 表示当前信号数，不是已重置次数。显示开关不影响检测与通知。",
+    "ja": "プレビューには最新の使用枠を使います。⚡は現在の情報件数で、実行済みのリセット回数ではありません。表示設定は検出や通知に影響しません。",
+    "ko": "미리 보기는 최신 한도를 사용합니다. ⚡는 현재 신호 수이며 완료된 초기화 횟수가 아닙니다. 표시 설정은 감지나 알림에 영향을 주지 않습니다."
+  },
+  "Illustrative preview only · 72% / 61% are sample values. These switches do not change detection or notifications.": {
+    "en": "Illustrative preview only · 72% / 61% are sample values. These switches do not change detection or notifications.",
+    "zh-Hant": "僅為示意預覽；72% / 61% 是範例值。顯示開關不影響偵測與通知。",
+    "zh-Hans": "仅为示意预览；72% / 61% 是示例值。显示开关不影响检测与通知。",
+    "ja": "例示用プレビューです。72% / 61%はサンプル値です。表示設定は検出や通知に影響しません。",
+    "ko": "설명용 미리 보기입니다. 72% / 61%는 예시 값입니다. 표시 설정은 감지나 알림에 영향을 주지 않습니다."
+  },
+  "Refresh": {
+    "en": "Refresh",
+    "zh-Hant": "更新頻率",
+    "zh-Hans": "更新频率",
+    "ja": "更新間隔",
+    "ko": "새로 고침"
+  },
+  "Usage": {
+    "en": "Usage",
+    "zh-Hant": "用量",
+    "zh-Hans": "用量",
+    "ja": "使用状況",
+    "ko": "사용량"
+  },
+  "Signals": {
+    "en": "Signals",
+    "zh-Hant": "訊號",
+    "zh-Hans": "信号",
+    "ja": "リセット情報",
+    "ko": "신호"
+  },
+  "%d min": {
+    "en": "%d min",
+    "zh-Hant": "%d 分鐘",
+    "zh-Hans": "%d 分钟",
+    "ja": "%d 分",
+    "ko": "%d분"
+  },
+  "Remaining quota reminders": {
+    "en": "Remaining quota reminders",
+    "zh-Hant": "剩餘額度提醒",
+    "zh-Hans": "剩余额度提醒",
+    "ja": "残り使用枠の通知",
+    "ko": "남은 한도 알림"
+  },
+  "Remind me when quota runs low": {
+    "en": "Remind me when quota runs low",
+    "zh-Hant": "額度偏低時提醒我",
+    "zh-Hans": "额度偏低时提醒我",
+    "ja": "使用枠が少なくなったら通知",
+    "ko": "한도가 낮아지면 알림"
+  },
+  "Low quota: ≤%d%% remaining": {
+    "en": "Low quota: ≤%d%% remaining",
+    "zh-Hant": "低額度：剩餘 ≤%d%%",
+    "zh-Hans": "低额度：剩余 ≤%d%%",
+    "ja": "残り使用枠：%d%%以下で通知",
+    "ko": "낮은 한도: %d%% 이하일 때 알림"
+  },
+  "Add a critical reminder": {
+    "en": "Add a critical reminder",
+    "zh-Hant": "加入極低額度提醒",
+    "zh-Hans": "添加极低额度提醒",
+    "ja": "さらに低い使用枠で通知",
+    "ko": "매우 낮은 한도 알림 추가"
+  },
+  "Critical: ≤%d%% remaining": {
+    "en": "Critical: ≤%d%% remaining",
+    "zh-Hant": "極低額度：剩餘 ≤%d%%",
+    "zh-Hans": "极低额度：剩余 ≤%d%%",
+    "ja": "残り使用枠：%d%%以下で追加通知",
+    "ko": "매우 낮은 한도: %d%% 이하일 때 알림"
+  },
+  "Paused until": {
+    "en": "Paused until",
+    "zh-Hant": "暫停至",
+    "zh-Hans": "暂停至",
+    "ja": "通知の停止期限",
+    "ko": "일시 중지 종료"
+  },
+  "Resume Quota Reminders": {
+    "en": "Resume Quota Reminders",
+    "zh-Hant": "恢復額度提醒",
+    "zh-Hans": "恢复额度提醒",
+    "ja": "使用枠の通知を再開",
+    "ko": "한도 알림 재개"
+  },
+  "Pause Quota Reminders for 1 Hour": {
+    "en": "Pause Quota Reminders for 1 Hour",
+    "zh-Hant": "暫停額度提醒一小時",
+    "zh-Hans": "暂停额度提醒一小时",
+    "ja": "使用枠の通知を1時間停止",
+    "ko": "한도 알림 1시간 중지"
+  },
+  "Show observed consumption today": {
+    "en": "Show observed consumption today",
+    "zh-Hant": "顯示今日觀測消耗量",
+    "zh-Hans": "显示今日观测消耗量",
+    "ja": "本日観測した消費量を表示",
+    "ko": "오늘 관측한 사용량 표시"
+  },
+  "One reminder per threshold per quota cycle. If both thresholds are crossed together, only the critical reminder is sent. Existing low quota also triggers a reminder on the next successful refresh. Reset alerts remain active while quota reminders are paused.": {
+    "en": "One reminder per threshold per quota cycle. If both thresholds are crossed together, only the critical reminder is sent. Existing low quota also triggers a reminder on the next successful refresh. Reset alerts remain active while quota reminders are paused.",
+    "zh-Hant": "每個額度週期的同一門檻只提醒一次。同時跨過兩個門檻時只發極低額度提醒。額度已偏低時會在下次成功更新後提醒。暫停額度提醒不影響 reset 通知。",
+    "zh-Hans": "每个额度周期的同一阈值只提醒一次。同时跨过两个阈值时只发极低额度提醒。额度已偏低时会在下次成功更新后提醒。暂停额度提醒不影响重置通知。",
+    "ja": "使用枠の各期間では、各しきい値につき1回通知します。両方を同時に下回った場合は追加通知のみ送信します。すでに少ない場合も次の取得成功時に通知します。停止中もリセット通知は有効です。",
+    "ko": "한도 주기마다 각 기준에 대해 한 번 알립니다. 두 기준을 동시에 넘으면 매우 낮은 한도 알림만 보냅니다. 이미 낮은 경우에도 다음 갱신 성공 시 알립니다. 한도 알림 중지 중에도 초기화 알림은 유지됩니다."
+  },
+  "Notifications": {
+    "en": "Notifications",
+    "zh-Hant": "通知",
+    "zh-Hans": "通知",
+    "ja": "通知",
+    "ko": "알림"
+  },
+  "Unexpected personal reset": {
+    "en": "Unexpected personal reset",
+    "zh-Hant": "帳號非預期 reset",
+    "zh-Hans": "账户非预期重置",
+    "ja": "アカウントの予期しないリセット",
+    "ko": "계정의 예상치 못한 초기화"
+  },
+  "Reset early signals": {
+    "en": "Reset early signals",
+    "zh-Hant": "Reset 早期訊號",
+    "zh-Hans": "重置早期信号",
+    "ja": "リセットの初期情報",
+    "ko": "초기화 초기 신호"
+  },
+  "Likely reset": {
+    "en": "Likely reset",
+    "zh-Hant": "可能性較高的 reset",
+    "zh-Hans": "可能性较高的重置",
+    "ja": "可能性の高いリセット",
+    "ko": "가능성이 높은 초기화"
+  },
+  "Official confirmation": {
+    "en": "Official confirmation",
+    "zh-Hant": "官方確認",
+    "zh-Hans": "官方确认",
+    "ja": "公式確認",
+    "ko": "공식 확인"
+  },
+  "Notify confidence": {
+    "en": "Notify confidence",
+    "zh-Hant": "通知可信度門檻",
+    "zh-Hans": "通知置信度阈值",
+    "ja": "通知する確信度",
+    "ko": "알림 신뢰도 기준"
+  },
+  "Very Early ≥15%": {
+    "en": "Very Early ≥15%",
+    "zh-Hant": "極早期 ≥15%",
+    "zh-Hans": "极早期 ≥15%",
+    "ja": "最初期 ≥15%",
+    "ko": "매우 초기 ≥15%"
+  },
+  "Early ≥25%": {
+    "en": "Early ≥25%",
+    "zh-Hant": "早期 ≥25%",
+    "zh-Hans": "早期 ≥25%",
+    "ja": "初期 ≥25%",
+    "ko": "초기 ≥25%"
+  },
+  "Likely ≥60%": {
+    "en": "Likely ≥60%",
+    "zh-Hant": "可能性高 ≥60%",
+    "zh-Hans": "可能性高 ≥60%",
+    "ja": "可能性が高い ≥60%",
+    "ko": "가능성 높음 ≥60%"
+  },
+  "Official Only ≥90%": {
+    "en": "Official Only ≥90%",
+    "zh-Hant": "僅官方 ≥90%",
+    "zh-Hans": "仅官方 ≥90%",
+    "ja": "公式のみ ≥90%",
+    "ko": "공식만 ≥90%"
+  },
+  "Permission": {
+    "en": "Permission",
+    "zh-Hant": "權限",
+    "zh-Hans": "权限",
+    "ja": "権限",
+    "ko": "권한"
+  },
+  "Enable Notifications": {
+    "en": "Enable Notifications",
+    "zh-Hant": "啟用通知",
+    "zh-Hans": "启用通知",
+    "ja": "通知を有効にする",
+    "ko": "알림 활성화"
+  },
+  "Send Test": {
+    "en": "Send Test",
+    "zh-Hant": "發送測試通知",
+    "zh-Hans": "发送测试通知",
+    "ja": "テスト通知を送信",
+    "ko": "테스트 알림 보내기"
+  },
+  "Sources": {
+    "en": "Sources",
+    "zh-Hant": "來源",
+    "zh-Hans": "来源",
+    "ja": "出典",
+    "ko": "출처"
+  },
+  "OpenAI official": {
+    "en": "OpenAI official",
+    "zh-Hant": "OpenAI 官方",
+    "zh-Hans": "OpenAI 官方",
+    "ja": "OpenAI 公式",
+    "ko": "OpenAI 공식"
+  },
+  "X: unavailable until an authorized API/feed is configured. GitHub Discussions and other communities can be added as adapters.": {
+    "en": "X: unavailable until an authorized API/feed is configured. GitHub Discussions and other communities can be added as adapters.",
+    "zh-Hant": "X：需設定授權 API／feed 才能使用。GitHub Discussions 與其他社群可透過 adapter 擴充。",
+    "zh-Hans": "X：需配置授权 API／feed 才能使用。GitHub Discussions 与其他社区可通过 adapter 扩展。",
+    "ja": "Xは認可されたAPIまたはフィードの設定後に利用できます。GitHub Discussionsなどはアダプターで追加できます。",
+    "ko": "X는 승인된 API나 피드를 설정한 후 사용할 수 있습니다. GitHub Discussions 등은 어댑터로 추가할 수 있습니다."
+  },
+  "Usage provider": {
+    "en": "Usage provider",
+    "zh-Hant": "用量資料來源",
+    "zh-Hans": "用量数据来源",
+    "ja": "使用状況の取得元",
+    "ko": "사용량 제공자"
+  },
+  "Codex executable (optional)": {
+    "en": "Codex executable (optional)",
+    "zh-Hant": "Codex 執行檔路徑（選填）",
+    "zh-Hans": "Codex 可执行文件路径（可选）",
+    "ja": "Codex実行ファイル（任意）",
+    "ko": "Codex 실행 파일 (선택)"
+  },
+  "Use manual snapshot": {
+    "en": "Use manual snapshot",
+    "zh-Hant": "使用手動快照",
+    "zh-Hans": "使用手动快照",
+    "ja": "手動の記録を使用",
+    "ko": "수동 스냅샷 사용"
+  },
+  "Enter Manual Snapshot…": {
+    "en": "Enter Manual Snapshot…",
+    "zh-Hant": "輸入手動快照…",
+    "zh-Hans": "输入手动快照…",
+    "ja": "手動の記録を入力…",
+    "ko": "수동 스냅샷 입력…"
+  },
+  "Codex windows are returned by the official local app-server. Other personal ChatGPT quotas are displayed only when the provider returns them.": {
+    "en": "Codex windows are returned by the official local app-server. Other personal ChatGPT quotas are displayed only when the provider returns them.",
+    "zh-Hant": "Codex 額度由官方本機 app-server 回傳；其他 ChatGPT 個人額度只有資料來源提供時才會顯示。",
+    "zh-Hans": "Codex 额度由官方本机 app-server 返回；其他 ChatGPT 个人额度只有数据来源提供时才会显示。",
+    "ja": "Codexの使用枠は公式のローカルapp-serverから取得します。他のChatGPT個人用使用枠は取得元が返した場合のみ表示します。",
+    "ko": "Codex 한도는 공식 로컬 app-server에서 가져옵니다. 다른 ChatGPT 개인 한도는 제공자가 반환할 때만 표시합니다."
+  },
+  "Record Banked Reset": {
+    "en": "Record Banked Reset",
+    "zh-Hant": "記錄 banked reset",
+    "zh-Hans": "记录 banked reset",
+    "ja": "保存済みリセットの適用を記録",
+    "ko": "저장된 초기화 사용 기록"
+  },
+  "Record Purchased Reset": {
+    "en": "Record Purchased Reset",
+    "zh-Hant": "記錄付費 reset",
+    "zh-Hans": "记录付费重置",
+    "ja": "購入したリセットの適用を記録",
+    "ko": "구매한 초기화 사용 기록"
+  },
+  "Record only when you apply a reset outside Sentinel. Annotation lasts 30 minutes; Sentinel never buys or consumes a reset.": {
+    "en": "Record only when you apply a reset outside Sentinel. Annotation lasts 30 minutes; Sentinel never buys or consumes a reset.",
+    "zh-Hant": "只在你於 Sentinel 以外套用 reset 時記錄。註記有效 30 分鐘；Sentinel 不會購買或消耗 reset。",
+    "zh-Hans": "只在你于 Sentinel 之外应用重置时记录。注记有效 30 分钟；Sentinel 不会购买或消耗重置。",
+    "ja": "Sentinel以外でリセットを適用した時だけ記録してください。注記は30分間有効です。Sentinelはリセットを購入・消費しません。",
+    "ko": "Sentinel 밖에서 초기화를 적용했을 때만 기록하세요. 기록은 30분간 유효하며 Sentinel은 초기화를 구매하거나 사용하지 않습니다."
+  },
+  "Privacy & Diagnostics": {
+    "en": "Privacy & Diagnostics",
+    "zh-Hant": "隱私與診斷",
+    "zh-Hans": "隐私与诊断",
+    "ja": "プライバシーと診断",
+    "ko": "개인정보 및 진단"
+  },
+  "All account data stays on this Mac. Public-source requests contain no account history or credentials. Official Codex handles its own authentication.": {
+    "en": "All account data stays on this Mac. Public-source requests contain no account history or credentials. Official Codex handles its own authentication.",
+    "zh-Hant": "帳號資料全部保留在此 Mac。公開來源請求不含帳號歷史或憑證；官方 Codex 自行處理驗證。",
+    "zh-Hans": "账户数据全部保留在此 Mac。公开来源请求不含账户历史或凭证；官方 Codex 自行处理验证。",
+    "ja": "アカウントデータはすべてこのMacに保存します。公開情報のリクエストに履歴や認証情報は含みません。認証は公式Codexが処理します。",
+    "ko": "모든 계정 데이터는 이 Mac에 저장됩니다. 공개 출처 요청에는 계정 기록이나 인증 정보가 포함되지 않습니다. 인증은 공식 Codex가 처리합니다."
+  },
+  "Diagnostics…": {
+    "en": "Diagnostics…",
+    "zh-Hant": "診斷…",
+    "zh-Hans": "诊断…",
+    "ja": "診断…",
+    "ko": "진단…"
+  },
+  "Event History…": {
+    "en": "Event History…",
+    "zh-Hant": "事件歷史…",
+    "zh-Hans": "事件历史…",
+    "ja": "イベント履歴…",
+    "ko": "이벤트 기록…"
+  },
+  "Mock scenarios · no live account reads": {
+    "en": "Mock scenarios · no live account reads",
+    "zh-Hant": "模擬情境・不讀取真實帳號",
+    "zh-Hans": "模拟情境・不读取真实账户",
+    "ja": "模擬シナリオ・実アカウントの取得なし",
+    "ko": "모의 시나리오 · 실제 계정 조회 없음"
+  },
+  "Test Quota Reminders: 30 → 20 → 5 → reset": {
+    "en": "Test Quota Reminders: 30 → 20 → 5 → reset",
+    "zh-Hant": "測試額度提醒：30 → 20 → 5 → reset",
+    "zh-Hans": "测试额度提醒：30 → 20 → 5 → 重置",
+    "ja": "通知をテスト：30 → 20 → 5 → リセット",
+    "ko": "한도 알림 테스트: 30 → 20 → 5 → 초기화"
+  },
+  "Run Scenario %d": {
+    "en": "Run Scenario %d",
+    "zh-Hant": "執行情境 %d",
+    "zh-Hans": "运行场景 %d",
+    "ja": "シナリオ%dを実行",
+    "ko": "시나리오 %d 실행"
+  },
+  "Testing": {
+    "en": "Testing",
+    "zh-Hant": "測試",
+    "zh-Hans": "测试",
+    "ja": "テスト",
+    "ko": "테스트"
+  },
+  "Open Isolated Mock App": {
+    "en": "Open Isolated Mock App",
+    "zh-Hant": "開啟獨立模擬 App",
+    "zh-Hans": "打开独立模拟 App",
+    "ja": "独立した模擬アプリを開く",
+    "ko": "독립 모의 앱 열기"
+  },
+  "Manual Snapshot": {
+    "en": "Manual Snapshot",
+    "zh-Hant": "手動快照",
+    "zh-Hans": "手动快照",
+    "ja": "手動の記録",
+    "ko": "수동 스냅샷"
+  },
+  "User entered evidence is labeled Manual. Save another snapshot to detect changes. Switch to CLI for automatic monitoring.": {
+    "en": "User entered evidence is labeled Manual. Save another snapshot to detect changes. Switch to CLI for automatic monitoring.",
+    "zh-Hant": "自行輸入的資料標記為「手動」。再儲存一筆快照可偵測變化；切換 CLI 可自動監控。",
+    "zh-Hans": "自行输入的数据标记为“手动”。再保存一笔快照可检测变化；切换 CLI 可自动监控。",
+    "ja": "入力した情報には「手動」と表示します。次の記録を保存すると変化を検出できます。自動監視にはCLIに切り替えてください。",
+    "ko": "입력한 데이터는 수동으로 표시됩니다. 다음 스냅샷을 저장하면 변화를 감지합니다. 자동 모니터링은 CLI로 전환하세요."
+  },
+  "Product": {
+    "en": "Product",
+    "zh-Hant": "產品",
+    "zh-Hans": "产品",
+    "ja": "製品",
+    "ko": "제품"
+  },
+  "Bucket name": {
+    "en": "Bucket name",
+    "zh-Hant": "額度名稱",
+    "zh-Hans": "额度名称",
+    "ja": "使用枠名",
+    "ko": "한도 이름"
+  },
+  "Window": {
+    "en": "Window",
+    "zh-Hant": "額度週期",
+    "zh-Hans": "额度周期",
+    "ja": "使用枠の期間",
+    "ko": "한도 기간"
+  },
+  "5-hour": {
+    "en": "5-hour",
+    "zh-Hant": "5 小時",
+    "zh-Hans": "5 小时",
+    "ja": "5時間",
+    "ko": "5시간"
+  },
+  "Weekly": {
+    "en": "Weekly",
+    "zh-Hant": "每週",
+    "zh-Hans": "每周",
+    "ja": "週間",
+    "ko": "주간"
+  },
+  "Remaining": {
+    "en": "Remaining",
+    "zh-Hant": "剩餘額度",
+    "zh-Hans": "剩余额度",
+    "ja": "残り使用枠",
+    "ko": "남은 한도"
+  },
+  "%d%% remaining": {
+    "en": "%d%% remaining",
+    "zh-Hant": "剩餘 %d%%",
+    "zh-Hans": "剩余 %d%%",
+    "ja": "残り%d%%",
+    "ko": "%d%% 남음"
+  },
+  "Reset time known": {
+    "en": "Reset time known",
+    "zh-Hant": "已知 reset 時間",
+    "zh-Hans": "已知重置时间",
+    "ja": "リセット時刻が判明",
+    "ko": "초기화 시간 확인됨"
+  },
+  "Next regular reset": {
+    "en": "Next regular reset",
+    "zh-Hant": "下次正常 reset",
+    "zh-Hans": "下次正常重置",
+    "ja": "次の定期リセット",
+    "ko": "다음 정기 초기화"
+  },
+  "Cancel": {
+    "en": "Cancel",
+    "zh-Hant": "取消",
+    "zh-Hans": "取消",
+    "ja": "キャンセル",
+    "ko": "취소"
+  },
+  "Save Snapshot": {
+    "en": "Save Snapshot",
+    "zh-Hant": "儲存快照",
+    "zh-Hans": "保存快照",
+    "ja": "記録を保存",
+    "ko": "스냅샷 저장"
+  },
+  "OpenAI Usage": {
+    "en": "OpenAI Usage",
+    "zh-Hant": "OpenAI 用量",
+    "zh-Hans": "OpenAI 用量",
+    "ja": "OpenAI 使用状況",
+    "ko": "OpenAI 사용량"
+  },
+  "MOCK": {
+    "en": "MOCK",
+    "zh-Hant": "模擬",
+    "zh-Hans": "模拟",
+    "ja": "模擬",
+    "ko": "모의"
+  },
+  "Last known values · live fetch unavailable": {
+    "en": "Last known values · live fetch unavailable",
+    "zh-Hant": "上次成功讀取的資料・目前無法取得即時資料",
+    "zh-Hans": "上次成功读取的数据・目前无法获取实时数据",
+    "ja": "前回取得した値・現在の取得に失敗",
+    "ko": "마지막 확인 값 · 실시간 조회 불가"
+  },
+  "Manual snapshot · user entered": {
+    "en": "Manual snapshot · user entered",
+    "zh-Hant": "手動快照・使用者輸入",
+    "zh-Hans": "手动快照・用户输入",
+    "ja": "手動の記録・ユーザー入力",
+    "ko": "수동 스냅샷 · 사용자 입력"
+  },
+  "Observed today: %@ percentage points used": {
+    "en": "Observed today: %@ percentage points used",
+    "zh-Hant": "今日觀測消耗：%@ 個百分點",
+    "zh-Hans": "今日观测消耗：%@ 个百分点",
+    "ja": "本日の観測消費量：%@ポイント",
+    "ko": "오늘 관측한 사용량: %@%p"
+  },
+  "Measured consumption only. Unsampled periods and reset jumps are excluded; this may be less than total daily usage.": {
+    "en": "Measured consumption only. Unsampled periods and reset jumps are excluded; this may be less than total daily usage.",
+    "zh-Hant": "僅計算觀測消耗，排除未取樣時段與 reset 跳升；可能少於完整每日用量。",
+    "zh-Hans": "仅计算观测消耗，排除未采样时段与重置跳升；可能少于完整每日用量。",
+    "ja": "観測した消費量のみです。未取得期間とリセットによる増加を除外するため、実際の1日の使用量を下回る場合があります。",
+    "ko": "관측한 사용량만 계산합니다. 미관측 구간과 초기화 증가분은 제외하므로 실제 하루 사용량보다 적을 수 있습니다."
+  },
+  "Remind at ≤%d%%": {
+    "en": "Remind at ≤%d%%",
+    "zh-Hant": "剩餘 ≤%d%% 時提醒",
+    "zh-Hans": "剩余 ≤%d%% 时提醒",
+    "ja": "%d%%以下で通知",
+    "ko": "%d%% 이하일 때 알림"
+  },
+  "Resume": {
+    "en": "Resume",
+    "zh-Hant": "恢復",
+    "zh-Hans": "恢复",
+    "ja": "再開",
+    "ko": "재개"
+  },
+  "Pause 1h": {
+    "en": "Pause 1h",
+    "zh-Hant": "暫停 1 小時",
+    "zh-Hans": "暂停 1 小时",
+    "ja": "1時間停止",
+    "ko": "1시간 중지"
+  },
+  "%d banked reset credits available · not applied": {
+    "en": "%d banked reset credits available · not applied",
+    "zh-Hant": "可用 banked reset：%d 次・尚未套用",
+    "zh-Hans": "可用 banked reset：%d 次・尚未应用",
+    "ja": "保存済みリセット：%d回・未適用",
+    "ko": "저장된 초기화 %d회 · 미사용"
+  },
+  "Provider says ordinary usage is unavailable.": {
+    "en": "Provider says ordinary usage is unavailable.",
+    "zh-Hant": "資料來源回報一般額度目前無法使用。",
+    "zh-Hans": "数据来源报告一般额度目前无法使用。",
+    "ja": "取得元によると通常の使用枠は利用できません。",
+    "ko": "제공자에 따르면 일반 한도를 사용할 수 없습니다."
+  },
+  "Usage unavailable": {
+    "en": "Usage unavailable",
+    "zh-Hant": "無法取得用量",
+    "zh-Hans": "无法获取用量",
+    "ja": "使用状況を取得できません",
+    "ko": "사용량 조회 불가"
+  },
+  "Sign in to official Codex, then refresh. No missing limits are estimated.": {
+    "en": "Sign in to official Codex, then refresh. No missing limits are estimated.",
+    "zh-Hant": "請登入官方 Codex 後更新；不會估算不存在的額度。",
+    "zh-Hans": "请登录官方 Codex 后更新；不会估算不存在的额度。",
+    "ja": "公式Codexにログインして更新してください。取得できない使用枠は推定しません。",
+    "ko": "공식 Codex에 로그인한 후 새로 고침하세요. 없는 한도는 추정하지 않습니다."
+  },
+  "Reset Signals": {
+    "en": "Reset Signals",
+    "zh-Hant": "Reset 訊號",
+    "zh-Hans": "重置信号",
+    "ja": "リセット情報",
+    "ko": "초기화 신호"
+  },
+  "History": {
+    "en": "History",
+    "zh-Hant": "歷史",
+    "zh-Hans": "历史",
+    "ja": "履歴",
+    "ko": "기록"
+  },
+  "No fresh irregular reset signal": {
+    "en": "No fresh irregular reset signal",
+    "zh-Hant": "目前沒有新的非例行 reset 訊號",
+    "zh-Hans": "目前没有新的非例行重置信号",
+    "ja": "新しい臨時リセット情報はありません",
+    "ko": "새로운 비정기 초기화 신호 없음"
+  },
+  "Irregular reset: no known schedule": {
+    "en": "Irregular reset: no known schedule",
+    "zh-Hant": "非例行 reset：沒有已知時程",
+    "zh-Hans": "非例行重置：没有已知时间表",
+    "ja": "臨時リセット：既知の日程なし",
+    "ko": "비정기 초기화: 알려진 일정 없음"
+  },
+  "Usage updated: ": {
+    "en": "Usage updated: ",
+    "zh-Hant": "用量更新：",
+    "zh-Hans": "用量更新：",
+    "ja": "使用状況の更新：",
+    "ko": "사용량 갱신: "
+  },
+  "No usage update": {
+    "en": "No usage update",
+    "zh-Hant": "尚未更新用量",
+    "zh-Hans": "尚未更新用量",
+    "ja": "使用状況の更新なし",
+    "ko": "사용량 갱신 없음"
+  },
+  "Refresh all sources": {
+    "en": "Refresh all sources",
+    "zh-Hant": "更新所有來源",
+    "zh-Hans": "更新所有来源",
+    "ja": "すべての取得元を更新",
+    "ko": "모든 출처 새로 고침"
+  },
+  "Settings…": {
+    "en": "Settings…",
+    "zh-Hant": "設定…",
+    "zh-Hans": "设置…",
+    "ja": "設定…",
+    "ko": "설정…"
+  },
+  "Settings": {
+    "en": "Settings",
+    "zh-Hant": "設定",
+    "zh-Hans": "设置",
+    "ja": "設定",
+    "ko": "설정"
+  },
+  "Diagnostics": {
+    "en": "Diagnostics",
+    "zh-Hant": "診斷",
+    "zh-Hans": "诊断",
+    "ja": "診断",
+    "ko": "진단"
+  },
+  "Quit": {
+    "en": "Quit",
+    "zh-Hant": "結束",
+    "zh-Hans": "退出",
+    "ja": "終了",
+    "ko": "종료"
+  },
+  "%@%% left": {
+    "en": "%@%% left",
+    "zh-Hant": "剩餘 %@%%",
+    "zh-Hans": "剩余 %@%%",
+    "ja": "残り%@%%",
+    "ko": "%@%% 남음"
+  },
+  "%@ · %d%% · %d reports · %@": {
+    "en": "%@ · %d%% · %d reports · %@",
+    "zh-Hant": "%@・%d%%・%d 則回報・%@",
+    "zh-Hans": "%@・%d%%・%d 条报告・%@",
+    "ja": "%@・%d%%・%d件の報告・%@",
+    "ko": "%@ · %d%% · 제보 %d건 · %@"
+  },
+  "Reset time unavailable": {
+    "en": "Reset time unavailable",
+    "zh-Hant": "Reset 時間未知",
+    "zh-Hans": "重置时间未知",
+    "ja": "リセット時刻不明",
+    "ko": "초기화 시간 미확인"
+  },
+  "Reset due · awaiting provider refresh": {
+    "en": "Reset due · awaiting provider refresh",
+    "zh-Hant": "已到 reset 時間・等待資料來源更新",
+    "zh-Hans": "已到重置时间・等待数据来源更新",
+    "ja": "リセット予定時刻を経過・取得元の更新待ち",
+    "ko": "초기화 시간 도달 · 제공자 갱신 대기"
+  },
+  "Resets in %dd %dh": {
+    "en": "Resets in %dd %dh",
+    "zh-Hant": "%d 天 %d 小時後 reset",
+    "zh-Hans": "%d 天 %d 小时后重置",
+    "ja": "%d日%d時間後にリセット",
+    "ko": "%d일 %d시간 후 초기화"
+  },
+  "Resets in %dh %dm": {
+    "en": "Resets in %dh %dm",
+    "zh-Hant": "%d 小時 %d 分鐘後 reset",
+    "zh-Hans": "%d 小时 %d 分钟后重置",
+    "ja": "%d時間%d分後にリセット",
+    "ko": "%d시간 %d분 후 초기화"
+  },
+  "Resets in %dm": {
+    "en": "Resets in %dm",
+    "zh-Hant": "%d 分鐘後 reset",
+    "zh-Hans": "%d 分钟后重置",
+    "ja": "%d分後にリセット",
+    "ko": "%d분 후 초기화"
+  },
+  "Event History": {
+    "en": "Event History",
+    "zh-Hant": "事件歷史",
+    "zh-Hans": "事件历史",
+    "ja": "イベント履歴",
+    "ko": "이벤트 기록"
+  },
+  "Event History · MOCK": {
+    "en": "Event History · MOCK",
+    "zh-Hant": "事件歷史・模擬",
+    "zh-Hans": "事件历史・模拟",
+    "ja": "イベント履歴・模擬",
+    "ko": "이벤트 기록 · 모의"
+  },
+  "Usage History": {
+    "en": "Usage History",
+    "zh-Hant": "用量歷史",
+    "zh-Hans": "用量历史",
+    "ja": "使用状況の履歴",
+    "ko": "사용량 기록"
+  },
+  "35 days of local snapshots. Select an event to inspect its evidence.": {
+    "en": "35 days of local snapshots. Select an event to inspect its evidence.",
+    "zh-Hant": "保留 35 天本機快照。選擇事件可查看證據。",
+    "zh-Hans": "保留 35 天本机快照。选择事件可查看证据。",
+    "ja": "35日分の記録をこのMacに保存します。イベントを選ぶと根拠を確認できます。",
+    "ko": "35일간의 로컬 스냅샷을 저장합니다. 이벤트를 선택하면 근거를 볼 수 있습니다."
+  },
+  "Snapshots appear after the first successful account read.": {
+    "en": "Snapshots appear after the first successful account read.",
+    "zh-Hant": "首次成功取得帳號用量後會顯示快照。",
+    "zh-Hans": "首次成功获取账户用量后会显示快照。",
+    "ja": "最初の取得成功後に記録を表示します。",
+    "ko": "계정 사용량을 처음 가져오면 스냅샷이 표시됩니다."
+  },
+  "Time": {
+    "en": "Time",
+    "zh-Hant": "時間",
+    "zh-Hans": "时间",
+    "ja": "時刻",
+    "ko": "시간"
+  },
+  "Remaining %": {
+    "en": "Remaining %",
+    "zh-Hant": "剩餘 %",
+    "zh-Hans": "剩余 %",
+    "ja": "残り %",
+    "ko": "남은 %"
+  },
+  "Bucket": {
+    "en": "Bucket",
+    "zh-Hant": "額度",
+    "zh-Hans": "额度",
+    "ja": "使用枠",
+    "ko": "한도"
+  },
+  "Test fixture · no real quota was changed.": {
+    "en": "Test fixture · no real quota was changed.",
+    "zh-Hant": "測試資料・沒有變更真實額度。",
+    "zh-Hans": "测试数据・没有更改真实额度。",
+    "ja": "テストデータ・実際の使用枠は変更していません。",
+    "ko": "테스트 데이터 · 실제 한도는 변경되지 않았습니다."
+  },
+  "First detected": {
+    "en": "First detected",
+    "zh-Hant": "首次偵測",
+    "zh-Hans": "首次检测",
+    "ja": "初回検出",
+    "ko": "첫 감지"
+  },
+  "Last evidence update": {
+    "en": "Last evidence update",
+    "zh-Hant": "證據最後更新",
+    "zh-Hans": "证据最后更新",
+    "ja": "根拠の最終更新",
+    "ko": "근거 최종 갱신"
+  },
+  "Reports": {
+    "en": "Reports",
+    "zh-Hant": "回報數",
+    "zh-Hans": "报告数",
+    "ja": "報告件数",
+    "ko": "제보 수"
+  },
+  "Plans mentioned": {
+    "en": "Plans mentioned",
+    "zh-Hant": "提及方案",
+    "zh-Hans": "提及套餐",
+    "ja": "言及されたプラン",
+    "ko": "언급된 요금제"
+  },
+  "%@ reports": {
+    "en": "%@ reports",
+    "zh-Hant": "%@ 回報",
+    "zh-Hans": "%@ 报告",
+    "ja": "%@の報告",
+    "ko": "%@ 제보"
+  },
+  "Your account": {
+    "en": "Your account",
+    "zh-Hant": "你的帳號",
+    "zh-Hans": "你的账户",
+    "ja": "あなたのアカウント",
+    "ko": "내 계정"
+  },
+  "No correlated unexpected account reset observed.": {
+    "en": "No correlated unexpected account reset observed.",
+    "zh-Hant": "尚未觀測到相關的帳號非預期 reset。",
+    "zh-Hans": "尚未观测到相关的账户非预期重置。",
+    "ja": "関連する予期しないアカウントのリセットは観測されていません。",
+    "ko": "관련된 예상치 못한 계정 초기화는 관측되지 않았습니다."
+  },
+  "Current %@: %d%% left": {
+    "en": "Current %@: %d%% left",
+    "zh-Hant": "目前 %@：剩餘 %d%%",
+    "zh-Hans": "当前 %@：剩余 %d%%",
+    "ja": "現在の%@：残り%d%%",
+    "ko": "현재 %@: %d%% 남음"
+  },
+  "Source attached · check scope and eligibility": {
+    "en": "Source attached · check scope and eligibility",
+    "zh-Hant": "已附來源・請確認適用範圍與資格",
+    "zh-Hans": "已附来源・请确认适用范围与资格",
+    "ja": "出典あり・対象範囲と条件を確認してください",
+    "ko": "출처 첨부됨 · 적용 범위 및 자격 확인"
+  },
+  "Not found in monitored sources": {
+    "en": "Not found in monitored sources",
+    "zh-Hant": "監控來源中尚未找到",
+    "zh-Hans": "监控来源中尚未找到",
+    "ja": "監視中の出典では未確認",
+    "ko": "모니터링 출처에서 찾지 못함"
+  },
+  "Confidence timeline": {
+    "en": "Confidence timeline",
+    "zh-Hant": "可信度時間軸",
+    "zh-Hans": "置信度时间线",
+    "ja": "確信度の推移",
+    "ko": "신뢰도 변화"
+  },
+  "Confidence %": {
+    "en": "Confidence %",
+    "zh-Hant": "可信度 %",
+    "zh-Hans": "置信度 %",
+    "ja": "確信度 %",
+    "ko": "신뢰도 %"
+  },
+  "Open ↗": {
+    "en": "Open ↗",
+    "zh-Hant": "開啟 ↗",
+    "zh-Hans": "打开 ↗",
+    "ja": "開く ↗",
+    "ko": "열기 ↗"
+  },
+  "Document updated: ": {
+    "en": "Document updated: ",
+    "zh-Hant": "文件更新：",
+    "zh-Hans": "文档更新：",
+    "ja": "文書更新：",
+    "ko": "문서 갱신: "
+  },
+  "Published: %@\nFetched: %@": {
+    "en": "Published: %@\nFetched: %@",
+    "zh-Hant": "發布：%@\n擷取：%@",
+    "zh-Hans": "发布：%@\n获取：%@",
+    "ja": "公開：%@\n取得：%@",
+    "ko": "게시: %@\n조회: %@"
+  },
+  "unknown": {
+    "en": "unknown",
+    "zh-Hant": "未知",
+    "zh-Hans": "未知",
+    "ja": "不明",
+    "ko": "알 수 없음"
+  },
+  "Notification permission: ": {
+    "en": "Notification permission: ",
+    "zh-Hant": "通知權限：",
+    "zh-Hans": "通知权限：",
+    "ja": "通知の権限：",
+    "ko": "알림 권한: "
+  },
+  "Refresh All": {
+    "en": "Refresh All",
+    "zh-Hant": "全部更新",
+    "zh-Hans": "全部更新",
+    "ja": "すべて更新",
+    "ko": "모두 새로 고침"
+  },
+  "Copy Diagnostics": {
+    "en": "Copy Diagnostics",
+    "zh-Hant": "複製診斷資料",
+    "zh-Hans": "复制诊断数据",
+    "ja": "診断情報をコピー",
+    "ko": "진단 정보 복사"
+  },
+  "Send Test Notification": {
+    "en": "Send Test Notification",
+    "zh-Hant": "發送測試通知",
+    "zh-Hans": "发送测试通知",
+    "ja": "テスト通知を送信",
+    "ko": "테스트 알림 보내기"
+  },
+  "Authorized": {
+    "en": "Authorized",
+    "zh-Hant": "已授權",
+    "zh-Hans": "已授权",
+    "ja": "許可済み",
+    "ko": "허용됨"
+  },
+  "Denied · enable in System Settings → Notifications": {
+    "en": "Denied · enable in System Settings → Notifications",
+    "zh-Hant": "未授權・請至系統設定 → 通知啟用",
+    "zh-Hans": "未授权・请到系统设置 → 通知启用",
+    "ja": "未許可・システム設定 → 通知で有効にしてください",
+    "ko": "거부됨 · 시스템 설정 → 알림에서 활성화"
+  },
+  "Not requested": {
+    "en": "Not requested",
+    "zh-Hant": "尚未請求",
+    "zh-Hans": "尚未请求",
+    "ja": "未申請",
+    "ko": "요청하지 않음"
+  },
+  "Unknown": {
+    "en": "Unknown",
+    "zh-Hant": "未知",
+    "zh-Hans": "未知",
+    "ja": "不明",
+    "ko": "알 수 없음"
+  },
+  "Normal reset": {
+    "en": "Normal reset",
+    "zh-Hant": "正常 reset",
+    "zh-Hans": "正常重置",
+    "ja": "定期リセット",
+    "ko": "정기 초기화"
+  },
+  "Banked reset": {
+    "en": "Banked reset",
+    "zh-Hant": "Banked reset",
+    "zh-Hans": "Banked reset",
+    "ja": "保存済みリセット",
+    "ko": "저장된 초기화"
+  },
+  "Purchased reset": {
+    "en": "Purchased reset",
+    "zh-Hant": "付費 reset",
+    "zh-Hans": "付费重置",
+    "ja": "購入したリセット",
+    "ko": "구매한 초기화"
+  },
+  "Automatic / global reset": {
+    "en": "Automatic / global reset",
+    "zh-Hant": "自動／全域 reset",
+    "zh-Hans": "自动／全局重置",
+    "ja": "自動／全体リセット",
+    "ko": "자동 / 전체 초기화"
+  },
+  "Possible global reset": {
+    "en": "Possible global reset",
+    "zh-Hant": "可能的全域 reset",
+    "zh-Hans": "可能的全局重置",
+    "ja": "全体リセットの可能性",
+    "ko": "전체 초기화 가능성"
+  },
+  "Unexpected account reset": {
+    "en": "Unexpected account reset",
+    "zh-Hant": "帳號非預期 reset",
+    "zh-Hans": "账户非预期重置",
+    "ja": "予期しないアカウントのリセット",
+    "ko": "예상치 못한 계정 초기화"
+  },
+  "Complimentary reset offer": {
+    "en": "Complimentary reset offer",
+    "zh-Hant": "免費 reset 提供",
+    "zh-Hans": "免费重置提供",
+    "ja": "無料リセットの提供",
+    "ko": "무료 초기화 제공"
+  },
+  "Unclassified quota increase": {
+    "en": "Unclassified quota increase",
+    "zh-Hant": "未分類的額度增加",
+    "zh-Hans": "未分类的额度增加",
+    "ja": "未分類の使用枠増加",
+    "ko": "미분류 한도 증가"
+  },
+  "Rumor": {
+    "en": "Rumor",
+    "zh-Hant": "傳聞",
+    "zh-Hans": "传闻",
+    "ja": "噂",
+    "ko": "소문"
+  },
+  "Early Signal": {
+    "en": "Early Signal",
+    "zh-Hant": "早期訊號",
+    "zh-Hans": "早期信号",
+    "ja": "初期情報",
+    "ko": "초기 신호"
+  },
+  "Likely": {
+    "en": "Likely",
+    "zh-Hant": "可能性高",
+    "zh-Hans": "可能性高",
+    "ja": "可能性が高い",
+    "ko": "가능성 높음"
+  },
+  "Confirmed": {
+    "en": "Confirmed",
+    "zh-Hant": "已確認",
+    "zh-Hans": "已确认",
+    "ja": "確認済み",
+    "ko": "확인됨"
+  },
+  "⚡ Reset signal strengthened": {
+    "en": "⚡ Reset signal strengthened",
+    "zh-Hant": "⚡ Reset 訊號增強",
+    "zh-Hans": "⚡ 重置信号增强",
+    "ja": "⚡ リセット情報の根拠が増加",
+    "ko": "⚡ 초기화 신호 강화"
+  },
+  "⚡ Unexpected usage reset detected": {
+    "en": "⚡ Unexpected usage reset detected",
+    "zh-Hant": "⚡ 偵測到非預期 usage reset",
+    "zh-Hans": "⚡ 检测到非预期 usage 重置",
+    "ja": "⚡ 予期しない使用枠のリセットを検出",
+    "ko": "⚡ 예상치 못한 사용 한도 초기화 감지"
+  },
+  "%d public reports": {
+    "en": "%d public reports",
+    "zh-Hant": "%d 則公開回報",
+    "zh-Hans": "%d 条公开报告",
+    "ja": "%d件の公開報告",
+    "ko": "공개 제보 %d건"
+  },
+  "Sources: %@. %@": {
+    "en": "Sources: %@. %@",
+    "zh-Hant": "來源：%@。%@",
+    "zh-Hans": "来源：%@。%@",
+    "ja": "出典：%@。%@",
+    "ko": "출처: %@. %@"
+  },
+  "Read source for eligibility.": {
+    "en": "Read source for eligibility.",
+    "zh-Hant": "請閱讀來源確認適用資格。",
+    "zh-Hans": "请阅读来源确认适用资格。",
+    "ja": "対象条件は出典をご確認ください。",
+    "ko": "적용 자격은 출처를 확인하세요."
+  },
+  "No official confirmation in monitored sources.": {
+    "en": "No official confirmation in monitored sources.",
+    "zh-Hant": "監控來源中尚無官方確認。",
+    "zh-Hans": "监控来源中尚无官方确认。",
+    "ja": "監視中の出典では公式確認はありません。",
+    "ko": "모니터링 출처에 공식 확인이 없습니다."
+  },
+  "Low quota · critical reminder": {
+    "en": "Low quota · critical reminder",
+    "zh-Hant": "低額度・極低門檻提醒",
+    "zh-Hans": "低额度・极低阈值提醒",
+    "ja": "残り使用枠・追加通知",
+    "ko": "낮은 한도 · 매우 낮음 알림"
+  },
+  "Low quota reminder": {
+    "en": "Low quota reminder",
+    "zh-Hant": "低額度提醒",
+    "zh-Hans": "低额度提醒",
+    "ja": "残り使用枠の通知",
+    "ko": "낮은 한도 알림"
+  },
+  "%@ · %@: %@%% left\nYour reminder threshold: ≤%d%%\nNext regular reset: %@\nSource: %@ · observed %@": {
+    "en": "%@ · %@: %@%% left\nYour reminder threshold: ≤%d%%\nNext regular reset: %@\nSource: %@ · observed %@",
+    "zh-Hant": "%@・%@：剩餘 %@%%\n提醒門檻：≤%d%%\n下次正常 reset：%@\n來源：%@・觀測時間 %@",
+    "zh-Hans": "%@・%@：剩余 %@%%\n提醒阈值：≤%d%%\n下次正常重置：%@\n来源：%@・观测时间 %@",
+    "ja": "%@・%@：残り%@%%\n通知のしきい値：%d%%以下\n次の定期リセット：%@\n取得元：%@・観測時刻 %@",
+    "ko": "%@ · %@: %@%% 남음\n알림 기준: %d%% 이하\n다음 정기 초기화: %@\n출처: %@ · 관측 %@"
+  },
+  "Delivered notifications in Notification Center: %d\n": {
+    "en": "Delivered notifications in Notification Center: %d\n",
+    "zh-Hant": "通知中心已送達通知：%d 則\n",
+    "zh-Hans": "通知中心已送达通知：%d 条\n",
+    "ja": "通知センターの配信済み通知：%d件\n",
+    "ko": "알림 센터 전달 알림: %d건\n"
+  },
+  "Notification test delivered. Click to open event history.": {
+    "en": "Notification test delivered. Click to open event history.",
+    "zh-Hant": "測試通知已送達。點擊可開啟事件歷史。",
+    "zh-Hans": "测试通知已送达。点击可打开事件历史。",
+    "ja": "テスト通知を送信しました。クリックするとイベント履歴を開きます。",
+    "ko": "테스트 알림이 전달되었습니다. 클릭하면 이벤트 기록이 열립니다."
+  },
+  "Notification permission not granted.": {
+    "en": "Notification permission not granted.",
+    "zh-Hant": "尚未授權通知。",
+    "zh-Hans": "尚未授权通知。",
+    "ja": "通知が許可されていません。",
+    "ko": "알림 권한이 없습니다."
+  },
+  "The increase was observed at or after the previously scheduled reset. A polling gap cannot prove the exact reset moment.": {
+    "en": "The increase was observed at or after the previously scheduled reset. A polling gap cannot prove the exact reset moment.",
+    "zh-Hant": "額度增加發生在原定 reset 時間或之後；取樣空檔無法證明確切 reset 時刻。",
+    "zh-Hans": "额度增加发生在原定重置时间或之后；采样空档无法证明确切重置时刻。",
+    "ja": "増加は前回の予定リセット時刻以降に観測されました。取得間隔があるため正確な時刻は特定できません。",
+    "ko": "증가는 이전 정기 초기화 시간 이후에 관측되었습니다. 관측 간격 때문에 정확한 시간은 확인할 수 없습니다."
+  },
+  "Quota increased while available reset credits decreased. A banked reset may have been redeemed, or a credit may have expired. The provider does not prove which happened; this is not global-reset evidence.": {
+    "en": "Quota increased while available reset credits decreased. A banked reset may have been redeemed, or a credit may have expired. The provider does not prove which happened; this is not global-reset evidence.",
+    "zh-Hant": "額度增加時可用 reset 次數減少，可能已兌換 banked reset 或次數到期。資料來源無法判定原因，不能視為全域 reset 證據。",
+    "zh-Hans": "额度增加时可用重置次数减少，可能已兑换 banked reset 或次数到期。数据来源无法判定原因，不能视为全局重置证据。",
+    "ja": "使用枠の増加と同時に利用可能なリセット回数が減りました。適用または期限切れの可能性があります。取得元は原因を示しておらず、全体リセットの根拠にはなりません。",
+    "ko": "한도가 증가하면서 사용 가능한 초기화 횟수가 감소했습니다. 사용했거나 만료되었을 수 있습니다. 원인은 확인되지 않아 전체 초기화의 근거가 아닙니다."
+  },
+  "Quota increased, but the previous scheduled reset time was unavailable.": {
+    "en": "Quota increased, but the previous scheduled reset time was unavailable.",
+    "zh-Hant": "額度增加，但先前的正常 reset 時間未知。",
+    "zh-Hans": "额度增加，但先前的正常重置时间未知。",
+    "ja": "使用枠は増えましたが、前回の定期リセット時刻は不明です。",
+    "ko": "한도가 증가했지만 이전 정기 초기화 시간은 확인되지 않았습니다."
+  },
+  "Quota increased before its previous regular reset. This is account evidence, not proof of a global reset. Purchased/banked activity outside this app is not always observable.": {
+    "en": "Quota increased before its previous regular reset. This is account evidence, not proof of a global reset. Purchased/banked activity outside this app is not always observable.",
+    "zh-Hant": "額度在原定正常 reset 前增加。這是帳號證據，不足以證明全域 reset；App 外的付費／banked reset 操作不一定能觀測到。",
+    "zh-Hans": "额度在原定正常重置前增加。这是账户证据，不足以证明全局重置；App 外的付费／banked reset 操作不一定能观测到。",
+    "ja": "前回の定期リセット予定より前に使用枠が増加しました。これはアカウントの観測結果で、全体リセットの証明ではありません。アプリ外の購入・保存済みリセットは観測できない場合があります。",
+    "ko": "이전 정기 초기화 전에 한도가 증가했습니다. 계정의 관측 결과이며 전체 초기화를 증명하지 않습니다. 앱 밖의 구매·저장된 초기화 사용은 확인되지 않을 수 있습니다."
+  },
+  "Public reports are also attached; product matches, account eligibility is unverified.": {
+    "en": "Public reports are also attached; product matches, account eligibility is unverified.",
+    "zh-Hant": "亦附上公開回報；產品相符，但帳號適用資格尚未確認。",
+    "zh-Hans": "亦附上公开报告；产品相符，但账户适用资格尚未确认。",
+    "ja": "公開報告も添付されています。製品は一致しますが、アカウントの対象条件は未確認です。",
+    "ko": "공개 제보도 첨부되었습니다. 제품은 일치하지만 계정의 적용 자격은 미확인입니다."
+  },
+  "Official source describes this reset or offer. See wording and eligibility in the source; this does not confirm your account reset.": {
+    "en": "Official source describes this reset or offer. See wording and eligibility in the source; this does not confirm your account reset.",
+    "zh-Hant": "官方來源描述此 reset 或提供方案。請查看原文及適用資格；不代表你的帳號已 reset。",
+    "zh-Hans": "官方来源描述此重置或提供方案。请查看原文及适用资格；不代表你的账户已重置。",
+    "ja": "公式の出典にリセットまたは提供内容の記載があります。原文と対象条件をご確認ください。あなたのアカウントのリセット完了を意味しません。",
+    "ko": "공식 출처가 초기화 또는 제공 내용을 설명합니다. 원문과 적용 자격을 확인하세요. 내 계정의 초기화 완료를 의미하지 않습니다."
+  },
+  "Fresh public report. No official confirmation found in monitored sources. No irregular reset date is predicted.": {
+    "en": "Fresh public report. No official confirmation found in monitored sources. No irregular reset date is predicted.",
+    "zh-Hant": "新的公開回報。監控來源中尚無官方確認；不會預測非例行 reset 日期。",
+    "zh-Hans": "新的公开报告。监控来源中尚无官方确认；不会预测非例行重置日期。",
+    "ja": "新しい公開報告です。監視中の出典では公式確認はありません。臨時リセットの日付は予測しません。",
+    "ko": "새로운 공개 제보입니다. 모니터링 출처에 공식 확인이 없습니다. 비정기 초기화 날짜는 예측하지 않습니다."
+  },
+  "You recorded a banked reset within the last 30 minutes.": {
+    "en": "You recorded a banked reset within the last 30 minutes.",
+    "zh-Hant": "你在過去 30 分鐘內記錄了 banked reset。",
+    "zh-Hans": "你在过去 30 分钟内记录了 banked reset。",
+    "ja": "過去30分以内に保存済みリセットの適用を記録しています。",
+    "ko": "지난 30분 이내에 저장된 초기화 사용을 기록했습니다."
+  },
+  "You recorded a purchased reset within the last 30 minutes.": {
+    "en": "You recorded a purchased reset within the last 30 minutes.",
+    "zh-Hant": "你在過去 30 分鐘內記錄了付費 reset。",
+    "zh-Hans": "你在过去 30 分钟内记录了付费重置。",
+    "ja": "過去30分以内に購入したリセットの適用を記録しています。",
+    "ko": "지난 30분 이내에 구매한 초기화 사용을 기록했습니다."
+  },
+  "Reset wave: %d independent reports within %d minutes. Possible phased rollout.": {
+    "en": "Reset wave: %d independent reports within %d minutes. Possible phased rollout.",
+    "zh-Hant": "Reset 波次：%d 則獨立回報集中於 %d 分鐘內，可能是分階段推出。",
+    "zh-Hans": "重置波次：%d 条独立报告集中于 %d 分钟内，可能是分阶段推出。",
+    "ja": "リセットの波：%d件の独立した報告が%d分以内に集中しています。段階的な展開の可能性があります。",
+    "ko": "초기화 흐름: 독립 제보 %d건이 %d분 이내에 집중되었습니다. 단계적 적용일 수 있습니다."
+  },
+  "%d active reset signals": {
+    "en": "%d active reset signals",
+    "zh-Hant": "目前 %d 個 reset 訊號",
+    "zh-Hans": "当前 %d 个重置信号",
+    "ja": "現在のリセット情報：%d件",
+    "ko": "현재 초기화 신호 %d개"
+  },
+  "%@ %@: %d%% remaining": {
+    "en": "%@ %@: %d%% remaining",
+    "zh-Hant": "%@ %@：剩餘 %d%%",
+    "zh-Hans": "%@ %@：剩余 %d%%",
+    "ja": "%@ %@：残り%d%%",
+    "ko": "%@ %@: %d%% 남음"
+  },
+  "◉ Usage ?": {
+    "en": "◉ Usage ?",
+    "zh-Hant": "◉ 用量 ?",
+    "zh-Hans": "◉ 用量 ?",
+    "ja": "◉ 使用状況 ?",
+    "ko": "◉ 사용량 ?"
+  },
+  "Approval required in System Settings → Login Items.": {
+    "en": "Approval required in System Settings → Login Items.",
+    "zh-Hant": "請至系統設定 → 登入項目允許。",
+    "zh-Hans": "请到系统设置 → 登录项允许。",
+    "ja": "システム設定 → ログイン項目で許可してください。",
+    "ko": "시스템 설정 → 로그인 항목에서 승인하세요."
+  },
+  "GitHub · openai/codex": {
+    "en": "GitHub · openai/codex",
+    "zh-Hant": "GitHub · openai/codex",
+    "zh-Hans": "GitHub · openai/codex",
+    "ja": "GitHub · openai/codex",
+    "ko": "GitHub · openai/codex"
+  },
+  "Reddit · r/codex": {
+    "en": "Reddit · r/codex",
+    "zh-Hant": "Reddit · r/codex",
+    "zh-Hans": "Reddit · r/codex",
+    "ja": "Reddit · r/codex",
+    "ko": "Reddit · r/codex"
+  },
+  "Hacker News": {
+    "en": "Hacker News",
+    "zh-Hant": "Hacker News",
+    "zh-Hans": "Hacker News",
+    "ja": "Hacker News",
+    "ko": "Hacker News"
+  },
+  "Notification test": {
+    "en": "Notification test",
+    "zh-Hant": "通知測試",
+    "zh-Hans": "通知测试",
+    "ja": "通知テスト",
+    "ko": "알림 테스트"
+  },
+  "Stage %d: ≤%d%% remaining": {
+    "en": "Stage %d: ≤%d%% remaining",
+    "zh-Hant": "第 %d 階段：剩餘 ≤%d%%",
+    "zh-Hans": "第 %d 阶段：剩余 ≤%d%%",
+    "ja": "段階 %d：残り ≤%d%%",
+    "ko": "%d단계: 잔여 ≤%d%%"
+  },
+  "Remove stage %d": {
+    "en": "Remove stage %d",
+    "zh-Hant": "移除第 %d 階段",
+    "zh-Hans": "移除第 %d 阶段",
+    "ja": "段階 %d を削除",
+    "ko": "%d단계 삭제"
+  },
+  "Add reminder (%d/5)": {
+    "en": "Add reminder (%d/5)",
+    "zh-Hant": "新增提醒（%d/5）",
+    "zh-Hans": "新增提醒（%d/5）",
+    "ja": "通知を追加（%d/5）",
+    "ko": "알림 추가 (%d/5)"
+  },
+  "Reminder stages": {
+    "en": "Reminder stages",
+    "zh-Hant": "提醒階段",
+    "zh-Hans": "提醒阶段",
+    "ja": "通知の段階",
+    "ko": "알림 단계"
+  },
+  "Add up to five distinct thresholds from 0–99%. Stages run from highest to lowest; the final stage is critical when more than one is set.": {
+    "en": "Add up to five distinct thresholds from 0–99%. Stages run from highest to lowest; the final stage is critical when more than one is set.",
+    "zh-Hant": "最多新增五個不同門檻，範圍為 0–99%。依剩餘比例由高到低排列；設定多個階段時，最後一階段為緊急提醒。",
+    "zh-Hans": "最多新增五个不同门槛，范围为 0–99%。依剩余比例由高到低排列；设置多个阶段时，最后一阶段为紧急提醒。",
+    "ja": "0〜99% の異なるしきい値を最大5つ追加できます。高い順に並び、複数ある場合は最後の段階が緊急通知になります。",
+    "ko": "0–99% 범위의 서로 다른 임계값을 최대 5개 추가할 수 있습니다. 높은 순으로 표시되며 여러 단계가 있으면 마지막 단계는 긴급 알림입니다."
+  },
+  "One reminder per stage per quota cycle. If several stages are crossed together, one alert covers them all. Existing low quota triggers on the next successful refresh. Reset alerts remain active while quota reminders are paused.": {
+    "en": "One reminder per stage per quota cycle. If several stages are crossed together, one alert covers them all. Existing low quota triggers on the next successful refresh. Reset alerts remain active while quota reminders are paused.",
+    "zh-Hant": "每個額度週期中，每階段只提醒一次。一次跨越多階段時合併為一則通知。已低於門檻時，在下次成功更新後提醒。暫停用量提醒不影響 reset 通知。",
+    "zh-Hans": "每个额度周期中，每阶段只提醒一次。一次跨越多阶段时合并为一则通知。已低于门槛时，在下次成功更新后提醒。暂停用量提醒不影响 reset 通知。",
+    "ja": "各使用枠の周期で、各段階の通知は1回です。一度に複数の段階を超えた場合は1件にまとめます。既に少ない場合は次の更新成功時に通知します。一時停止中もリセット通知は有効です。",
+    "ko": "사용 주기마다 각 단계는 한 번만 알립니다. 여러 단계를 한 번에 넘으면 하나로 합칩니다. 이미 낮은 경우 다음 업데이트 성공 시 알립니다. 사용량 알림을 일시 중지해도 초기화 알림은 유지됩니다."
+  },
+  "Custom agent": {
+    "en": "Custom agent",
+    "zh-Hant": "自訂代理",
+    "zh-Hans": "自定义代理",
+    "ja": "カスタムエージェント",
+    "ko": "사용자 지정 에이전트"
+  },
+  "AI agent": {
+    "en": "AI agent",
+    "zh-Hant": "AI 代理",
+    "zh-Hans": "AI 代理",
+    "ja": "AI エージェント",
+    "ko": "AI 에이전트"
+  },
+  "Local usage JSON path": {
+    "en": "Local usage JSON path",
+    "zh-Hant": "本機用量 JSON 路徑",
+    "zh-Hans": "本地用量 JSON 路径",
+    "ja": "ローカル使用量 JSON パス",
+    "ko": "로컬 사용량 JSON 경로"
+  },
+  "Choose JSON Export…": {
+    "en": "Choose JSON Export…",
+    "zh-Hant": "選擇 JSON 匯出檔…",
+    "zh-Hans": "选择 JSON 导出文件…",
+    "ja": "JSON 書き出しを選択…",
+    "ko": "JSON 내보내기 선택…"
+  },
+  "Agent setup guide": {
+    "en": "Agent setup guide",
+    "zh-Hant": "代理設定指南",
+    "zh-Hans": "代理设置指南",
+    "ja": "エージェント設定ガイド",
+    "ko": "에이전트 설정 안내"
+  },
+  "Claude supports the official status-line bridge. Gemini and Grok use a user-provided local export or manual snapshot. No cookies or private APIs are accessed. Files older than ten minutes are marked stale.": {
+    "en": "Claude supports the official status-line bridge. Gemini and Grok use a user-provided local export or manual snapshot. No cookies or private APIs are accessed. Files older than ten minutes are marked stale.",
+    "zh-Hant": "Claude 支援官方狀態列橋接。Gemini 和 Grok 使用使用者提供的本機匯出檔或手動快照。不讀取 cookie 或私人 API。超過十分鐘的檔案會標示為過期。",
+    "zh-Hans": "Claude 支持官方状态栏桥接。Gemini 和 Grok 使用用户提供的本地导出文件或手动快照。不读取 cookie 或私有 API。超过十分钟的文件会标记为过期。",
+    "ja": "Claude は公式ステータスラインの連携に対応。Gemini と Grok はユーザーのローカル書き出し、または手動入力を使います。Cookie や非公開 API にアクセスせず、10分以上前のデータは古いと表示します。",
+    "ko": "Claude는 공식 상태 표시줄 연동을 지원합니다. Gemini와 Grok은 사용자가 제공한 로컬 파일 또는 수동 입력을 사용합니다. 쿠키나 비공개 API에 접근하지 않으며 10분이 지난 파일은 오래된 데이터로 표시합니다."
+  }
+}

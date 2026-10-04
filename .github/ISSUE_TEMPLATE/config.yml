@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Setup and privacy guide
+    url: https://github.com/Joe05520/usage-sentinel/blob/main/docs/AGENTS.md
+    about: Read supported provider methods before configuring an integration.

@@ -1,0 +1,16 @@
+build/
+.build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+.env*
+*.sqlite*
+*.log
+Evidence/*.xcresult/
+Portable/dist/
+Portable/build/
+*.spec
+__pycache__/
+*.pyc
+.venv/

@@ -1,0 +1,15 @@
+name: Feature request
+description: Suggest a new adapter, improvement or translation.
+title: '[Feature] '
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would this help you do?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Suggested behavior or official data source
+      description: For a provider adapter, link its official documentation. Do not share credentials.

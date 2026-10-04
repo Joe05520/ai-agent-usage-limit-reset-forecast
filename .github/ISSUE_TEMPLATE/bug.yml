@@ -1,0 +1,29 @@
+name: Bug report
+description: Report a reproducible problem without sharing private account data.
+title: '[Bug] '
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Please remove account IDs, credentials, usage history and private paths. Never upload your Codex/Claude auth files.
+  - type: input
+    id: version
+    attributes:
+      label: App version and operating system
+      placeholder: 1.4.0, macOS 14 / Windows 11 / Ubuntu 22.04
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: What happened and how to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Sanitized diagnostics (optional)

@@ -1,0 +1,280 @@
+import json
+from pathlib import Path
+import sys
+import time
+from datetime import datetime
+from PySide6.QtCore import Qt, QTimer, QObject, QRunnable, QThreadPool, Signal, QUrl
+from PySide6.QtGui import QIcon, QDesktopServices, QColor, QPainter, QPixmap, QFont
+from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QTabWidget, QSystemTrayIcon, QMenu, QProgressBar, QScrollArea, QComboBox, QCheckBox, QSpinBox, QLineEdit, QFileDialog, QMessageBox, QTextBrowser, QFormLayout)
+from . import __version__, core, autostart
+from .i18n import Translator, LANGUAGES
+from .storage import Database, data_dir
+from .providers import codex_usage, export_usage
+from .sources import CATALOG, fetch
+
+DEFAULT = dict(agent="Codex", cli="", exports={}, stages=[20,5], reminders_enabled=True, language="en", interval=300, news_interval=300, confidence=.25, notify_personal=True, notify_signals=True, sources=["OpenAI Status","OpenAI News","Codex Releases","GitHub","Reddit"], style="Standard", signal_count=False, excluded=[], snooze=0)
+TYPE_NAMES = dict(scheduled="Normal reset", banked="Banked reset", purchased="Purchased reset", automaticGlobal="Automatic / global reset", suspectedGlobal="Possible global reset", accountUnexpected="Unexpected account reset", complimentary="Complimentary reset offer", unknown="Unclassified quota increase")
+LEVEL_NAMES = ["Rumor", "Early Signal", "Likely", "Confirmed"]
+
+
+class Result(QObject):
+    ready = Signal(str, object, object)
+
+
+class Work(QRunnable):
+    def __init__(self, name, function, callback):
+        super().__init__(); self.name, self.function = name, function
+        self.result = Result(); self.result.ready.connect(callback)
+    def run(self):
+        try: self.result.ready.emit(self.name, self.function(), None)
+        except Exception as error: self.result.ready.emit(self.name, None, str(error))
+
+
+def icon(percent=None):
+    image = QPixmap(64,64); image.fill(Qt.GlobalColor.transparent)
+    painter = QPainter(image); painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+    painter.setBrush(QColor("#27766d")); painter.setPen(Qt.PenStyle.NoPen); painter.drawEllipse(4,4,56,56)
+    painter.setPen(QColor("white")); painter.setFont(QFont("Sans", 20, QFont.Weight.Bold)); painter.drawText(image.rect(), Qt.AlignmentFlag.AlignCenter, str(round(percent)) if percent is not None else "S")
+    painter.end(); return QIcon(image)
+
+
+def clear(layout):
+    while layout.count():
+        item = layout.takeAt(0)
+        if item.widget(): item.widget().deleteLater()
+        elif item.layout(): clear(item.layout())
+
+
+class SentinelWindow(QMainWindow):
+    def __init__(self, mock=False):
+        super().__init__(); self.mock = mock
+        self.db = Database(data_dir()/("portable-mock.sqlite" if mock else "portable.sqlite"))
+        self.settings = DEFAULT | self.db.load("settings", {})
+        self.t = Translator(self.settings["language"])
+        self.engine = core.ReminderEngine(self.db.load("cycles", {}))
+        self.events = self.db.load("events", [])
+        self.state = None; self.available = False; self.busy = set(); self.work = {}; self.last_usage = self.last_news = 0; self.diagnostics = {}; self.selected_event = None
+        self.setWindowTitle("Usage Sentinel"+(" · MOCK" if mock else "")); self.setWindowIcon(icon()); self.resize(520,700)
+        self.tabs = QTabWidget(); self.setCentralWidget(self.tabs)
+        self.usage_page, self.events_page, self.settings_page, self.debug_page = (QWidget() for _ in range(4))
+        self.usage_layout = QVBoxLayout(self.usage_page); self.event_layout = QVBoxLayout(self.events_page); self.settings_layout = QVBoxLayout(self.settings_page); self.debug_layout = QVBoxLayout(self.debug_page)
+        for page, name in zip((self.usage_page,self.events_page,self.settings_page,self.debug_page), ("Usage","Event History","Settings","Diagnostics")): self.tabs.addTab(page,self.t(name))
+        self.tray = QSystemTrayIcon(icon(), self); self.tray.setToolTip("Usage Sentinel · Usage ?")
+        self.tray.activated.connect(self.activated); self.tray.messageClicked.connect(self.notification_clicked)
+        self.tray.show(); self.rebuild_settings(); self.render(); self.build_debug()
+        self.timer = QTimer(self); self.timer.setInterval(30000); self.timer.timeout.connect(self.tick); self.timer.start()
+        QTimer.singleShot(100, self.refresh_all)
+        if not QSystemTrayIcon.isSystemTrayAvailable():
+            self.show(); self.statusBar().showMessage("System tray unavailable. Keep this window open; a tray extension may be needed on GNOME.")
+
+    def closeEvent(self, event):
+        if QSystemTrayIcon.isSystemTrayAvailable(): event.ignore(); self.hide()
+        else: event.accept(); QApplication.quit()
+
+    def activated(self, reason):
+        if reason in (QSystemTrayIcon.ActivationReason.Trigger, QSystemTrayIcon.ActivationReason.DoubleClick):
+            self.show(); self.raise_(); self.activateWindow(); self.refresh_usage()
+
+    def notification_clicked(self):
+        self.show(); self.tabs.setCurrentWidget(self.events_page if self.selected_event else self.usage_page); self.raise_()
+
+    def save(self): self.db.save("settings", self.settings)
+
+    def run(self, name, function):
+        if name in self.busy: return
+        self.busy.add(name); work = Work(name, function, self.completed); self.work[name] = work; QThreadPool.globalInstance().start(work)
+
+    def refresh_usage(self):
+        if "Usage" in self.busy: return
+        self.last_usage = time.time()
+        agent = self.settings["agent"]
+        if self.mock:
+            self.run("Usage", lambda: core.parse_export(dict(schemaVersion=1,timestamp=datetime.now().astimezone().isoformat(),origin="MOCK",buckets=[dict(id="weekly",name="Weekly",remainingPercent=61,resetAt=time.time()+3*86400,windowDurationMins=10080)]), agent))
+        elif agent == "Codex":
+            path = self.settings["cli"]; self.run("Usage",lambda: codex_usage(path))
+        else:
+            path = self.settings["exports"].get(agent, ""); self.run("Usage",lambda: export_usage(path,agent))
+
+    def refresh_news(self):
+        if self.mock: return
+        self.last_news = time.time()
+        for name in self.settings["sources"]:
+            cache = self.db.load("cache:"+name, {}); self.run(name, lambda n=name,c=cache: fetch(n,c))
+
+    def refresh_all(self): self.refresh_usage(); self.refresh_news()
+
+    def tick(self):
+        if time.time()-self.last_usage >= self.settings["interval"]: self.refresh_usage()
+        if time.time()-self.last_news >= self.settings["news_interval"]: self.refresh_news()
+        self.render()
+
+    def completed(self, name, result, error):
+        self.busy.discard(name); self.work.pop(name,None)
+        now = time.time(); self.diagnostics[name] = dict(status=error or "OK", checked=now)
+        if name == "Usage":
+            if error: self.available = False
+            else:
+                prior = self.db.latest(result["source"])
+                if not prior or prior["timestamp"] != result["timestamp"]:
+                    resets = core.personal_resets(prior,result,self.db.load("intent"))
+                    self.db.append(result); self.engine.observe(result); self.db.save("cycles",self.engine.cycles)
+                    self.events = core.merge(self.events,[],resets,now)
+                self.state = result; self.available = -60 <= now-result["timestamp"] <= 600
+                if not self.available: self.diagnostics[name]["status"] = "Export is stale · refresh at source"
+        elif result:
+            cache, signals, status = result; self.db.save("cache:"+name,cache); self.diagnostics[name].update(status=status,latency=cache.get("latency"),last_success=cache.get("last_success"),retry=cache.get("retry"))
+            self.events = core.merge(self.events,signals,[],now)
+        self.notify(); self.db.save("events",self.events); self.render(); self.build_debug()
+
+    def send(self, title, body, event=None):
+        # Qt reports capability, not guaranteed OS delivery. Focus/DND may hide banners.
+        if not QSystemTrayIcon.supportsMessages() or not QSystemTrayIcon.isSystemTrayAvailable():
+            self.diagnostics["Notifications"] = dict(status="Desktop notification support unavailable",checked=time.time()); return False
+        self.selected_event = event
+        self.tray.showMessage(("[MOCK] " if self.mock else "")+title,body,QSystemTrayIcon.MessageIcon.Information,10000)
+        return True
+
+    def notify(self):
+        now = time.time()
+        for event in self.events:
+            if core.should_notify(event,self.settings,now):
+                title = self.t("⚡ Reset signal strengthened") if event["own"] and len(event["sources"])>1 else self.t("⚡ Unexpected usage reset detected") if event["own"] else "⚡ "+self.t(TYPE_NAMES[event["type"]])
+                body = f"{event['product']} · {event['confidence']:.0%} · {self.t(LEVEL_NAMES[core.level(event['confidence'])])}\n"+"\n".join(s["url"] for s in event["sources"][:2])
+                if self.send(title,body,event["id"]): event["notified"] = core.level(event["confidence"]); event["notified_own"] |= event["own"]
+        if self.available and self.state:
+            for alert in self.engine.pending(self.state,self.settings,now):
+                row = alert["row"]; title = self.t("Low quota · critical reminder" if alert["critical"] else "Low quota reminder")
+                body = f"{row['product']} · {self.t(row['name'])}: {row['remaining']:g}%\n≤{alert['threshold']}% · {row['source']}"
+                if self.send(title,body): self.engine.delivered(alert); self.db.save("cycles",self.engine.cycles)
+
+    def render(self):
+        clear(self.usage_layout); clear(self.event_layout)
+        header = QLabel("Usage Sentinel"+(" · MOCK" if self.mock else "")); header.setStyleSheet("font-size:20px;font-weight:600"); self.usage_layout.addWidget(header)
+        menu = QMenu(self); menu.addAction("Usage Sentinel",self.show)
+        if self.state:
+            for row in self.state["buckets"]:
+                label = QLabel(f"{row['product']} · {self.t(row['name'])}     {row['remaining']:g}% "+self.t("remaining")); self.usage_layout.addWidget(label)
+                bar = QProgressBar(); bar.setRange(0,100); bar.setValue(round(row["remaining"])); bar.setTextVisible(False); self.usage_layout.addWidget(bar)
+                reset = datetime.fromtimestamp(row["reset"]).astimezone().strftime("%b %d, %H:%M") if row["reset"] else self.t("unknown")
+                self.usage_layout.addWidget(QLabel(self.t("Next regular reset")+": "+reset))
+                self.usage_layout.addWidget(QLabel(row["source"]))
+                menu.addAction(f"{row['product']} {self.t(row['name'])} {row['remaining']:g}%"+(" · stale" if not self.available else ""),self.show)
+            stamp = datetime.fromtimestamp(self.state["timestamp"]).astimezone().strftime("%H:%M:%S")
+            self.usage_layout.addWidget(QLabel(self.t("Last updated")+": "+stamp+(" · "+self.t("Last successful snapshot · stale") if not self.available else "")))
+        else: self.usage_layout.addWidget(QLabel(self.t("Usage unavailable")))
+        active = [e for e in self.events if time.time()-e["updated"]<86400 and e["type"] not in ("scheduled","banked","purchased")]
+        self.usage_layout.addWidget(QLabel(self.t("Reset Signals")+f" · {len(active)}"))
+        if not active: self.usage_layout.addWidget(QLabel(self.t("No current irregular reset signals")))
+        for event in sorted(self.events,key=lambda e:e["updated"],reverse=True)[:100]:
+            button = QPushButton(f"{event['product']} · {self.t(TYPE_NAMES[event['type']])}\n{event['confidence']:.0%} · {self.t(LEVEL_NAMES[core.level(event['confidence'])])} · {datetime.fromtimestamp(event['at']).strftime('%m/%d %H:%M')}")
+            button.clicked.connect(lambda checked=False,e=event:self.show_event(e)); self.event_layout.addWidget(button)
+        self.event_layout.addStretch(); self.usage_layout.addStretch()
+        button = QPushButton(self.t("Refresh All")); button.clicked.connect(self.refresh_all); self.usage_layout.addWidget(button)
+        for key, callback in (("Refresh All",self.refresh_all),("Settings",lambda:self.open_tab(self.settings_page)),("Event History",lambda:self.open_tab(self.events_page)),("Quit",QApplication.quit)): menu.addAction(self.t(key),callback)
+        self.tray.setContextMenu(menu)
+        rows = self.state["buckets"] if self.available and self.state else []
+        tooltip = " · ".join(f"{r['product']} {r['name']} {r['remaining']:g}%" for r in rows) or "Usage ?"
+        if self.settings["signal_count"] and active: tooltip += f" · ⚡{len(active)}"
+        self.tray.setToolTip("Usage Sentinel · "+tooltip)
+        self.tray.setIcon(icon(rows[0]["remaining"] if rows and self.settings["style"] == "Percentage" else None))
+
+    def open_tab(self,page): self.show(); self.tabs.setCurrentWidget(page); self.raise_()
+
+    def show_event(self,event):
+        dialog = QMainWindow(self); dialog.setWindowTitle(self.t(TYPE_NAMES[event["type"]])); dialog.resize(600,550)
+        browser = QTextBrowser(); browser.setOpenExternalLinks(True)
+        import html
+        escaped = html.escape
+        pieces = [f"<h2>{escaped(event['product'])} · {escaped(self.t(TYPE_NAMES[event['type']]))}</h2>",f"<p>{event['confidence']:.0%} · {escaped(self.t(LEVEL_NAMES[core.level(event['confidence'])]))}</p>",f"<p>{escaped(event['explanation'])}</p>"]
+        for s in event["sources"]:
+            stamp = datetime.fromtimestamp(s["publishedAt"]).astimezone().isoformat() if s.get("publishedAt") else "unknown"
+            pieces.append(f"<hr><p><b>{escaped(s['platform'])}</b> · {escaped(stamp)}<br><a href='{escaped(s['url'],quote=True)}'>{escaped(s['title'])}</a></p><p>{escaped(s['snippet'])}</p><p>Fetched: {datetime.fromtimestamp(s['fetchedAt']).astimezone().isoformat()} · {escaped(s.get('author') or '')}</p>")
+        browser.setHtml("".join(pieces)); dialog.setCentralWidget(browser); dialog.show(); self.event_dialog = dialog
+
+    def option(self,key,value): self.settings[key] = value; self.save()
+
+    def rebuild_settings(self):
+        clear(self.settings_layout)
+        scroll = QScrollArea(); scroll.setWidgetResizable(True); body = QWidget(); form = QFormLayout(body); scroll.setWidget(body); self.settings_layout.addWidget(scroll)
+        language = QComboBox(); [language.addItem(name,code) for code,name in LANGUAGES.items()]; language.setCurrentIndex(list(LANGUAGES).index(self.settings["language"]))
+        def change_language(index):
+            self.option("language",language.itemData(index)); self.t.language = self.settings["language"]
+            for i,key in enumerate(("Usage","Event History","Settings","Diagnostics")): self.tabs.setTabText(i,self.t(key))
+            QTimer.singleShot(0, self.rebuild_settings); self.render(); self.build_debug()
+        language.currentIndexChanged.connect(change_language); form.addRow(self.t("Language"),language)
+        agent = QComboBox(); agent.addItems(["Codex","Claude","Gemini","Grok","Custom"]); agent.setCurrentText(self.settings["agent"])
+        def change_agent(value): self.option("agent",value); self.available=False; self.state=None; QTimer.singleShot(0,self.rebuild_settings); self.refresh_usage(); self.render()
+        agent.currentTextChanged.connect(change_agent); form.addRow(self.t("AI agent"),agent)
+        cli = QLineEdit(self.settings["cli"]); cli.editingFinished.connect(lambda:self.option("cli",cli.text())); form.addRow(self.t("Codex executable (optional)"),cli)
+        path = QLineEdit(self.settings["exports"].get(self.settings["agent"],""))
+        def save_path(): self.settings["exports"][self.settings["agent"]] = path.text(); self.save()
+        path.editingFinished.connect(save_path); form.addRow(self.t("Local usage JSON path"),path)
+        choose = QPushButton(self.t("Choose JSON Export…"))
+        def choose_file():
+            file,_ = QFileDialog.getOpenFileName(self,self.t("Choose JSON Export…"),"","JSON (*.json)")
+            if file: path.setText(file); save_path(); self.refresh_usage()
+        choose.clicked.connect(choose_file); form.addRow(choose)
+        guide = QPushButton(self.t("Agent setup guide")); guide.clicked.connect(lambda:QDesktopServices.openUrl(QUrl("https://github.com/Joe05520/usage-sentinel/blob/main/docs/AGENTS.md"))); form.addRow(guide)
+        self.checkbox(form,"Remind me when quota runs low","reminders_enabled")
+        values = core.thresholds(self.settings["stages"])
+        for index,value in enumerate(values):
+            row = QWidget(); layout = QHBoxLayout(row); layout.setContentsMargins(0,0,0,0)
+            spin = QSpinBox(); spin.setRange(values[index+1]+1 if index+1<len(values) else 0,values[index-1]-1 if index else 99); spin.setValue(value); spin.setSuffix("%")
+            def change(v,i=index):
+                stages = self.settings["stages"][:]; stages[i] = v; self.option("stages",core.thresholds(stages))
+                QTimer.singleShot(0,self.rebuild_settings)
+            spin.valueChanged.connect(change); layout.addWidget(spin)
+            remove = QPushButton("−"); remove.setAccessibleName(self.t("Remove stage %d",index+1)); remove.clicked.connect(lambda checked=False,i=index:self.remove_stage(i)); layout.addWidget(remove)
+            form.addRow(self.t("Stage %d: ≤%d%% remaining",index+1,value),row)
+        add = QPushButton(self.t("Add reminder (%d/5)",len(values))); add.setEnabled(len(values)<5); add.clicked.connect(self.add_stage); form.addRow(add)
+        caption = QLabel(self.t("Add up to five distinct thresholds from 0–99%. Stages run from highest to lowest; the final stage is critical when more than one is set.")); caption.setWordWrap(True); form.addRow(caption)
+        pause = QPushButton(self.t("Pause Quota Reminders for 1 Hour")); pause.clicked.connect(lambda:self.option("snooze",time.time()+3600)); form.addRow(pause)
+        resume = QPushButton(self.t("Resume Quota Reminders")); resume.clicked.connect(lambda:self.option("snooze",0)); form.addRow(resume)
+        for key in ("interval","news_interval"):
+            combo = QComboBox(); [combo.addItem(self.t("%d min",v),v*60) for v in [2,5,10,15,30]]; combo.setCurrentIndex(combo.findData(self.settings[key])); combo.currentIndexChanged.connect(lambda i,c=combo,k=key:self.option(k,c.itemData(i)))
+            form.addRow(self.t("Usage" if key=="interval" else "Signals"),combo)
+        confidence = QComboBox(); [confidence.addItem(self.t(label),v) for label,v in [("Very Early ≥15%",.15),("Early ≥25%",.25),("Likely ≥60%",.6),("Official Only ≥90%",.9)]]; confidence.setCurrentIndex(confidence.findData(self.settings["confidence"])); confidence.currentIndexChanged.connect(lambda i:self.option("confidence",confidence.itemData(i))); form.addRow(self.t("Notify confidence"),confidence)
+        self.checkbox(form,"Unexpected personal reset","notify_personal"); self.checkbox(form,"Reset early signals","notify_signals"); self.checkbox(form,"Show reset signal count in menu bar","signal_count")
+        style = QComboBox(); style.addItems(["Standard","Percentage"]); style.setCurrentText(self.settings["style"]); style.currentTextChanged.connect(lambda v:(self.option("style",v),self.render())); form.addRow(self.t("Display style"),style)
+        for name in CATALOG:
+            checkbox = QCheckBox(name); checkbox.setChecked(name in self.settings["sources"])
+            def enabled(value,n=name):
+                values=set(self.settings["sources"]); values.add(n) if value else values.discard(n); self.option("sources",sorted(values))
+            checkbox.toggled.connect(enabled); form.addRow(checkbox)
+        login = QCheckBox(self.t("Launch at Login")); login.setChecked(autostart.enabled())
+        def toggle_login(value):
+            try: autostart.set_enabled(value)
+            except OSError as error: QMessageBox.warning(self,"Usage Sentinel",str(error)); login.blockSignals(True); login.setChecked(autostart.enabled()); login.blockSignals(False)
+            except RuntimeError as error: QMessageBox.information(self,"Usage Sentinel",str(error))
+        login.toggled.connect(toggle_login); form.addRow(login)
+        test = QPushButton(self.t("Send Test")); test.clicked.connect(lambda:self.send("Usage Sentinel · "+self.t("Notification test"),self.t("All account data stays on this Mac. Public-source requests contain no account history or credentials. Official Codex handles its own authentication.").replace("Mac","device"))); form.addRow(test)
+        privacy = QLabel("All account data stays on this device. Public requests contain no usage history or credentials. X is unavailable without an authorized feed."); privacy.setWordWrap(True); form.addRow(privacy)
+        if self.mock:
+            mock = QPushButton("[MOCK] Run reset + five-stage scenarios"); mock.clicked.connect(self.mock_test); form.addRow(mock)
+
+    def checkbox(self,form,label,key):
+        checkbox=QCheckBox(self.t(label)); checkbox.setChecked(self.settings[key]); checkbox.toggled.connect(lambda v:self.option(key,v)); form.addRow(checkbox)
+
+    def add_stage(self):
+        stages = self.settings["stages"]
+        if len(stages)<5:
+            next_value=next(v for v in [50,30,20,10,5]+list(range(99,-1,-1)) if v not in stages)
+            self.option("stages",core.thresholds(stages+[next_value])); self.rebuild_settings()
+
+    def remove_stage(self,index):
+        values=self.settings["stages"][:]; values.pop(index); self.option("stages",values); self.rebuild_settings()
+
+    def build_debug(self):
+        clear(self.debug_layout)
+        report = json.dumps(dict(version=__version__,mock=self.mock,agent=self.settings["agent"],usage_available=self.available,notifications_capable=QSystemTrayIcon.supportsMessages(),tray_available=QSystemTrayIcon.isSystemTrayAvailable(),sources=self.diagnostics),indent=2)
+        browser=QTextBrowser(); browser.setPlainText(report); self.debug_layout.addWidget(browser)
+        copy=QPushButton(self.t("Copy Diagnostics")); copy.clicked.connect(lambda:QApplication.clipboard().setText(report)); self.debug_layout.addWidget(copy)
+
+    def mock_test(self):
+        if not self.mock: return
+        self.option("stages",[50,30,20,10,5]); self.engine=core.ReminderEngine()
+        now=time.time(); before=core.parse_export(dict(schemaVersion=1,timestamp=now-60,buckets=[dict(id="weekly",name="Weekly",remainingPercent=23,resetAt=now+3*86400,windowDurationMins=10080)],origin="MOCK"),"Codex",now)
+        after=json.loads(json.dumps(before)); after["timestamp"]=now; after["buckets"][0]["remaining"]=100
+        events=core.personal_resets(before,after); self.events=core.merge(self.events,[],events,now)
+        low=json.loads(json.dumps(after)); low["timestamp"]=now+1; low["buckets"][0]["remaining"]=3
+        self.state=low; self.available=True; self.engine.observe(low); self.notify(); self.db.save("events",self.events); self.render(); self.rebuild_settings()
