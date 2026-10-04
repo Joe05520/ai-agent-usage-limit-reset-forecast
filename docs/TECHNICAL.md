@@ -172,7 +172,7 @@ Banked/purchased actions performed elsewhere are not completely exposed by a quo
 - `mock.sqlite`: isolated mock-only state.
 - `public-cache.json`: public feed/document responses and HTTP cache validators, retained for up to seven days.
 
-Account identifiers are reduced to a local SHA-256 fingerprint for account-switch detection. Raw access/refresh tokens, cookies and private app-server responses are not persisted by Sentinel. Database/cache files use owner-only permissions; storage is not application-level encrypted. macOS login/FileVault protections remain relevant.
+Account identifiers, when actually supplied by the official provider, are reduced to a local SHA-256 fingerprint for account-switch detection. If a provider omits an account identifier, an account switch cannot be reliably distinguished from a quota change. Local export profile labels should be changed when switching accounts. Raw access/refresh tokens, cookies and private app-server responses are not persisted by Sentinel. Database/cache files use owner-only permissions; storage is not application-level encrypted. macOS login/FileVault protections remain relevant.
 
 ### Credentials and network traffic
 
