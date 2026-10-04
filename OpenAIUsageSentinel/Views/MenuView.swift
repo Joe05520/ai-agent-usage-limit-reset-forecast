@@ -5,7 +5,7 @@ struct MenuView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Label(L10n.t("OpenAI Usage"), systemImage: "gauge.with.dots.needle.50percent").font(.headline)
+                Label("Usage Sentinel", systemImage: "gauge.with.dots.needle.50percent").font(.headline)
                 Spacer()
                 if store.isMock { Text(L10n.t("MOCK")).font(.caption.bold()).foregroundStyle(.orange) }
                 if let plan = store.usage?.plan { Text(plan.capitalized).font(.caption).foregroundStyle(.secondary) }

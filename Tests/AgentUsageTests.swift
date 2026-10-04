@@ -40,4 +40,21 @@ final class AgentUsageTests: XCTestCase {
         let restored = try JSONDecoder().decode(AppSettings.self, from: JSONSerialization.data(withJSONObject: json))
         XCTAssertEqual(restored.selectedAgent, .codex); XCTAssertEqual(restored.reminders.stages, [30,5])
     }
+    func testImportedEvidenceKeepsLowerConfidenceAfterMerge() throws {
+        let before = try LocalJSONUsageProvider.parse(json(), agent: .grok, now: now)
+        var after = before; after.timestamp = now.addingTimeInterval(60); after.buckets[0].remainingPercent = 100
+        let personal = PersonalResetDetector.detect(before: before, after: after)
+        let merged = EventEngine.merge(signals: [], personal: personal, into: [], now: after.timestamp)
+        XCTAssertEqual(merged[0].confidence, 0.3); XCTAssertEqual(merged[0].reportCount, 0)
+        XCTAssertFalse(EventEngine.score(sources: merged[0].sources, ownReset: false, now: after.timestamp) > 0)
+    }
+    func testClaudeBankedAndPurchasedStayQuiet() throws {
+        let before = try LocalJSONUsageProvider.parse(json(), agent: .claude, now: now)
+        var after = before; after.timestamp = now.addingTimeInterval(60); after.buckets[0].remainingPercent = 100
+        for type: ResetEventType in [.banked, .purchased] {
+            let event = PersonalResetDetector.detect(before: before, after: after, intent: ResetIntent(type: type, recordedAt: now))[0]
+            XCTAssertFalse(NotificationPolicy.shouldNotify(event, settings: AppSettings(), now: after.timestamp))
+        }
+    }
+
 }

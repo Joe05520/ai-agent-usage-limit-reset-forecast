@@ -68,9 +68,9 @@ final class SentinelStore: ObservableObject {
             }
             self.selectedEventID = id; self.openWindow?("history")
         }
-        observers.append(NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in Task { @MainActor in await self?.refreshAll() } })
-        observers.append(NotificationCenter.default.addObserver(forName: NSApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in Task { @MainActor in await self?.refreshUsage() } })
-        timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in Task { @MainActor in await self?.tick() } }
+        observers.append(NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in guard let self else { return }; Task { @MainActor in await self.refreshAll() } })
+        observers.append(NotificationCenter.default.addObserver(forName: NSApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in guard let self else { return }; Task { @MainActor in await self.refreshUsage() } })
+        timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in guard let self else { return }; Task { @MainActor in await self.tick() } }
         timer?.tolerance = 5
         if ProcessInfo.processInfo.environment["SENTINEL_TEST_HOST"] == "1" { return }
         Task {

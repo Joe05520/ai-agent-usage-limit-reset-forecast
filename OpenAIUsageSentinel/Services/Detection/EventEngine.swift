@@ -15,11 +15,11 @@ public enum EventEngine {
             urls.insert(source.id); texts.insert(text); if let author { authors.insert(author) }; return true
         }
     }
-    public static func score(sources: [SignalSource], ownReset: Bool, now: Date) -> Double {
+    public static func score(sources: [SignalSource], ownReset: Bool, now: Date, ownConfidence: Double = 0.60) -> Double {
         let sources = uniqueSources(sources)
         if sources.contains(where: { $0.official }) { return 0.95 }
-        var score = ownReset ? 0.60 : 0.0
-        let community = sources.filter { !$0.official && $0.platform != "Local Codex" && $0.platform != "Manual" }
+        var score = ownReset ? ownConfidence : 0.0
+        let community = sources.filter { !$0.official && !$0.isAccountEvidence }
         for source in community {
             let base = source.platform == "GitHub" ? 0.20 : source.platform == "Reddit" ? 0.12 : 0.08
             // Unknown authors / hearsay do not count as full independent account evidence.
@@ -40,6 +40,7 @@ public enum EventEngine {
             if incoming.ownAccountReset, let index = events.firstIndex(where: { compatible($0, product: incoming.product, model: incoming.model, type: .suspectedGlobal, at: now) }) {
                 events[index].sources = uniqueSources(events[index].sources + incoming.sources)
                 events[index].ownAccountReset = true
+                events[index].ownEvidenceConfidence = max(events[index].ownEvidenceConfidence ?? 0, incoming.ownEvidenceConfidence ?? incoming.confidence)
                 events[index].beforeValue.merge(incoming.beforeValue) { _, new in new }
                 events[index].afterValue.merge(incoming.afterValue) { _, new in new }
                 events[index].affectedBuckets = Array(Set(events[index].affectedBuckets + incoming.affectedBuckets)).sorted()
@@ -60,8 +61,8 @@ public enum EventEngine {
                 events.insert(ResetEvent(type: signal.behavior, detectedAt: now, updatedAt: now, product: signal.product, model: signal.model, plans: signal.plan.map { [$0] } ?? [], affectedBuckets: [], beforeValue: [:], afterValue: [:], confidence: 0, sources: [signal.source], explanation: signal.source.official ? "Official source describes this reset or offer. See wording and eligibility in the source; this does not confirm your account reset." : "Fresh public report. No official confirmation found in monitored sources. No irregular reset date is predicted.", ownAccountReset: false, timeline: []), at: 0)
             }
         }
-        for index in events.indices where events[index].type != .scheduled && events[index].type != .unknown && events[index].type != .purchased && !(events[index].type == .banked && events[index].sources.allSatisfy({ $0.platform == "Local Codex" || $0.platform == "Manual" })) {
-            let score = score(sources: events[index].sources, ownReset: events[index].ownAccountReset, now: now)
+        for index in events.indices where events[index].type != .scheduled && events[index].type != .unknown && events[index].type != .purchased && !(events[index].type == .banked && events[index].sources.allSatisfy({ $0.isAccountEvidence })) {
+            let score = score(sources: events[index].sources, ownReset: events[index].ownAccountReset, now: now, ownConfidence: events[index].ownEvidenceConfidence ?? 0.60)
             if abs(events[index].confidence-score) > 0.001 || events[index].timeline.isEmpty {
                 events[index].confidence = score
                 events[index].timeline.append(ConfidencePoint(timestamp: now, score: score))
@@ -87,7 +88,7 @@ public enum NotificationPolicy {
     public static func shouldNotify(_ event: ResetEvent, settings: AppSettings, now: Date) -> Bool {
         guard event.type != .scheduled, event.updatedAt > now.addingTimeInterval(-86400) else { return false }
         // Personal purchases/known banked redemption are history, not global alerts.
-        if (event.type == .banked || event.type == .purchased) && event.sources.allSatisfy({ $0.platform == "Local Codex" || $0.platform == "Manual" }) { return false }
+        if (event.type == .banked || event.type == .purchased) && event.sources.allSatisfy({ $0.isAccountEvidence }) { return false }
         if event.ownAccountReset && !event.notifiedOwnReset && settings.notifyUnexpected { return true }
         guard event.confidence >= settings.threshold else { return false }
         let enabled = event.level == .confirmed ? settings.notifyOfficial : event.level == .likely ? settings.notifyLikely : settings.notifyEarly

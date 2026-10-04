@@ -28,7 +28,7 @@ public enum PersonalResetDetector {
             let now = after.timestamp
             let local = SignalSource(title: "\(bucket.product) \(bucket.name): \(Int(old.remainingPercent))% → \(Int(bucket.remainingPercent))%", url: AgentKind.forProduct(bucket.product).sourceURL, platform: after.source.contains("Manual") ? "Manual" : "Local " + bucket.product, publishedAt: now, fetchedAt: now, author: nil, snippet: "Provider: \(bucket.source). Previous schedule: \(old.resetAt?.formatted() ?? "unknown"). \(reason)", official: false)
             let score = type == .accountUnexpected ? (local.platform == "Manual" || after.source.contains("user-provided") || (after.source.contains("Local ") && after.accountFingerprint == nil) ? 0.3 : 0.6) : type == .unknown ? 0.25 : 1.0
-            return ResetEvent(type: type, detectedAt: now, updatedAt: now, product: bucket.product, model: nil, plans: after.plan.map { [$0] } ?? [], affectedBuckets: [bucket.id], beforeValue: [bucket.id: old.remainingPercent], afterValue: [bucket.id: bucket.remainingPercent], confidence: score, sources: [local], explanation: reason, ownAccountReset: type == .accountUnexpected, timeline: [ConfidencePoint(timestamp: now, score: score)])
+            return ResetEvent(type: type, detectedAt: now, updatedAt: now, product: bucket.product, model: nil, plans: after.plan.map { [$0] } ?? [], affectedBuckets: [bucket.id], beforeValue: [bucket.id: old.remainingPercent], afterValue: [bucket.id: bucket.remainingPercent], confidence: score, sources: [local], explanation: reason, ownAccountReset: type == .accountUnexpected, timeline: [ConfidencePoint(timestamp: now, score: score)], ownEvidenceConfidence: type == .accountUnexpected ? score : nil)
         }
     }
 }

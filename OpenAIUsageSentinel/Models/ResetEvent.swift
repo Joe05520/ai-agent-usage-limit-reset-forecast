@@ -34,6 +34,7 @@ public struct SignalSource: Codable, Identifiable, Equatable, Sendable {
     public var author: String?
     public var snippet: String
     public var official: Bool
+    public var isAccountEvidence: Bool { platform.hasPrefix("Local ") || platform == "Manual" }
     public var screenshotEvidence: Bool = false
     public var modifiedAt: Date? = nil
     public var reportedPlan: String? = nil
@@ -69,6 +70,7 @@ public struct ResetEvent: Codable, Identifiable, Equatable, Sendable {
     public var timeline: [ConfidencePoint]
     public var notifiedRank: Int = -1
     public var notifiedOwnReset: Bool = false
+    public var ownEvidenceConfidence: Double? = nil
     public var level: ConfidenceLevel { .from(confidence) }
     public var isMockEvidence: Bool { sources.contains { ($0.url.host == "example.com" && $0.url.path.hasPrefix("/mock/")) || $0.author == "OpenAI (MOCK)" || $0.snippet.contains("Mock · scenario") } }
     public var reportCount: Int { sources.filter { !$0.official && !$0.platform.hasPrefix("Local ") && $0.platform != "Manual" }.count }

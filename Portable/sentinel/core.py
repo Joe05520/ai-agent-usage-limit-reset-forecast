@@ -128,7 +128,7 @@ def personal_resets(before, after, intent=None):
         url = "https://code.claude.com/docs/en/statusline" if row["product"] == "Claude" else "https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/commands.md" if row["product"] == "Gemini" else "https://docs.x.ai/developers/rate-limits" if row["product"] == "Grok" else "https://chatgpt.com/codex/settings/usage"
         uncertain = "user-provided" in after["source"] or after["source"].startswith("Local ") and not after.get("account")
         score = (.3 if uncertain else .6) if kind == "accountUnexpected" else .25 if kind == "unknown" else 1
-        events.append(dict(id=str(uuid.uuid4()), type=kind, product=row["product"], model=None, at=when, updated=when, confidence=score, own=kind == "accountUnexpected", before=old["remaining"], after=row["remaining"], notified=-1, notified_own=False,
+        events.append(dict(id=str(uuid.uuid4()), type=kind, product=row["product"], model=None, at=when, updated=when, confidence=score, own=kind == "accountUnexpected", before=old["remaining"], after=row["remaining"], notified=-1, notified_own=False, own_confidence=score,
             explanation="Observed quota increase; not proof of a global reset. Banked/purchased resets outside Sentinel may be unobservable.", sources=[dict(title=f"{row['name']}: {old['remaining']:g}% → {row['remaining']:g}%", url=url, platform=f"Local {row['product']}", publishedAt=when, fetchedAt=when, author=None, snippet=row["source"], official=False)], timeline=[dict(at=when, score=score)]))
     return events
 
@@ -163,13 +163,13 @@ def dedup(sources):
     return result
 
 
-def confidence(sources, own, now):
+def confidence(sources, own, now, own_confidence=.6):
     sources = dedup(sources)
     official = [s for s in sources if s["official"]]
     if official:
         return .95
     reports = [s for s in sources if not s["platform"].startswith("Local ") and not s["official"]]
-    score = .6 if own else 0
+    score = own_confidence if own else 0
     for s in reports:
         age = max(0, now-(s.get("publishedAt") or s["fetchedAt"])) / 3600
         decay = 1 if age <= 1 else .9 if age <= 3 else .7 if age <= 12 else .5 if age <= 24 else .25
@@ -186,9 +186,9 @@ def merge(events, signals, personal, now):
     for entry in personal:
         match = next((e for e in events if e["product"] == entry["product"] and e["type"] in ("suspectedGlobal", "accountUnexpected") and abs(now-e["updated"]) < 21600), None) if entry["own"] else None
         if match:
-            match.update(own=True, before=entry["before"], after=entry["after"], updated=now)
+            match.update(own=True, own_confidence=entry.get("own_confidence",.6), before=entry["before"], after=entry["after"], updated=now)
             match["sources"] = dedup(match["sources"]+entry["sources"])
-            match["confidence"] = max(match["confidence"], confidence(match["sources"], True, now))
+            match["confidence"] = max(match["confidence"], confidence(match["sources"], True, now, match.get("own_confidence",.6)))
             match["timeline"].append(dict(at=now, score=match["confidence"]))
         else: events.append(entry)
     for signal in signals:
@@ -203,7 +203,7 @@ def merge(events, signals, personal, now):
             events.append(match)
         previous = match["confidence"]
         match["sources"] = dedup(match["sources"]+[s]); match["updated"] = max(match["updated"], when)
-        match["confidence"] = max(previous, confidence(match["sources"], match["own"], now))
+        match["confidence"] = max(previous, confidence(match["sources"], match["own"], now, match.get("own_confidence",.6)))
         if s["official"]: match["type"] = signal["type"]
         if match["confidence"] != previous: match["timeline"].append(dict(at=now, score=match["confidence"]))
     return [e for e in events if now-e["at"] < 365*86400]

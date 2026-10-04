@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol UsageProvider {
+public protocol UsageProvider: Sendable {
     var name: String { get }
     func fetchUsage() async throws -> UsageState
 }
