@@ -1433,5 +1433,138 @@
     "zh-Hans": "Claude 支持官方状态栏桥接。Gemini 和 Grok 使用用户提供的本地导出文件或手动快照。不读取 cookie 或私有 API。超过十分钟的文件会标记为过期。",
     "ja": "Claude は公式ステータスラインの連携に対応。Gemini と Grok はユーザーのローカル書き出し、または手動入力を使います。Cookie や非公開 API にアクセスせず、10分以上前のデータは古いと表示します。",
     "ko": "Claude는 공식 상태 표시줄 연동을 지원합니다. Gemini와 Grok은 사용자가 제공한 로컬 파일 또는 수동 입력을 사용합니다. 쿠키나 비공개 API에 접근하지 않으며 10분이 지난 파일은 오래된 데이터로 표시합니다."
+  },
+  "Updates": {
+    "en": "Updates",
+    "zh-Hant": "更新",
+    "zh-Hans": "更新",
+    "ja": "アップデート",
+    "ko": "업데이트"
+  },
+  "Check for updates daily": {
+    "en": "Check for updates daily",
+    "zh-Hant": "每天檢查更新",
+    "zh-Hans": "每天检查更新",
+    "ja": "毎日更新を確認",
+    "ko": "매일 업데이트 확인"
+  },
+  "Include preview releases": {
+    "en": "Include preview releases",
+    "zh-Hant": "包含預覽版本",
+    "zh-Hans": "包含预览版本",
+    "ja": "プレビュー版を含める",
+    "ko": "미리 보기 버전 포함"
+  },
+  "Check for Updates": {
+    "en": "Check for Updates",
+    "zh-Hant": "檢查更新",
+    "zh-Hans": "检查更新",
+    "ja": "更新を確認",
+    "ko": "업데이트 확인"
+  },
+  "Download Verified Update": {
+    "en": "Download Verified Update",
+    "zh-Hant": "下載並驗證更新",
+    "zh-Hans": "下载并验证更新",
+    "ja": "検証済み更新をダウンロード",
+    "ko": "검증된 업데이트 다운로드"
+  },
+  "Update available": {
+    "en": "Update available",
+    "zh-Hant": "有可用更新",
+    "zh-Hans": "有可用更新",
+    "ja": "更新があります",
+    "ko": "업데이트 사용 가능"
+  },
+  "You are up to date": {
+    "en": "You are up to date",
+    "zh-Hant": "目前已是最新版本",
+    "zh-Hans": "目前已是最新版本",
+    "ja": "最新バージョンです",
+    "ko": "최신 버전입니다"
+  },
+  "No release in this channel": {
+    "en": "No release in this channel",
+    "zh-Hant": "此更新頻道尚無版本",
+    "zh-Hans": "此更新频道尚无版本",
+    "ja": "このチャンネルに公開版はありません",
+    "ko": "이 채널에 출시된 버전이 없습니다"
+  },
+  "Verified download ready · quit the app, replace it and reopen": {
+    "en": "Verified download ready · quit the app, replace it and reopen",
+    "zh-Hant": "下載驗證完成 · 結束 App、替換程式後重新開啟",
+    "zh-Hans": "下载验证完成 · 退出 App、替换程序后重新打开",
+    "ja": "検証完了 · アプリを終了し、置き換えて再起動してください",
+    "ko": "다운로드 검증 완료 · 앱을 종료하고 교체한 뒤 다시 실행하세요"
+  },
+  "Downloads require an Ed25519 signature and SHA-256 match. Installation is manual; account data stays in Application Support.": {
+    "en": "Downloads require an Ed25519 signature and SHA-256 match. Installation is manual; account data stays in Application Support.",
+    "zh-Hant": "下載須通過 Ed25519 簽章與 SHA-256 驗證。手動安裝，帳號資料保留於 Application Support。",
+    "zh-Hans": "下载须通过 Ed25519 签名与 SHA-256 验证。手动安装，账号数据保留于 Application Support。",
+    "ja": "Ed25519署名とSHA-256を検証します。インストールは手動で、データはApplication Supportに残ります。",
+    "ko": "Ed25519 서명과 SHA-256을 검증합니다. 설치는 수동이며 계정 데이터는 Application Support에 유지됩니다."
+  },
+  "Optional anonymous analytics": {
+    "en": "Optional anonymous analytics",
+    "zh-Hant": "選用匿名統計",
+    "zh-Hans": "可选匿名统计",
+    "ja": "任意の匿名統計",
+    "ko": "선택적 익명 통계"
+  },
+  "Share anonymous daily usage habits": {
+    "en": "Share anonymous daily usage habits",
+    "zh-Hant": "分享匿名每日使用習慣",
+    "zh-Hans": "分享匿名每日使用习惯",
+    "ja": "匿名の日次利用傾向を共有",
+    "ko": "익명 일일 사용 패턴 공유"
+  },
+  "Also share coarse remaining-quota bands": {
+    "en": "Also share coarse remaining-quota bands",
+    "zh-Hant": "另外分享粗略剩餘額度區間",
+    "zh-Hans": "另外分享粗略剩余额度区间",
+    "ja": "大まかな残り利用枠も共有",
+    "ko": "대략적인 잔여 한도 구간도 공유"
+  },
+  "Delete shared reports and turn off": {
+    "en": "Delete shared reports and turn off",
+    "zh-Hant": "刪除已分享回報並關閉",
+    "zh-Hans": "删除已分享报告并关闭",
+    "ja": "共有済みレポートを削除して無効化",
+    "ko": "공유한 보고서 삭제 및 비활성화"
+  },
+  "Analytics privacy details": {
+    "en": "Analytics privacy details",
+    "zh-Hant": "統計隱私說明",
+    "zh-Hans": "统计隐私说明",
+    "ja": "統計のプライバシー詳細",
+    "ko": "통계 개인정보 안내"
+  },
+  "Anonymous daily summary sent": {
+    "en": "Anonymous daily summary sent",
+    "zh-Hant": "已傳送匿名每日摘要",
+    "zh-Hans": "已发送匿名每日摘要",
+    "ja": "匿名の日次サマリーを送信しました",
+    "ko": "익명 일일 요약을 전송했습니다"
+  },
+  "Shared reports deleted; analytics disabled": {
+    "en": "Shared reports deleted; analytics disabled",
+    "zh-Hant": "已刪除分享回報並關閉統計",
+    "zh-Hans": "已删除分享报告并关闭统计",
+    "ja": "共有レポートを削除し統計を無効化しました",
+    "ko": "공유 보고서를 삭제하고 통계를 비활성화했습니다"
+  },
+  "Account history stays local by default. Optional analytics sends only the daily fields shown above. Official Codex handles its own authentication.": {
+    "en": "Account history stays local by default. Optional analytics sends only the daily fields shown above. Official Codex handles its own authentication.",
+    "zh-Hant": "帳號歷史預設保留本機。選用統計僅傳送上列每日欄位。官方 Codex 處理其登入驗證。",
+    "zh-Hans": "账号历史默认保留本机。可选统计仅发送上述每日字段。官方 Codex 处理其登录验证。",
+    "ja": "アカウント履歴は既定でローカルです。任意の統計は上記の日次項目のみ送信します。認証は公式Codexが行います。",
+    "ko": "계정 기록은 기본적으로 로컬에 저장됩니다. 선택 통계는 위 일일 항목만 전송합니다. 인증은 공식 Codex가 처리합니다."
+  },
+  "Off by default. Sends country, platform, agent, reminder-stage count and a daily activity band. Quota bands require separate consent. No account ID, exact usage, reset time, prompts, tokens or cookies. Cloudflare processes your IP to determine country but this app does not store it in analytics.": {
+    "en": "Off by default. Sends country, platform, agent, reminder-stage count and a daily activity band. Quota bands require separate consent. No account ID, exact usage, reset time, prompts, tokens or cookies. Cloudflare processes your IP to determine country but this app does not store it in analytics.",
+    "zh-Hant": "預設關閉。分享國家／地區、平台、Agent、提醒階段數及每日額度變動次數區間。額度區間須另外同意。不傳送帳號 ID、精確用量、重置時間、提示詞、token 或 cookie。Cloudflare 以 IP 判定國家，本 App 的統計不保存 IP。",
+    "zh-Hans": "默认关闭。分享国家／地区、平台、Agent、提醒阶段数及每日额度变化次数区间。额度区间须另外同意。不发送账号 ID、精确用量、重置时间、提示词、token 或 cookie。Cloudflare 用 IP 判断国家，本 App 的统计不保存 IP。",
+    "ja": "既定では無効です。国・地域、OS、エージェント、通知段階数と日次の利用枠減少回数区分を共有します。残り枠の区分は別途同意が必要です。アカウントID、正確な使用量、リセット時刻、プロンプト、トークン、Cookieは送信しません。CloudflareはIPから国を判定しますが本統計にはIPを保存しません。",
+    "ko": "기본적으로 꺼져 있습니다. 국가, 플랫폼, 에이전트, 알림 단계 수와 일일 한도 감소 횟수 구간을 공유합니다. 잔여 한도 구간은 별도 동의가 필요합니다. 계정 ID, 정확한 사용량, 초기화 시간, 프롬프트, 토큰, 쿠키는 전송하지 않습니다. Cloudflare는 IP로 국가를 판단하지만 이 통계에는 IP를 저장하지 않습니다."
   }
 }

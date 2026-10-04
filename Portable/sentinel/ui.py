@@ -6,13 +6,13 @@ from datetime import datetime
 from PySide6.QtCore import Qt, QTimer, QObject, QRunnable, QThreadPool, Signal, QUrl
 from PySide6.QtGui import QIcon, QDesktopServices, QColor, QPainter, QPixmap, QFont
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QTabWidget, QSystemTrayIcon, QMenu, QProgressBar, QScrollArea, QComboBox, QCheckBox, QSpinBox, QLineEdit, QFileDialog, QMessageBox, QTextBrowser, QFormLayout)
-from . import __version__, core, autostart
+from . import __version__, core, autostart, extensions
 from .i18n import Translator, LANGUAGES
 from .storage import Database, data_dir
 from .providers import codex_usage, export_usage
 from .sources import CATALOG, fetch
 
-DEFAULT = dict(agent="Codex", cli="", exports={}, stages=[20,5], reminders_enabled=True, language="en", interval=300, news_interval=300, confidence=.25, notify_personal=True, notify_signals=True, sources=["OpenAI Status","OpenAI News","Codex Releases","GitHub","Reddit"], style="Standard", signal_count=False, excluded=[], snooze=0)
+DEFAULT = dict(analytics=False, share_quota=False, update_checks=True, preview_updates=True, agent="Codex", cli="", exports={}, stages=[20,5], reminders_enabled=True, language="en", interval=300, news_interval=300, confidence=.25, notify_personal=True, notify_signals=True, sources=["OpenAI Status","OpenAI News","Codex Releases","GitHub","Reddit"], style="Standard", signal_count=False, excluded=[], snooze=0)
 TYPE_NAMES = dict(scheduled="Normal reset", banked="Banked reset", purchased="Purchased reset", automaticGlobal="Automatic / global reset", suspectedGlobal="Possible global reset", accountUnexpected="Unexpected account reset", complimentary="Complimentary reset offer", unknown="Unclassified quota increase")
 LEVEL_NAMES = ["Rumor", "Early Signal", "Likely", "Confirmed"]
 
@@ -53,6 +53,7 @@ class SentinelWindow(QMainWindow):
         self.t = Translator(self.settings["language"])
         self.engine = core.ReminderEngine(self.db.load("cycles", {}))
         self.events = self.db.load("events", [])
+        self.analytics_state = self.db.load("analytics", {}); self.last_update = 0; self.manifest = None; self.extension_status = ""
         self.state = None; self.available = False; self.busy = set(); self.work = {}; self.last_usage = self.last_news = 0; self.diagnostics = {}; self.selected_event = None
         self.setWindowTitle("Usage Sentinel"+(" · MOCK" if mock else "")); self.setWindowIcon(icon()); self.resize(520,700)
         self.tabs = QTabWidget(); self.setCentralWidget(self.tabs)
@@ -103,7 +104,20 @@ class SentinelWindow(QMainWindow):
 
     def refresh_all(self): self.refresh_usage(); self.refresh_news()
 
+    def check_updates(self):
+        if self.mock: return
+        self.last_update=time.time(); preview=self.settings['preview_updates']; self.run('Updates',lambda:extensions.check_update(preview))
+
+    def analytics_tick(self):
+        if self.mock or not self.settings['analytics'] or not extensions.CONFIG.get('analyticsEndpoint'): return
+        state=self.analytics_state
+        if not state.get('closed') or state.get('sent')==state['closed']['day'] or time.time()-state.get('attempt',0)<3600: return
+        state['attempt']=time.time(); self.db.save('analytics',state); settings=self.settings.copy(); summary=state.copy()
+        self.run('Analytics',lambda:extensions.send_analytics(settings,summary))
+
     def tick(self):
+        if not self.mock and self.settings['update_checks'] and time.time()-self.last_update>=86400: self.check_updates()
+        self.analytics_tick()
         if time.time()-self.last_usage >= self.settings["interval"]: self.refresh_usage()
         if time.time()-self.last_news >= self.settings["news_interval"]: self.refresh_news()
         self.render()
@@ -111,6 +125,16 @@ class SentinelWindow(QMainWindow):
     def completed(self, name, result, error):
         self.busy.discard(name); self.work.pop(name,None)
         now = time.time(); self.diagnostics[name] = dict(status=error or "OK", checked=now)
+        if name in ('Updates','Update Download','Analytics','Delete Analytics'):
+            if error: self.extension_status=error
+            elif name=='Updates':
+                self.manifest=result; self.extension_status=self.t('No release in this channel') if not result else (self.t('Update available')+': '+result['version'] if extensions.version(result['version'])>extensions.version(__version__) else self.t('You are up to date'))
+            elif name=='Update Download': self.extension_status=self.t('Verified download ready · quit the app, replace it and reopen')+' · '+result
+            elif name=='Analytics':
+                if result: self.analytics_state['sent']=result['day']; self.db.save('analytics',self.analytics_state)
+                self.extension_status=self.t('Anonymous daily summary sent')
+            else: self.analytics_state={}; self.db.save('analytics',{}); self.extension_status=self.t('Shared reports deleted; analytics disabled')
+            self.rebuild_settings(); self.build_debug(); return
         if name == "Usage":
             if error: self.available = False
             else:
@@ -119,6 +143,20 @@ class SentinelWindow(QMainWindow):
                     resets = core.personal_resets(prior,result,self.db.load("intent"))
                     self.db.append(result); self.engine.observe(result); self.db.save("cycles",self.engine.cycles)
                     self.events = core.merge(self.events,[],resets,now)
+                if self.settings['analytics'] and not self.mock and -60 <= now-result['timestamp'] <= 600:
+                    day=time.strftime('%Y-%m-%d',time.gmtime())
+                    if self.analytics_state.get('day')!=day: self.analytics_state={'day':day,'observations':0,'agent':self.settings['agent'].lower(),'closed':{k:v for k,v in self.analytics_state.items() if k not in ('closed','sent','attempt')} if self.analytics_state.get('day') else None}
+                    if self.analytics_state.get('timestamp')!=result['timestamp']:
+                        self.analytics_state['timestamp']=result['timestamp']
+                        if self.analytics_state.get('agent')!=self.settings['agent'].lower(): self.analytics_state['agent']='custom'
+                        decreased=prior and 0<result['timestamp']-prior['timestamp']<=900 and prior.get('account')==result.get('account') and prior.get('plan')==result.get('plan') and any(a['id']==b['id'] and a.get('reset')==b.get('reset') and a['remaining']>b['remaining'] for a in prior['buckets'] for b in result['buckets'])
+                        if decreased: self.analytics_state['observations']=min(21,self.analytics_state['observations']+1)
+                        remaining=min((b['remaining'] for b in result['buckets']),default=None)
+                        new_band='unknown' if remaining is None or now-result['timestamp']>600 else '0-4' if remaining<5 else '5-19' if remaining<20 else '20-49' if remaining<50 else '50-100'
+                        order=['0-4','5-19','20-49','50-100','unknown']
+                        if not self.settings['share_quota']: new_band='unknown'
+                        if order.index(new_band)<order.index(self.analytics_state.get('quotaBand','unknown')): self.analytics_state['quotaBand']=new_band
+                        self.db.save('analytics',self.analytics_state)
                 self.state = result; self.available = -60 <= now-result["timestamp"] <= 600
                 if not self.available: self.diagnostics[name]["status"] = "Export is stale · refresh at source"
         elif result:
@@ -182,7 +220,7 @@ class SentinelWindow(QMainWindow):
 
     def show_event(self,event):
         dialog = QMainWindow(self); dialog.setWindowTitle(self.t(TYPE_NAMES[event["type"]])); dialog.resize(600,550)
-        browser = QTextBrowser(); browser.setOpenExternalLinks(True)
+        browser = QTextBrowser(); browser.setOpenExternalLinks(False); browser.anchorClicked.connect(lambda url: QDesktopServices.openUrl(url) if extensions.safe_url(url.toString()) else None)
         import html
         escaped = html.escape
         pieces = [f"<h2>{escaped(event['product'])} · {escaped(self.t(TYPE_NAMES[event['type']]))}</h2>",f"<p>{event['confidence']:.0%} · {escaped(self.t(LEVEL_NAMES[core.level(event['confidence'])]))}</p>",f"<p>{escaped(event['explanation'])}</p>"]
@@ -215,6 +253,25 @@ class SentinelWindow(QMainWindow):
             if file: path.setText(file); save_path(); self.refresh_usage()
         choose.clicked.connect(choose_file); form.addRow(choose)
         guide = QPushButton(self.t("Agent setup guide")); guide.clicked.connect(lambda:QDesktopServices.openUrl(QUrl("https://github.com/Joe05520/usage-sentinel/blob/main/docs/AGENTS.md"))); form.addRow(guide)
+        self.checkbox(form,'Check for updates daily','update_checks')
+        self.checkbox(form,'Include preview releases','preview_updates')
+        check=QPushButton(self.t('Check for Updates')); check.clicked.connect(self.check_updates); check.setEnabled(not self.mock); form.addRow(check)
+        if self.manifest:
+            download=QPushButton(self.t('Download Verified Update')); download.clicked.connect(lambda:self.run('Update Download',lambda:extensions.download_update(self.manifest))); form.addRow(download)
+        summary=QLabel(self.extension_status); summary.setWordWrap(True); form.addRow(summary)
+        privacy=QLabel(self.t('Off by default. Sends country, platform, agent, reminder-stage count and a daily activity band. Quota bands require separate consent. No account ID, exact usage, reset time, prompts, tokens or cookies. Cloudflare processes your IP to determine country but this app does not store it in analytics.')); privacy.setWordWrap(True); form.addRow(privacy)
+        consent=QCheckBox(self.t('Share anonymous daily usage habits')); consent.setChecked(self.settings['analytics']); consent.setEnabled(not self.mock and bool(extensions.CONFIG.get('analyticsEndpoint')))
+        def consent_changed(value):
+            if value:
+                try: extensions.identity()
+                except Exception as error: consent.setChecked(False); self.extension_status=str(error); QMessageBox.warning(self,'Usage Sentinel',str(error)); return
+            self.option('analytics',value)
+        consent.toggled.connect(consent_changed); form.addRow(consent)
+        self.checkbox(form,'Also share coarse remaining-quota bands','share_quota')
+        remove=QPushButton(self.t('Delete shared reports and turn off'))
+        def delete_reports():
+            self.option('analytics',False); self.option('share_quota',False); self.run('Delete Analytics',extensions.delete_analytics)
+        remove.clicked.connect(delete_reports); remove.setEnabled(not self.mock); form.addRow(remove)
         self.checkbox(form,"Remind me when quota runs low","reminders_enabled")
         values = core.thresholds(self.settings["stages"])
         for index,value in enumerate(values):

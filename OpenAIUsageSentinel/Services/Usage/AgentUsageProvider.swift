@@ -26,6 +26,8 @@ public struct LocalJSONUsageProvider: UsageProvider {
         let path = NSString(string: path).expandingTildeInPath
         guard !path.isEmpty else { throw SentinelError.unavailable("Choose a local usage JSON export. No subscription API is assumed for \(agent.label).") }
         let url = URL(fileURLWithPath: path)
+        let values = try url.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey])
+        guard values.isRegularFile == true else { throw SentinelError.unavailable("Choose a regular JSON file") }
         let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
         guard size < 1_000_000 else { throw SentinelError.unavailable("Usage export exceeds 1 MB.") }
         let data = try Data(contentsOf: url)
@@ -50,7 +52,8 @@ public struct LocalJSONUsageProvider: UsageProvider {
             let reset: Date?
             if let text = row["resetAt"] as? String { guard let parsed = date(text) else { throw SentinelError.unavailable("Invalid resetAt date.") }; reset = parsed } else { reset = nil }
             let duration = (row["windowDurationMins"] as? NSNumber)?.doubleValue
-            if let duration, !duration.isFinite || duration <= 0 { throw SentinelError.unavailable("Invalid windowDurationMins.") }
+            if let raw = row["windowDurationMins"] as? NSNumber, CFGetTypeID(raw) == CFBooleanGetTypeID() { throw SentinelError.unavailable("Invalid windowDurationMins") }
+            if let duration, !duration.isFinite || duration <= 0 || duration > 52_560_000 { throw SentinelError.unavailable("Invalid windowDurationMins.") }
             buckets.append(UsageBucket(id: "\(agent.rawValue).\(id)", name: name, product: agent == .custom ? (root["product"] as? String ?? "Custom") : agent.label,
                 remainingPercent: value.doubleValue, usedPercent: 100-value.doubleValue, resetAt: reset, windowDuration: duration.map { $0*60 }, source: source, lastUpdated: timestamp))
         }

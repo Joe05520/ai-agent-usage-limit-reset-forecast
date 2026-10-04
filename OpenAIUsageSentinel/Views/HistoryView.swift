@@ -77,7 +77,7 @@ struct EventDetailView: View {
                 Divider(); Text(L10n.t("Sources")).font(.headline)
                 ForEach(event.sources) { source in
                     VStack(alignment: .leading, spacing: 5) {
-                        HStack { Text(source.platform).font(.headline); Spacer(); Link(L10n.t("Open ↗"), destination: source.url) }
+                        HStack { Text(source.platform).font(.headline); Spacer(); if SafeURL.external(source.url) { Link(L10n.t("Open ↗"), destination: source.url) } }
                         Text(source.title).font(.subheadline.weight(.medium))
                         if let author = source.author { Text(author).font(.caption).foregroundStyle(.secondary) }
                         Text(source.snippet).font(.caption).textSelection(.enabled)

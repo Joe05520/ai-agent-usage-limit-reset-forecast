@@ -2,6 +2,8 @@
 
 Native Swift / SwiftUI menu bar app for macOS 14+. Apple Silicon first; Release builds also include Intel. It reads real Codex quota, detects unexpected account increases, monitors public reset reports, and keeps evidence on this Mac. This is a working local app, not an OpenAI product.
 
+Version 1.5 adds [consent-based aggregate analytics](ANALYTICS.md), [signature-verified updates](UPDATES.md), and the controls documented in [SECURITY_REVIEW.md](SECURITY_REVIEW.md). The detailed quota/news design below remains applicable.
+
 ## Start using it
 
 Installed app: `~/Applications/Usage Sentinel.app`.
@@ -107,7 +109,7 @@ Manual mode accepts an explicitly user-entered snapshot and labels it Manual. Th
 
 ## Reset signal sources and requests
 
-All requests are HTTPS reads of public data, with an identifying User-Agent. There is no search-engine backend or cloud service owned by Sentinel.
+All requests are HTTPS reads of public data, with an identifying User-Agent. There is no search-engine backend. Optional consent-based aggregate analytics uses the project-owned Cloudflare Worker described in [ANALYTICS.md](ANALYTICS.md).
 
 | Adapter | Public endpoint | Notes |
 |---|---|---|
@@ -180,7 +182,7 @@ Sentinel does **not** read `auth.json`, browser sessions, cookies or the Codex K
 
 Public-source network requests contain only public search terms, HTTP validators and User-Agent. They contain no OpenAI token, account identifier, quota history or personal snapshots. Clicking a source opens its public URL in your default browser, where that browser follows its own normal behavior.
 
-No cloud backend exists. No API key is required by current adapters. A reserved `KeychainStore` uses macOS Keychain for future explicitly configured adapters. `.gitignore` excludes local secrets, state databases and build output. App Sandbox is disabled because the app must launch the installed official CLI and use its local context; only the described paths are accessed by Sentinel's implementation. The locally built app is ad-hoc signed and is not notarized for external distribution.
+The optional Cloudflare aggregate backend never receives raw account history or credentials. No API key is required by current usage adapters. `KeychainStore` stores optional rotating analytics identities and publisher secrets securely. `.gitignore` excludes local secrets, state databases and build output. App Sandbox is disabled because the app must launch the installed official CLI and use its local context; only the described paths are accessed by Sentinel's implementation. The locally built app is ad-hoc signed and is not notarized for external distribution.
 
 ## Build → Test → Run
 

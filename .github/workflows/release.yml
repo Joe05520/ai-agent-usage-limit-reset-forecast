@@ -3,12 +3,22 @@ on:
   workflow_dispatch:
     inputs:
       build_run:
-        description: Passing Build and test run ID to publish
+        description: Passing Build and test main-branch run ID
         required: true
-        default: '37192161755'
+      version:
+        description: Version matching all three build artifacts
+        required: true
+        default: '1.5.0'
+      channel:
+        type: choice
+        options: [preview, stable]
+        default: preview
 permissions:
   contents: write
-  actions: read
+  actions: write
+concurrency:
+  group: release-publish
+  cancel-in-progress: false
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -16,36 +26,58 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GH_REPO: ${{ github.repository }}
       BUILD_RUN: ${{ inputs.build_run }}
+      RELEASE_VERSION: ${{ inputs.version }}
+      CHANNEL: ${{ inputs.channel }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Require passing build and retain exact source
-        shell: bash
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - name: Require passing trusted main build
         run: |
           [[ "$BUILD_RUN" =~ ^[0-9]+$ ]]
-          gh run view "$BUILD_RUN" --json conclusion,workflowName,headSha > build-run.json
+          [[ "$RELEASE_VERSION" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]
+          [[ "$CHANNEL" == preview || "$CHANNEL" == stable ]]
+          gh api "repos/$GH_REPO/actions/runs/$BUILD_RUN" > build-run.json
           python3 - <<'PY'
-          import json, os
+          import json, os, re
           info=json.load(open('build-run.json'))
-          assert info['conclusion']=='success' and info['workflowName']=='Build and test'
-          assert len(info['headSha'])==40
-          with open(os.environ['GITHUB_ENV'],'a') as f: f.write('SOURCE_SHA='+info['headSha']+'\n')
+          assert info['conclusion']=='success' and info['path']=='.github/workflows/build.yml'
+          assert info['head_branch']=='main' and info['event'] in ['push','workflow_dispatch']
+          assert info['head_repository']['full_name']==os.environ['GH_REPO']
+          assert re.fullmatch('[0-9a-f]{40}',info['head_sha'])
+          with open(os.environ['GITHUB_ENV'],'a') as f: f.write('SOURCE_SHA='+info['head_sha']+'\n')
           PY
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
           run-id: ${{ inputs.build_run }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: release
           merge-multiple: true
-      - name: Validate packages and compute hashes
+      - name: Validate exact packages and compute hashes
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import hashlib
-          files=sorted(Path('release').glob('*'))
-          expected={'UsageSentinel-1.4.0-macOS-universal.zip','UsageSentinel-1.4.0-Windows-x64.zip','UsageSentinel-1.4.0-Linux-x64.tar.gz'}
+          import hashlib,os
+          version=os.environ['RELEASE_VERSION']; files=sorted(Path('release').glob('*'))
+          expected={f'UsageSentinel-{version}-{suffix}' for suffix in ['macOS-universal.zip','Windows-x64.zip','Linux-x64.tar.gz']}
           assert {f.name for f in files}==expected
-          for f in files: assert f.stat().st_size>1000000
+          for f in files: assert 1000000<f.stat().st_size<=250000000
           Path('release/SHA256SUMS.txt').write_text(''.join(hashlib.sha256(f.read_bytes()).hexdigest()+'  '+f.name+'\n' for f in files))
           PY
-      - name: Publish preview release
-        run: gh release create v1.4.0 release/* --target "$SOURCE_SHA" --title 'Usage Sentinel 1.4.0 — five-stage reminders & portable beta' --prerelease --notes-file .github/RELEASE_NOTES.md
+      - name: Sign update manifest
+        env:
+          UPDATES_ED25519_KEY: ${{ secrets.UPDATES_ED25519_KEY }}
+        run: |
+          python3 -m pip install cryptography==50.0.2
+          python3 Scripts/sign_update_manifest.py "$RELEASE_VERSION" "$CHANNEL" release
+      - name: Publish validated release
+        run: |
+          FLAGS=()
+          if [[ "$CHANNEL" == preview ]]; then FLAGS+=(--prerelease); fi
+          gh release create "v$RELEASE_VERSION" release/* --target "$SOURCE_SHA" --title "Usage Sentinel $RELEASE_VERSION" "${FLAGS[@]}" --notes-file .github/RELEASE_NOTES.md
+      - name: Publish signed channel manifest and refresh Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/updates
+          git commit -m "Publish signed $CHANNEL update channel for $RELEASE_VERSION"
+          git push origin HEAD:main
+          gh workflow run pages.yml --ref main

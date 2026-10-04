@@ -12,6 +12,13 @@ final class SentinelStore: ObservableObject {
     @Published var history: [UsageSnapshot] = []
     @Published var diagnostics: [SourceDiagnostic] = []
     @Published var errorMessage: String?
+    @Published var updateStatus = ""
+    @Published var updateManifest: UpdateManifest?
+    @Published var updateBusy = false
+    @Published var analyticsStatus = ""
+    private var lastUpdateCheck = Date.distantPast
+    private var analyticsState = AnalyticsState()
+    private var analyticsBusy = false
     @Published var usageBusy = false
     @Published var newsBusy = false
     @Published var permission = "Checking…"
@@ -52,6 +59,7 @@ final class SentinelStore: ObservableObject {
             for index in events.indices where !events[index].ownAccountReset {
                 if let source = events[index].sources.first, let signal = SignalClassifier.classify(source) { events[index].type = signal.behavior }
             }
+            analyticsState = try database?.load(AnalyticsState.self, key: "analyticsState") ?? AnalyticsState()
             history = try database?.snapshots() ?? []
             usage = history.last
             intent = try database?.load(ResetIntent.self, key: "intent")
@@ -96,8 +104,48 @@ final class SentinelStore: ObservableObject {
     }
     private func tick() async {
         guard !isMock else { return }
+        if settings.automaticUpdateChecks != false && Date().timeIntervalSince(lastUpdateCheck) >= 86400 { await checkUpdates() }
+        await reportAnalytics()
         if Date().timeIntervalSince(lastUsageAttempt) >= settings.usageInterval { await refreshUsage() }
         if Date().timeIntervalSince(lastNewsAttempt) >= settings.signalInterval { await refreshNews() }
+    }
+    func checkUpdates() async {
+        guard !isMock, !updateBusy else { return }
+        updateBusy = true; lastUpdateCheck = Date(); defer { updateBusy = false }
+        do {
+            updateManifest = try await UpdateService.check(preview: settings.includePreviewUpdates != false)
+            let current = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.5.0"
+            updateStatus = updateManifest.map { $0.isNewer(than: current) ? L10n.t("Update available") + ": " + $0.version : L10n.t("You are up to date") } ?? L10n.t("No release in this channel")
+        } catch { updateManifest = nil; updateStatus = error.localizedDescription }
+    }
+    func downloadUpdate() async {
+        guard let manifest = updateManifest, !updateBusy else { return }
+        updateBusy = true; defer { updateBusy = false }
+        do {
+            let file = try await UpdateService.download(manifest, directory: FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask)[0])
+            updateStatus = L10n.t("Verified download ready · quit the app, replace it and reopen")
+            NSWorkspace.shared.activateFileViewerSelecting([file])
+        } catch { updateStatus = error.localizedDescription }
+    }
+    func reportAnalytics() async {
+        guard !isMock, settings.analytics.enabled, let endpoint = ServiceConfiguration.bundled.telemetryURL, !analyticsBusy,
+              Date().timeIntervalSince(analyticsState.lastAttempt ?? .distantPast) >= 3600,
+              analyticsState.closedDay != nil else { return }
+        analyticsBusy = true; defer { analyticsBusy = false }
+        do {
+            let client = try AnalyticsService.identity()
+            let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.5.0"
+            guard let body = AnalyticsState.payload(client: client, preferences: settings.analytics, state: analyticsState, usage: usage, agent: settings.selectedAgent, reminders: settings.reminders.stages.count, now: Date(), version: version) else { return }
+            analyticsState.lastAttempt = Date(); persist(analyticsState, key: "analyticsState")
+            try await AnalyticsService.send(body, endpoint: endpoint)
+            analyticsState.sentDay = body["day"] as? String; persist(analyticsState, key: "analyticsState"); analyticsStatus = L10n.t("Anonymous daily summary sent")
+        } catch { analyticsStatus = error.localizedDescription }
+    }
+    func deleteAnalytics() async {
+        settings.analytics.enabled = false; settings.analytics.shareQuota = false; saveSettings()
+        guard let endpoint = ServiceConfiguration.bundled.telemetryURL else { return }
+        do { try await AnalyticsService.delete(endpoint: endpoint); analyticsState = AnalyticsState(); persist(analyticsState, key: "analyticsState"); analyticsStatus = L10n.t("Shared reports deleted; analytics disabled") }
+        catch { analyticsStatus = error.localizedDescription }
     }
     func refreshAll(force: Bool = true) async {
         if isMock { await deliverNotifications(); return }
@@ -129,6 +177,15 @@ final class SentinelStore: ObservableObject {
         let personal = previous.map { PersonalResetDetector.detect(before: $0, after: next, intent: intent) } ?? []
         // Commit snapshot first: disk failures are visible and never silently reported as saved.
         try database?.append(next)
+        if settings.analytics.enabled && abs(Date().timeIntervalSince(next.timestamp)) <= 600 {
+            let decreased = previous.map { prior in
+                next.timestamp > prior.timestamp && next.timestamp.timeIntervalSince(prior.timestamp) <= 900 && next.buckets.contains { bucket in
+                    prior.buckets.contains { $0.id == bucket.id && $0.resetAt == bucket.resetAt && $0.remainingPercent > bucket.remainingPercent }
+                }
+            } ?? false
+            analyticsState.observe(next.timestamp, agent: settings.selectedAgent, band: settings.analytics.shareQuota ? AnalyticsState.band(next.buckets.map(\.remainingPercent).min()) : "unknown", consumptionObserved: decreased)
+            persist(analyticsState, key: "analyticsState")
+        }
         reminderEngine.observe(next)
         persist(reminderEngine, key: "usageReminderEngine")
         usage = next; history.append(next); history = history.filter { $0.timestamp > Date().addingTimeInterval(-35*86400) }

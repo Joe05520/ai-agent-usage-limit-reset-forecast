@@ -48,6 +48,13 @@ public struct AppSettings: Codable, Equatable, Sendable {
         get { appLanguage ?? .english }
         set { appLanguage = newValue }
     }
+    public var analyticsConfiguration: AnalyticsPreferences?
+    public var analytics: AnalyticsPreferences {
+        get { analyticsConfiguration ?? AnalyticsPreferences() }
+        set { analyticsConfiguration = newValue }
+    }
+    public var automaticUpdateChecks: Bool?
+    public var includePreviewUpdates: Bool?
     public init() {}
 }
 public struct SourceDiagnostic: Identifiable, Codable, Sendable {

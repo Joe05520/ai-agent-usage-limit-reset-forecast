@@ -29,8 +29,8 @@ public actor HTTPClient {
             if let modified = entry.modified { request.setValue(modified, forHTTPHeaderField: "If-Modified-Since") }
         }
         do {
-            let (data, response) = try await session.data(for: request)
-            guard let http = response as? HTTPURLResponse else { throw SentinelError.unavailable("Invalid HTTP response.") }
+            let (data, response) = try await SecureTransport.read(request, limit: 5_000_000, redirectHosts: ["openai.com", "www.openai.com", "help.openai.com", "status.openai.com", "developers.openai.com", "api.github.com", "github.com", "www.reddit.com", "reddit.com", "hn.algolia.com"])
+            let http = response
             if http.statusCode == 304, let saved = cache[key] { failures[key] = 0; blockedUntil[key] = nil; return saved.data }
             guard http.statusCode == 200 else {
                 if http.statusCode == 429 || http.statusCode == 403 || http.statusCode == 503 {

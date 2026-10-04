@@ -79,11 +79,13 @@ public struct CodexCLIUsageProvider: UsageProvider {
         var buckets: [UsageBucket] = []
         for (limitID, limit) in snapshots.sorted(by: { $0.key < $1.key }) {
             for key in ["primary", "secondary"] {
-                guard let window = limit[key] as? [String: Any], let used = (window["usedPercent"] as? NSNumber)?.doubleValue, used.isFinite, used >= 0 else { continue }
-                let mins = (window["windowDurationMins"] as? NSNumber)?.doubleValue
+                guard let window = limit[key] as? [String: Any], let numeric = window["usedPercent"] as? NSNumber, CFGetTypeID(numeric) != CFBooleanGetTypeID(), numeric.doubleValue.isFinite, numeric.doubleValue >= 0 else { continue }
+                let used = numeric.doubleValue
+                let duration = window["windowDurationMins"] as? NSNumber
+                let mins = duration.flatMap { CFGetTypeID($0) != CFBooleanGetTypeID() && $0.doubleValue.isFinite && $0.doubleValue > 0 && $0.doubleValue <= 52_560_000 ? $0.doubleValue : nil }
                 let label: String = mins == 300 ? "5-hour" : mins == 10080 ? "Weekly" : mins.map { "\(Int($0))-minute" } ?? key.capitalized
                 let product = limitID == "codex" ? "Codex" : (limit["limitName"] as? String ?? limitID)
-                let reset = ((window["resetsAt"] as? NSNumber)?.doubleValue).flatMap { $0 > 0 ? Date(timeIntervalSince1970: $0) : nil }
+                let reset = ((window["resetsAt"] as? NSNumber)?.doubleValue).flatMap { $0.isFinite && $0 > 0 && $0 <= Date.distantFuture.timeIntervalSince1970 ? Date(timeIntervalSince1970: $0) : nil }
                 buckets.append(UsageBucket(id: "\(limitID).\(key)", name: label, product: product, remainingPercent: max(0, 100-used), usedPercent: used, resetAt: reset, windowDuration: mins.map { $0 * 60 }, source: "Local Codex app-server · account/rateLimits/read", lastUpdated: now))
             }
         }

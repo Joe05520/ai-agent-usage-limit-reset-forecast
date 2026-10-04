@@ -42,7 +42,7 @@ Usage Sentinel combines an actual usage meter, a personal reset detector and a p
 | --- | --- | --- |
 | macOS 14+, Apple Silicon / Intel | [Universal ZIP](https://github.com/Joe05520/usage-sentinel/releases/download/v1.4.0/UsageSentinel-1.4.0-macOS-universal.zip) | Native SwiftUI/MenuBarExtra. Built and run on Apple Silicon; Intel build included. |
 | Windows 10/11 x64 | [Windows ZIP](https://github.com/Joe05520/usage-sentinel/releases/download/v1.4.0/UsageSentinel-1.4.0-Windows-x64.zip) | Native Qt beta. CI builds/tests; real desktop validation still needed. |
-| Linux x64, glibc 2.28+ | [Linux tar.gz](https://github.com/Joe05520/usage-sentinel/releases/download/v1.4.0/UsageSentinel-1.4.0-Linux-x64.tar.gz) | Native Qt beta. Desktop tray/notification support varies. |
+| Linux x64, glibc 2.35+ | [Linux tar.gz](https://github.com/Joe05520/usage-sentinel/releases/download/v1.4.0/UsageSentinel-1.4.0-Linux-x64.tar.gz) | Native Qt beta. Desktop tray/notification support varies. |
 
 macOS: extract, move **Usage Sentinel.app** to Applications, then open. This release uses an ad-hoc signature and is **not Apple-notarized**. If macOS blocks it, use the explicit **System Settings → Privacy & Security → Open Anyway** flow after reviewing the release. Do not disable system security settings.
 
@@ -60,11 +60,17 @@ Windows: extract the **entire folder**, run `UsageSentinel.exe`. Linux: extract,
 
 This version displays **one selected agent at a time**, preserving separate source history and paths. Other ChatGPT personal quotas appear only if the official provider returns them. Public reset news currently focuses on OpenAI/Codex; Claude/Gemini/Grok public feeds are not implemented. See [agent setup and export schema](docs/AGENTS.md).
 
+## Verified updates and community insights
+
+1.5 adds signed stable/preview update checks and verified downloads. Installation is manual and retains application data. [Update mechanism](docs/UPDATES.md).
+
+The public [Insights page](https://joe05520.github.io/usage-sentinel/insights.html) separates GitHub asset download counts from consented country statistics. Public categories require at least 10 anonymous contributors; private administrator charts need sign-in. [Analytics documentation](docs/ANALYTICS.md) · [Security review](docs/SECURITY_REVIEW.md).
+
 ## Privacy
 
-**What stays local:** Usage percentages, reset times, snapshots, account fingerprint, settings, events, fetched metadata and notification bookkeeping. No telemetry, analytics or account-data backend.
+**What stays local:** Usage percentages, reset times, snapshots, account fingerprint, settings, events, fetched metadata and notification bookkeeping. Optional analytics in 1.5 is OFF by default. Daily activity bands require consent; coarse quota bands require separate consent. No raw account history is uploaded. [Analytics schema & privacy](docs/ANALYTICS.md).
 
-**Network requests:** The official Codex executable manages its own authenticated usage request. Sentinel's own requests go only to selected public official/GitHub/Reddit/HN sources. They contain no usage history or credentials. The website has no tracking scripts, external fonts or cookies; a browser-local preference stores its selected language.
+**Network requests:** The official Codex executable manages its own authenticated usage request. Sentinel's own requests go only to selected public official/GitHub/Reddit/HN sources. They contain no usage history or credentials. Optional analytics requests go to the project-owned Cloudflare Worker only after consent; update checks go to GitHub Pages and verified packages download from GitHub. The website uses no third-party tracking scripts or external fonts. Download-country reporting is optional and disabled by default; the private admin uses a secure session cookie. Browser-local preferences store language and optional consent.
 
 **Credentials:** Sentinel never reads browser cookies or vendor authentication files, and never uploads tokens. Official Codex handles its own sign-in. The Claude bridge receives the official status-line payload and stores only quota fields, not raw session/transcript data. Future keyed adapters must use OS credential storage. Details: [security](SECURITY.md), [technical architecture & request inventory](docs/TECHNICAL.md).
 

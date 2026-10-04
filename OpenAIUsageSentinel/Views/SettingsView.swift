@@ -141,8 +141,26 @@ struct SettingsView: View {
                 }
                 Text(L10n.t("Record only when you apply a reset outside Sentinel. Annotation lasts 30 minutes; Sentinel never buys or consumes a reset.")).font(.caption).foregroundStyle(.secondary)
             }
+            Section(L10n.t("Updates")) {
+                Toggle(L10n.t("Check for updates daily"), isOn: Binding(get: { store.settings.automaticUpdateChecks != false }, set: { store.settings.automaticUpdateChecks = $0; store.saveSettings() }))
+                Toggle(L10n.t("Include preview releases"), isOn: Binding(get: { store.settings.includePreviewUpdates != false }, set: { store.settings.includePreviewUpdates = $0; store.saveSettings() }))
+                HStack {
+                    Button(L10n.t("Check for Updates")) { Task { await store.checkUpdates() } }.disabled(store.updateBusy || store.isMock)
+                    if store.updateManifest != nil { Button(L10n.t("Download Verified Update")) { Task { await store.downloadUpdate() } }.disabled(store.updateBusy) }
+                }
+                Text(store.updateStatus).font(.caption).textSelection(.enabled)
+                Text(L10n.t("Downloads require an Ed25519 signature and SHA-256 match. Installation is manual; account data stays in Application Support.")).font(.caption).foregroundStyle(.secondary)
+            }
+            Section(L10n.t("Optional anonymous analytics")) {
+                Toggle(L10n.t("Share anonymous daily usage habits"), isOn: $store.settings.analytics.enabled).disabled(store.isMock || ServiceConfiguration.bundled.telemetryURL == nil)
+                Toggle(L10n.t("Also share coarse remaining-quota bands"), isOn: $store.settings.analytics.shareQuota).disabled(!store.settings.analytics.enabled)
+                Text(L10n.t("Off by default. Sends country, platform, agent, reminder-stage count and a daily activity band. Quota bands require separate consent. No account ID, exact usage, reset time, prompts, tokens or cookies. Cloudflare processes your IP to determine country but this app does not store it in analytics.")).font(.caption).foregroundStyle(.secondary)
+                Button(L10n.t("Delete shared reports and turn off")) { Task { await store.deleteAnalytics() } }.disabled(store.isMock)
+                Link(L10n.t("Analytics privacy details"), destination: URL(string: "https://joe05520.github.io/usage-sentinel/insights.html")!)
+                Text(store.analyticsStatus).font(.caption).textSelection(.enabled)
+            }
             Section(L10n.t("Privacy & Diagnostics")) {
-                Text(L10n.t("All account data stays on this Mac. Public-source requests contain no account history or credentials. Official Codex handles its own authentication.")).font(.caption)
+                Text(L10n.t("Account history stays local by default. Optional analytics sends only the daily fields shown above. Official Codex handles its own authentication.")).font(.caption)
                 HStack { Button(L10n.t("Diagnostics…")) { store.openWindow?("diagnostics") }; Button(L10n.t("Event History…")) { store.openWindow?("history") } }
             }
             if store.isMock {

@@ -50,3 +50,7 @@ Windows / Linux 為 beta。CI 建置與 offscreen smoke test 不代表所有桌�
 [技術說明](TECHNICAL.md) · [驗證紀錄](VALIDATION.md) · [參與貢獻](../CONTRIBUTING.md) · [回報問題](https://github.com/Joe05520/usage-sentinel/issues)
 
 MIT 授權。第三方 Qt / Python 授權見 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。獨立社群專案，與 OpenAI、Anthropic、Google、xAI 無隸屬或背書關係。
+
+## 1.5 更新
+
+新增每日更新檢查、Ed25519 簽章與 SHA-256 驗證下載，安裝需手動替換 App，保留原資料。新增預設關閉的匿名每日統計，粗略額度須另行同意。公開圖表至少 10 個匿名參與識別碼；個別帳號歷史仍保留本機。[統計隱私](ANALYTICS.md) · [更新說明](UPDATES.md)。

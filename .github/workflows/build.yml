@@ -2,7 +2,7 @@ name: Build and test
 on:
   push:
     branches: [main]
-    paths: ['OpenAIUsageSentinel/**', 'OpenAIUsageSentinel.xcodeproj/**', 'Tests/**', 'Portable/**', 'Scripts/**', 'Package.swift', '.github/workflows/build.yml']
+    paths: ['OpenAIUsageSentinel/**', 'OpenAIUsageSentinel.xcodeproj/**', 'Tests/**', 'Portable/**', 'Scripts/**', 'Package.swift', 'Backend/**', '.github/workflows/build.yml']
   pull_request:
   workflow_dispatch:
 permissions:
@@ -11,13 +11,13 @@ jobs:
   macos:
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - run: python3 Scripts/check_localization.py
       - run: swift test
       - run: python3 Scripts/generate_project.py
       - run: xcodebuild -project OpenAIUsageSentinel.xcodeproj -scheme OpenAIUsageSentinel -configuration Release -derivedDataPath build/DerivedData ARCHS='arm64 x86_64' ONLY_ACTIVE_ARCH=NO build
-      - run: ditto -c -k --sequesterRsrc --keepParent 'build/DerivedData/Build/Products/Release/Usage Sentinel.app' build/UsageSentinel-1.4.0-macOS-universal.zip
-      - uses: actions/upload-artifact@v4
+      - run: ditto -c -k --sequesterRsrc --keepParent 'build/DerivedData/Build/Products/Release/Usage Sentinel.app' build/UsageSentinel-1.5.0-macOS-universal.zip
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: macOS-universal
           path: build/UsageSentinel-*.zip
@@ -28,8 +28,8 @@ jobs:
         os: [windows-latest, ubuntu-22.04]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.12'
           cache: pip
@@ -58,10 +58,31 @@ jobs:
         run: |
           $process = Start-Process -FilePath 'build/portable-package/dist/UsageSentinel/UsageSentinel.exe' -ArgumentList '--smoke-test' -Wait -PassThru
           if ($process.ExitCode -ne 0) { throw "Packaged smoke test failed: $($process.ExitCode)" }
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: ${{ runner.os }}-x64
           path: |
             build/UsageSentinel-*.zip
             build/UsageSentinel-*.tar.gz
           if-no-files-found: error
+
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: Backend/package-lock.json
+      - run: npm ci --prefix Backend --ignore-scripts
+      - run: npm audit --prefix Backend --audit-level=moderate
+      - run: npm test --prefix Backend
+      - run: npm run migrate:local --prefix Backend
+      - name: Real local Worker + D1 smoke
+        run: |
+          npm run dev --prefix Backend -- --var INGEST_SECRET:local-testing-only-0000000000000000000000000000 --var ADMIN_SECRET:local-testing-admin-0000000000000000000000000000000 > worker.log 2>&1 &
+          WORKER_PID=$!
+          trap 'kill "$WORKER_PID"' EXIT
+          for i in $(seq 1 30); do curl --silent --fail http://127.0.0.1:8787/health && break || sleep 1; done
+          python3 Backend/tests/runtime_smoke.py

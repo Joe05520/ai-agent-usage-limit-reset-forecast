@@ -1,0 +1,8 @@
+{
+  "name": "usage-sentinel-analytics", "main": "src/worker.mjs", "compatibility_date": "2026-10-04",
+  "account_id": "f8b957cb289aae102217a435bdbfc984", "workers_dev": true, "observability": {"enabled": false},
+  "vars": {"SITE_ORIGIN": "https://joe05520.github.io", "ACCESS_TEAM": "", "ACCESS_AUD": ""},
+  "d1_databases": [{"binding": "DB", "database_name": "sentinel-analytics", "database_id": "b82860fe-8fcd-4756-a252-bc61aa7155ed", "migrations_dir": "migrations"}],
+  "ratelimits": [{"name": "INGEST_LIMIT", "namespace_id": "1001", "simple": {"limit": 30, "period": 60}}, {"name": "ADMIN_LIMIT", "namespace_id": "1002", "simple": {"limit": 5, "period": 60}}],
+  "triggers": {"crons": ["17 * * * *"]}
+}

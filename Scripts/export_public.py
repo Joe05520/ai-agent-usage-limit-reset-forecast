@@ -5,12 +5,12 @@ import shutil
 import sys
 root=Path(__file__).resolve().parents[1]
 dest=root/'build/public-repository'; dest.mkdir(parents=True,exist_ok=True)
-allowed=['OpenAIUsageSentinel','OpenAIUsageSentinel.xcodeproj','Tests','Scripts','Portable','docs','.github','README.md','Package.swift','LICENSE','SECURITY.md','CONTRIBUTING.md','THIRD_PARTY_NOTICES.md','.gitignore']
+allowed=['Backend','OpenAIUsageSentinel','OpenAIUsageSentinel.xcodeproj','Tests','Scripts','Portable','docs','.github','README.md','Package.swift','LICENSE','SECURITY.md','CONTRIBUTING.md','THIRD_PARTY_NOTICES.md','.gitignore']
 for name in allowed:
     source=root/name; target=dest/name
     if source.is_dir():
         if target.exists(): shutil.rmtree(target)
-        shutil.copytree(source,target,ignore=shutil.ignore_patterns('__pycache__','*.pyc','xcuserdata','*.xcuserstate','build','dist','*.sqlite*','*.log'))
+        shutil.copytree(source,target,ignore=shutil.ignore_patterns('__pycache__','*.pyc','xcuserdata','*.xcuserstate','build','dist','*.sqlite*','*.log','node_modules','.wrangler','.dev.vars*'))
     else: shutil.copy2(source,target)
 for file in dest.rglob('*'):
     if not file.is_file() or '.git' in file.parts: continue

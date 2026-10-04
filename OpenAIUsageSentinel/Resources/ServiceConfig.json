@@ -1,0 +1,5 @@
+{
+  "analyticsEndpoint": "https://usage-sentinel-analytics.usage-sentinel-backend.workers.dev",
+  "schema": 1,
+  "updatePublicKey": "b8DagUJyqkT6e6me2l75mS6XUcfab9PDm0BkQELbO/w="
+}

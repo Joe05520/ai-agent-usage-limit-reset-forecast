@@ -13,6 +13,11 @@ public enum KeychainStore {
         }
         guard update == errSecSuccess else { throw SentinelError.unavailable("Could not update API key in Keychain.") }
     }
+    public static func delete(account: String) throws {
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: account]
+        let status = SecItemDelete(query as CFDictionary)
+        guard status == errSecSuccess || status == errSecItemNotFound else { throw SentinelError.unavailable("Could not remove Keychain entry") }
+    }
     public static func read(account: String) throws -> Data? {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: account, kSecReturnData as String: true, kSecMatchLimit as String: kSecMatchLimitOne]
         var result: CFTypeRef?
