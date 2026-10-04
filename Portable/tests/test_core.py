@@ -98,7 +98,14 @@ class SignalTests(unittest.TestCase):
     def test_own_quota_strengthens_cluster(self):
         events=core.merge([],[core.classify(source(i)) for i in [1,2]],[],NOW)
         own=core.personal_resets(usage(17),usage(100,60)); events=core.merge(events,[],own,NOW+60)
-        self.assertEqual(len(events),1); self.assertTrue(events[0]['own']); self.assertGreater(events[0]['confidence'],.6)
+        self.assertEqual(len(events),1); self.assertTrue(events[0]['own']); self.assertGreater(events[0]['confidence'],.28); self.assertLess(events[0]['confidence'],.6)
+    def test_official_codex_personal_evidence_gets_full_weight(self):
+        before=core.parse_codex(dict(rateLimits=dict(primary=dict(usedPercent=83,windowDurationMins=10080,resetsAt=NOW+3*86400))),NOW)
+        after=core.parse_codex(dict(rateLimits=dict(primary=dict(usedPercent=0,windowDurationMins=10080,resetsAt=NOW+3*86400))),NOW+60)
+        own=core.personal_resets(before,after)
+        events=core.merge([],[core.classify(source(i)) for i in [1,2]],[],NOW)
+        events=core.merge(events,[],own,NOW+60)
+        self.assertEqual(len(events),1); self.assertGreaterEqual(events[0]['confidence'],.6)
     def test_no_duplicate_notification_tiny_score_change(self):
         event=core.merge([],[core.classify(source(i)) for i in [1,2]],[],NOW)[0]; event['notified']=core.level(event['confidence'])
         event['confidence']+=.01; self.assertFalse(core.should_notify(event,{},NOW)); event['confidence']=.65; self.assertTrue(core.should_notify(event,{},NOW))
