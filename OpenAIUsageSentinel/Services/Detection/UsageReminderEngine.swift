@@ -26,7 +26,7 @@ public struct UsageReminderSettings: Codable, Equatable, Sendable {
     }
     public mutating func addStage() {
         guard stages.count < Self.maximumStages else { return }
-        let available = [50.0, 30, 20, 10, 5] + (0...99).reversed().map(Double.init)
+        let available: [Double] = [50, 30, 20, 10, 5] + (0...99).reversed().map { Double($0) }
         if let next = available.first(where: { !stages.contains($0) }) { stages += [next] }
     }
 

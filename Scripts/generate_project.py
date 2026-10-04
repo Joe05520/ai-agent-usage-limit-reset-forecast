@@ -16,9 +16,9 @@ for path in swift+tests:
  if path in tests:test_refs.append(ref);test_build.append(build)
  else:source_refs.append(ref);source_build.append(build)
 resource_build=[]
-for path in sorted((ROOT/'OpenAIUsageSentinel/Resources').glob('*.json')):
+for path in sorted((ROOT/'OpenAIUsageSentinel/Resources').glob('*')):
  rel=path.relative_to(ROOT).as_posix()
- ref=obj(rel, f'isa = PBXFileReference; lastKnownFileType = text.json; path = {q(rel)}; sourceTree = SOURCE_ROOT;')
+ ref=obj(rel, f'isa = PBXFileReference; lastKnownFileType = {"text.json" if path.suffix == ".json" else "image.icns"}; path = {q(rel)}; sourceTree = SOURCE_ROOT;')
  source_refs.append(ref)
  resource_build.append(obj(rel+'build',f'isa = PBXBuildFile; fileRef = {ref};'))
 app=obj('product.app' ,'isa = PBXFileReference; explicitFileType = wrapper.application; path = "Usage Sentinel.app"; sourceTree = BUILT_PRODUCTS_DIR;')
