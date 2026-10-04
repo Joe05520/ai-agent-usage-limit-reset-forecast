@@ -17,6 +17,10 @@ Native menu bar / system tray companion for quota reminders and early reset sign
 
 </div>
 
+![Usage Sentinel website preview — illustrative usage values](docs/website-preview.jpg)
+
+The website preview uses illustrative quota values. Actual account readings stay in the desktop app.
+
 ## Know what is left. Notice what changes.
 
 Usage Sentinel combines an actual usage meter, a personal reset detector and a public reset-signal monitor. It lives in the macOS menu bar or Windows/Linux system tray and keeps account data on your device.
