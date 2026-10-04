@@ -1,0 +1,51 @@
+name: Publish verified release
+on:
+  workflow_dispatch:
+    inputs:
+      build_run:
+        description: Passing Build and test run ID to publish
+        required: true
+        default: '37192161755'
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      BUILD_RUN: ${{ inputs.build_run }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require passing build and retain exact source
+        shell: bash
+        run: |
+          [[ "$BUILD_RUN" =~ ^[0-9]+$ ]]
+          gh run view "$BUILD_RUN" --json conclusion,workflowName,headSha > build-run.json
+          python3 - <<'PY'
+          import json, os
+          info=json.load(open('build-run.json'))
+          assert info['conclusion']=='success' and info['workflowName']=='Build and test'
+          assert len(info['headSha'])==40
+          with open(os.environ['GITHUB_ENV'],'a') as f: f.write('SOURCE_SHA='+info['headSha']+'\n')
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ inputs.build_run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: release
+          merge-multiple: true
+      - name: Validate packages and compute hashes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          files=sorted(Path('release').glob('*'))
+          expected={'UsageSentinel-1.4.0-macOS-universal.zip','UsageSentinel-1.4.0-Windows-x64.zip','UsageSentinel-1.4.0-Linux-x64.tar.gz'}
+          assert {f.name for f in files}==expected
+          for f in files: assert f.stat().st_size>1000000
+          Path('release/SHA256SUMS.txt').write_text(''.join(hashlib.sha256(f.read_bytes()).hexdigest()+'  '+f.name+'\n' for f in files))
+          PY
+      - name: Publish preview release
+        run: gh release create v1.4.0 release/* --target "$SOURCE_SHA" --title 'Usage Sentinel 1.4.0 — five-stage reminders & portable beta' --prerelease --notes-file .github/RELEASE_NOTES.md
