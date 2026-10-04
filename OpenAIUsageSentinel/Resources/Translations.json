@@ -113,7 +113,7 @@
   },
   "Show reset signal count in menu bar": {
     "en": "Show reset signal count in menu bar",
-    "zh-Hant": "在選單列顯示 reset 訊號數",
+    "zh-Hant": "在選單列顯示 重置訊號數",
     "zh-Hans": "在菜单栏显示重置信号数",
     "ja": "メニューバーにリセット情報の件数を表示",
     "ko": "메뉴 막대에 초기화 신호 수 표시"
@@ -176,7 +176,7 @@
   },
   "Preview uses your latest quota. ⚡ counts current signals, not completed resets. These switches do not change detection or notifications.": {
     "en": "Preview uses your latest quota. ⚡ counts current signals, not completed resets. These switches do not change detection or notifications.",
-    "zh-Hant": "預覽使用最新額度。⚡ 表示目前訊號數，不是已重置次數。顯示開關不影響偵測與通知。",
+    "zh-Hant": "預覽使用最新額度。⚡ 表示目前重置訊號數，不是已重置次數。顯示開關不影響偵測與通知。",
     "zh-Hans": "预览使用最新额度。⚡ 表示当前信号数，不是已重置次数。显示开关不影响检测与通知。",
     "ja": "プレビューには最新の使用枠を使います。⚡は現在の情報件数で、実行済みのリセット回数ではありません。表示設定は検出や通知に影響しません。",
     "ko": "미리 보기는 최신 한도를 사용합니다. ⚡는 현재 신호 수이며 완료된 초기화 횟수가 아닙니다. 표시 설정은 감지나 알림에 영향을 주지 않습니다."
@@ -204,8 +204,8 @@
   },
   "Signals": {
     "en": "Signals",
-    "zh-Hant": "訊號",
-    "zh-Hans": "信号",
+    "zh-Hant": "重置訊號",
+    "zh-Hans": "重置信号",
     "ja": "リセット情報",
     "ko": "신호"
   },
@@ -302,7 +302,7 @@
   },
   "Reset early signals": {
     "en": "Reset early signals",
-    "zh-Hant": "Reset 早期訊號",
+    "zh-Hant": "早期重置訊號",
     "zh-Hans": "重置早期信号",
     "ja": "リセットの初期情報",
     "ko": "초기화 초기 신호"
@@ -701,7 +701,7 @@
   },
   "Reset Signals": {
     "en": "Reset Signals",
-    "zh-Hant": "Reset 訊號",
+    "zh-Hant": "重置訊號",
     "zh-Hans": "重置信号",
     "ja": "リセット情報",
     "ko": "초기화 신호"
@@ -715,7 +715,7 @@
   },
   "No fresh irregular reset signal": {
     "en": "No fresh irregular reset signal",
-    "zh-Hant": "目前沒有新的非例行 reset 訊號",
+    "zh-Hant": "目前沒有新的非例行 重置訊號",
     "zh-Hans": "目前没有新的非例行重置信号",
     "ja": "新しい臨時リセット情報はありません",
     "ko": "새로운 비정기 초기화 신호 없음"
@@ -1121,7 +1121,7 @@
   },
   "Early Signal": {
     "en": "Early Signal",
-    "zh-Hant": "早期訊號",
+    "zh-Hant": "早期重置訊號",
     "zh-Hans": "早期信号",
     "ja": "初期情報",
     "ko": "초기 신호"
@@ -1142,7 +1142,7 @@
   },
   "⚡ Reset signal strengthened": {
     "en": "⚡ Reset signal strengthened",
-    "zh-Hant": "⚡ Reset 訊號增強",
+    "zh-Hant": "⚡ 重置訊號增強",
     "zh-Hans": "⚡ 重置信号增强",
     "ja": "⚡ リセット情報の根拠が増加",
     "ko": "⚡ 초기화 신호 강화"
@@ -1296,7 +1296,7 @@
   },
   "%d active reset signals": {
     "en": "%d active reset signals",
-    "zh-Hant": "目前 %d 個 reset 訊號",
+    "zh-Hant": "目前 %d 個 重置訊號",
     "zh-Hans": "当前 %d 个重置信号",
     "ja": "現在のリセット情報：%d件",
     "ko": "현재 초기화 신호 %d개"

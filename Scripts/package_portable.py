@@ -17,6 +17,6 @@ for name in ('PySide6','PySide6-Essentials','shiboken6','pyinstaller','cryptogra
     for file in dist.files or []:
         if 'license' in str(file).lower() and dist.locate_file(file).is_file():
             dest=licenses/name/str(file).replace('../',''); dest.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(dist.locate_file(file),dest)
-base=root/'build'/('UsageSentinel-1.5.0-'+('Windows-x64' if sys.platform=='win32' else 'Linux-x64' if sys.platform=='linux' else 'Qt-macOS-dev'))
+base=root/'build'/('UsageSentinel-1.5.1-'+('Windows-x64' if sys.platform=='win32' else 'Linux-x64' if sys.platform=='linux' else 'Qt-macOS-dev'))
 archive=shutil.make_archive(str(base),'zip' if sys.platform=='win32' else 'gztar',app.parent,app.name)
 print(archive)

@@ -1,3 +1,7 @@
+## 1.5.1 terminology update
+
+Traditional Chinese reset-signal labels now consistently use 「重置訊號」 in the app, settings, notification text and website. Includes the 1.5 analytics, security and verified-update features below.
+
 Usage Sentinel 1.5.0 adds consent-based analytics, a private administrator dashboard, and signed update downloads.
 
 - Optional analytics is OFF by default; coarse quota bands need separate consent. Monthly rotating IDs live in OS credential storage. No vendor account ID, token, cookie, prompt, exact quota or reset time is collected.

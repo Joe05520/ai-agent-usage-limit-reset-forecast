@@ -4,16 +4,16 @@
 
 [官方專案網站與互動範例](https://joe05520.github.io/usage-sentinel/) · [下載](https://github.com/Joe05520/usage-sentinel/releases/tag/v1.5.0) · [English](../README.md)
 
-Usage Sentinel 是免費開源的選單列／系統匣工具，結合用量顯示、非例行 reset 偵測與社群初期訊號監控。macOS 採原生 SwiftUI / MenuBarExtra；Windows 與 Linux 使用原生 Qt，目前為 beta。
+Usage Sentinel 是免費開源的選單列／系統匣工具，結合用量顯示、非例行 reset 偵測與社群初期重置訊號監控。macOS 採原生 SwiftUI / MenuBarExtra；Windows 與 Linux 使用原生 Qt，目前為 beta。
 
 ## 主要功能
 
 - 顯示真實剩餘額度、例行 reset 時間、最後成功更新；資料取得失敗就顯示未知或過期。
 - 最多五階段用量提醒，例如 **50%、30%、20%、10%、5%**，支援新增、刪除與修改。每週期每階段只提醒一次，一次跨越多階段只送一則合併通知。
 - 偵測帳號額度在原定 reset 之前增加；這是帳號觀察，不直接宣稱全球 reset。
-- 監控 OpenAI 官方來源、GitHub、Reddit 初期訊號；預設可信度 **25%** 即可通知，也可改為 15%、60%、90%。
+- 監控 OpenAI 官方來源、GitHub、Reddit 初期重置訊號；預設可信度 **25%** 即可通知，也可改為 15%、60%、90%。
 - 每則事件保存來源、時間、網址、可信度；多來源合併，避免重複文字與作者灌水。
-- macOS 提供五種選單列樣式，訊號數量與 banked reset credits 可分別關閉。
+- macOS 提供五種選單列樣式，重置訊號數量與 banked reset credits 可分別關閉。
 - App 支援英文、繁體中文、簡體中文、日文、韓文。來源原文不自動翻譯。
 - 本機 SQLite 保存 35 天用量快照、最長一年事件；支援診斷、登入自動啟動及原生通知。macOS 另有歷史圖表與可信度時間線。
 
