@@ -1,4 +1,4 @@
-# AI Usage Sentinel
+# AI Agent Usage Sentinel
 
 **讓 AI 剩餘額度，隨時看得見。**
 

@@ -1,7 +1,8 @@
-# Share AI Usage Sentinel accurately
+# Share AI Agent Usage Sentinel accurately
 
-Display name: **AI Usage Sentinel**
-Subtitle: **AI Quota Monitor & Reset Alerts**
+GitHub project name: **AI Agent Usage Sentinel**
+App display name: **AI Usage Sentinel**
+Subtitle: **AI Agent Quota Monitor & Reset Alerts**
 Repository: https://github.com/Joe05520/usage-sentinel
 Website: https://joe05520.github.io/usage-sentinel/
 Share image: [social-preview.png](social-preview.png)

@@ -2,9 +2,9 @@
 
 <img src="docs/favicon.svg" width="80" height="80" alt="AI Usage Sentinel logo">
 
-# AI Usage Sentinel
+# AI Agent Usage Sentinel
 
-**AI Quota Monitor & Reset Alerts — Codex, Claude Code and local quota imports.**
+**AI Agent Quota Monitor & Reset Alerts — Codex, Claude Code, Gemini & Grok local imports.**
 
 Track remaining AI usage, next regular resets and unexpected quota increases. Native macOS menu bar app; Windows/Linux tray beta. Five-stage reminders and source-linked reset alerts.
 
