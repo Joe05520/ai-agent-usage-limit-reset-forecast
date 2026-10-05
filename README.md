@@ -13,7 +13,7 @@ Track remaining AI usage, next regular resets and unexpected quota increases. Na
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B-163832)](https://github.com/Joe05520/usage-sentinel/releases)
 [![Windows / Linux beta](https://img.shields.io/badge/Windows%20%2F%20Linux-beta-987c35)](Portable/README.md)
 
-[**Website & interactive demo**](https://joe05520.github.io/usage-sentinel/) · [**Download**](https://github.com/Joe05520/usage-sentinel/releases/tag/v1.6.0) · [Agent setup](docs/AGENTS.md) · [繁體中文](docs/README.zh-Hant.md)
+[**Website & interactive demo**](https://joe05520.github.io/usage-sentinel/) · [**Download**](https://github.com/Joe05520/usage-sentinel/releases/tag/v1.7.0) · [Agent setup](docs/AGENTS.md) · [繁體中文](docs/README.zh-Hant.md)
 
 </div>
 
@@ -40,13 +40,13 @@ AI Usage Sentinel combines an actual usage meter, a personal reset detector and 
 
 | Platform | Package | Status |
 | --- | --- | --- |
-| macOS 14+, Apple Silicon / Intel | [Universal ZIP](https://github.com/Joe05520/usage-sentinel/releases/download/v1.6.0/UsageSentinel-1.6.0-macOS-universal.zip) | Native SwiftUI/MenuBarExtra. Built and run on Apple Silicon; Intel build included. |
-| Windows 10/11 x64 | [Windows ZIP](https://github.com/Joe05520/usage-sentinel/releases/download/v1.6.0/UsageSentinel-1.6.0-Windows-x64.zip) | Native Qt beta. CI builds/tests; real desktop validation still needed. |
-| Linux x64, glibc 2.35+ | [Linux tar.gz](https://github.com/Joe05520/usage-sentinel/releases/download/v1.6.0/UsageSentinel-1.6.0-Linux-x64.tar.gz) | Native Qt beta. Desktop tray/notification support varies. |
+| macOS 14+, Apple Silicon / Intel | [Universal ZIP](https://github.com/Joe05520/usage-sentinel/releases/download/v1.7.0/UsageSentinel-1.7.0-macOS-universal.zip) | Native SwiftUI/MenuBarExtra. Built and run on Apple Silicon; Intel build included. |
+| Windows 10/11 x64 | [Windows ZIP](https://github.com/Joe05520/usage-sentinel/releases/download/v1.7.0/UsageSentinel-1.7.0-Windows-x64.zip) | Native Qt beta. CI builds/tests; real desktop validation still needed. |
+| Linux x64, glibc 2.35+ | [Linux tar.gz](https://github.com/Joe05520/usage-sentinel/releases/download/v1.7.0/UsageSentinel-1.7.0-Linux-x64.tar.gz) | Native Qt beta. Desktop tray/notification support varies. |
 
 macOS: extract, move **AI Usage Sentinel.app** to Applications, then open. This release uses an ad-hoc signature and is **not Apple-notarized**. If macOS blocks it, use the explicit **System Settings → Privacy & Security → Open Anyway** flow after reviewing the release. Do not disable system security settings.
 
-Windows: extract the **entire folder**, run `UsageSentinel.exe`. Linux: extract, run `./UsageSentinel/UsageSentinel`. Keep the executable with its runtime/shared-library directory. Python is bundled for the app; the optional Claude bridge separately requires Python 3.9+. Downloads are unsigned previews; see [release notes and SHA-256 checksums](https://github.com/Joe05520/usage-sentinel/releases/tag/v1.6.0) and the [portable installation guide](Portable/README.md).
+Windows: extract the **entire folder**, run `UsageSentinel.exe`. Linux: extract, run `./UsageSentinel/UsageSentinel`. Keep the executable with its runtime/shared-library directory. Python is bundled for the app; the optional Claude bridge separately requires Python 3.9+. Downloads are unsigned previews; see [release notes and SHA-256 checksums](https://github.com/Joe05520/usage-sentinel/releases/tag/v1.7.0) and the [portable installation guide](Portable/README.md).
 
 ## Choose how you see your quota
 
@@ -56,6 +56,8 @@ Windows: extract the **entire folder**, run `UsageSentinel.exe`. Linux: extract,
 | Intuitive · ring | Remaining allowance as a ring, a plain-language status and reset countdown. |
 | Intuitive · battery | A battery-style fill with the same actual quota and reset data. |
 | Compact | Essential quota percentage and countdown with less visual detail. |
+
+Settings uses separate icon categories. Panel mode and quota visualization choices live only in Settings. With animations enabled, each quota fills from 0 to its current percentage on appearance; numbers and graphics move together. macOS Reduce Motion bypasses the transition. No usage snapshots or detection values are changed by animation.
 
 Switch modes directly in the native panel or in Settings. Settings includes a live preview (clearly labeled sample values if live data is unavailable). Quota transitions are finite and optional; macOS respects Reduce Motion, and Qt animations are off by default. Changing a view does not change reminders, reset classification or stored history. All five app languages include the new controls.
 
@@ -120,5 +122,3 @@ Scenarios cover scheduled reset, unexpected personal reset, early Reddit reports
 Please share the project if it helps, report reproducible problems, improve translations or add a **documented** provider adapter. [Contribution guide](CONTRIBUTING.md) · [Issue templates](https://github.com/Joe05520/usage-sentinel/issues/new/choose).
 
 MIT licensed original source. Qt/Python distributions retain their upstream licenses; see [third-party notices](THIRD_PARTY_NOTICES.md). An independent community project, not affiliated with or endorsed by OpenAI, Anthropic, Google or xAI.
-
-Settings uses separate icon categories. Panel mode and quota visualization choices live only in Settings. With animations enabled, each quota fills from 0 to its current percentage on appearance; numbers and graphics move together. macOS Reduce Motion bypasses the transition. No usage snapshots or detection values are changed by animation.
