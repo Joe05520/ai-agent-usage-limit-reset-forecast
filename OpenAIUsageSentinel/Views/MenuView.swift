@@ -65,6 +65,7 @@ struct MenuView: View {
             }.font(.caption)
         }
         .padding(16).frame(width: 390)
+        .onChange(of: store.settings.panel) { _, _ in store.saveSettings() }
         .onAppear { Task { await store.refreshAll(force: false) } }
     }
 }
