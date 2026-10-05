@@ -270,7 +270,7 @@ class SentinelWindow(QMainWindow):
         visual.setCurrentIndex(0 if self.settings["visual_style"] == "ring" else 1); visual.setEnabled(self.settings["panel_mode"] == "intuitive")
         visual.currentIndexChanged.connect(lambda i: self.change_visual("visual_style", visual.itemData(i))); form.addRow(self.t("Visualization"), visual)
         animated = QCheckBox(self.t("Animate quota changes")); animated.setChecked(self.settings["animations"])
-        animated.toggled.connect(lambda v: self.option("animations", v)); form.addRow(animated)
+        animated.toggled.connect(lambda v: self.change_visual("animations", v)); form.addRow(animated)
         form.addRow(QLabel(self.t("Illustrative visualization preview")), QuotaVisual(72, self.settings["visual_style"], self.settings["animations"]))
         form = forms["General"]
         language = QComboBox(); [language.addItem(name,code) for code,name in LANGUAGES.items()]; language.setCurrentIndex(list(LANGUAGES).index(self.settings["language"]))

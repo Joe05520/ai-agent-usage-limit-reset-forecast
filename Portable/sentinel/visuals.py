@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QWidget
 class QuotaVisual(QWidget):
     def __init__(self, remaining, style='ring', animate=False, previous=None, parent=None):
         super().__init__(parent)
-        self.value = max(0., min(100., remaining))
+        self.value = float(max(0., min(100., remaining)))
         self.style = style
         self.setMinimumSize(110, 36 if style in ("bar", "number") else 84)
         self.setAccessibleName(f'{self.value:g}% remaining')
@@ -14,7 +14,8 @@ class QuotaVisual(QWidget):
             end = self.value
             self.animation = QVariantAnimation(self)
             self.animation.setDuration(950 if previous is None else 450)
-            self.animation.setStartValue(max(0., min(100., previous or 0)))
+            self.value = float(max(0., min(100., previous or 0)))
+            self.animation.setStartValue(self.value)
             self.animation.setEndValue(end)
             self.animation.setEasingCurve(QEasingCurve.Type.InOutCubic)
             self.animation.valueChanged.connect(self.frame)
