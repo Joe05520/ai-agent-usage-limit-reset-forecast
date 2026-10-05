@@ -19,6 +19,6 @@ for name in ('PySide6','PySide6-Essentials','shiboken6','pyinstaller','cryptogra
         if 'license' in str(file).lower() and dist.locate_file(file).is_file():
             dest=licenses/name/str(file).replace('../',''); dest.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(dist.locate_file(file),dest)
 version=next(ast.literal_eval(node.value) for node in ast.parse((portable/'sentinel/__init__.py').read_text()).body if isinstance(node,ast.Assign) and any(isinstance(target,ast.Name) and target.id=='__version__' for target in node.targets))
-base=root/'build'/('UsageSentinel-'+version+'-'('Windows-x64' if sys.platform=='win32' else 'Linux-x64' if sys.platform=='linux' else 'Qt-macOS-dev'))
+base=root/'build'/('UsageSentinel-'+version+'-'+('Windows-x64' if sys.platform=='win32' else 'Linux-x64' if sys.platform=='linux' else 'Qt-macOS-dev'))
 archive=shutil.make_archive(str(base),'zip' if sys.platform=='win32' else 'gztar',app.parent,app.name)
 print(archive)
