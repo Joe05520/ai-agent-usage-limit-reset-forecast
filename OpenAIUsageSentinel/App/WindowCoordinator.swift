@@ -22,7 +22,8 @@ final class WindowCoordinator {
         case "diagnostics": content = AnyView(DiagnosticsView().environmentObject(store))
         default: content = AnyView(HistoryView().environmentObject(store))
         }
-        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: page == "history" ? 900 : 600, height: page == "settings" ? 740 : 540), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: page == "settings" ? 1100 : page == "history" ? 900 : 600, height: page == "settings" ? 740 : 540), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
+        if page == "settings" { window.minSize = NSSize(width: 900, height: 600) }
         window.title = "AI Usage Sentinel · " + L10n.t(page == "history" ? "Event History" : page.capitalized)
         window.contentView = NSHostingView(rootView: LocalizedWindowContent(content: content).environmentObject(store))
         window.isReleasedWhenClosed = false; window.center()

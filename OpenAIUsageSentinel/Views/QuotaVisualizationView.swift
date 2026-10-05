@@ -5,6 +5,8 @@ struct QuotaVisualizationView: View {
     let bucket: UsageBucket
     let appearance: PanelAppearance
     var preview = false
+    @State private var displayedValue = 0.0
+    private var shouldAnimate: Bool { appearance.animations && !reduceMotion }
     private var value: Double { min(100, max(0, bucket.remainingPercent)) }
     private var color: Color { value < 5 ? .red : value < 20 ? .orange : value <= 50 ? .yellow : .accentColor }
     private var status: String { L10n.t(value < 5 ? "Almost empty" : value < 20 ? "Running low" : value <= 50 ? "Keep an eye on usage" : "Plenty remaining") }
@@ -13,7 +15,7 @@ struct QuotaVisualizationView: View {
             switch appearance.mode {
             case .professional:
                 VStack(alignment: .leading, spacing: 5) {
-                    BucketRow(bucket: bucket)
+                    BucketRow(bucket: bucket, displayedValue: displayedValue)
                     HStack {
                         Text(L10n.t("Used") + " \(Int(bucket.usedPercent))%")
                         Spacer()
@@ -27,21 +29,21 @@ struct QuotaVisualizationView: View {
                         Text(DateParsing.countdown(bucket.resetAt)).font(.caption).foregroundStyle(.secondary)
                     }
                     Spacer()
-                    Text("\(Int(value))%").font(.title3.monospacedDigit().weight(.semibold)).foregroundStyle(color)
+                    AnimatedQuotaPercent(value: displayedValue).font(.title3.monospacedDigit().weight(.semibold)).foregroundStyle(color)
                 }.accessibilityElement(children: .combine)
             case .intuitive:
                 HStack(spacing: 16) {
                     ZStack {
                         if appearance.visualStyle == .ring {
                             Circle().stroke(color.opacity(0.15), lineWidth: 9)
-                            Circle().trim(from: 0, to: value / 100).stroke(color, style: StrokeStyle(lineWidth: 9, lineCap: .round)).rotationEffect(.degrees(-90))
+                            Circle().trim(from: 0, to: displayedValue / 100).stroke(color, style: StrokeStyle(lineWidth: 9, lineCap: .round)).rotationEffect(.degrees(-90))
                         } else {
                             RoundedRectangle(cornerRadius: 9).stroke(color.opacity(0.35), lineWidth: 2)
                             GeometryReader { geometry in
-                                RoundedRectangle(cornerRadius: 5).fill(color.opacity(0.25)).frame(width: max(0, (geometry.size.width - 8) * value / 100), height: geometry.size.height - 8).padding(4)
+                                RoundedRectangle(cornerRadius: 5).fill(color.opacity(0.25)).frame(width: max(0, (geometry.size.width - 8) * displayedValue / 100), height: geometry.size.height - 8).padding(4)
                             }
                         }
-                        Text("\(Int(value))%").font(.title3.monospacedDigit().weight(.bold))
+                        AnimatedQuotaPercent(value: displayedValue).font(.title3.monospacedDigit().weight(.bold))
                     }.frame(width: 70, height: appearance.visualStyle == .ring ? 70 : 44).accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 4) {
                         Text(L10n.t(bucket.name)).font(.subheadline.weight(.semibold))
@@ -54,8 +56,35 @@ struct QuotaVisualizationView: View {
                     .accessibilityLabel(L10n.t(bucket.name) + ", " + L10n.f("%@%% left", String(Int(value))) + ", " + status + ", " + DateParsing.countdown(bucket.resetAt))
             }
         }
-        .animation(appearance.animations && !reduceMotion ? .easeInOut(duration: 0.45) : nil, value: value)
+        .task {
+            displayedValue = shouldAnimate ? 0 : value
+            if shouldAnimate {
+                do { try await Task.sleep(for: .milliseconds(40)) } catch { return }
+            }
+            guard !Task.isCancelled else { return }
+            transition(to: value, entrance: true)
+        }
+        .onChange(of: value) { _, newValue in transition(to: newValue) }
+        .onChange(of: shouldAnimate) { _, _ in transition(to: value) }
+        .accessibilityValue(L10n.f("%@%% left", String(Int(value))))
         .animation(appearance.animations && !reduceMotion ? .easeInOut(duration: 0.2) : nil, value: appearance.mode)
+    }
+    private func transition(to target: Double, entrance: Bool = false) {
+        if entrance { displayedValue = shouldAnimate ? 0 : target }
+        withAnimation(shouldAnimate ? .easeOut(duration: entrance ? 0.95 : 0.45) : nil) {
+            displayedValue = target
+        }
+    }
+}
+
+// Animatable interpolates the digits with the same transaction as the fill.
+// UsageBucket remains the authoritative value throughout the presentation.
+struct AnimatedQuotaPercent: View, Animatable {
+    var value: Double
+    var remainingLabel = false
+    var animatableData: Double { get { value } set { value = newValue } }
+    var body: some View {
+        Text(remainingLabel ? L10n.f("%@%% left", String(Int(value.rounded(.down)))) : "\(Int(value.rounded(.down)))%")
     }
 }
 

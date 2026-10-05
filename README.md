@@ -120,3 +120,5 @@ Scenarios cover scheduled reset, unexpected personal reset, early Reddit reports
 Please share the project if it helps, report reproducible problems, improve translations or add a **documented** provider adapter. [Contribution guide](CONTRIBUTING.md) · [Issue templates](https://github.com/Joe05520/usage-sentinel/issues/new/choose).
 
 MIT licensed original source. Qt/Python distributions retain their upstream licenses; see [third-party notices](THIRD_PARTY_NOTICES.md). An independent community project, not affiliated with or endorsed by OpenAI, Anthropic, Google or xAI.
+
+Settings uses separate icon categories. Panel mode and quota visualization choices live only in Settings. With animations enabled, each quota fills from 0 to its current percentage on appearance; numbers and graphics move together. macOS Reduce Motion bypasses the transition. No usage snapshots or detection values are changed by animation.

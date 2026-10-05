@@ -64,3 +64,5 @@ MIT 授權。第三方 Qt / Python 授權見 [THIRD_PARTY_NOTICES.md](../THIRD_P
 在面板與設定直接切換，設定內有即時預覽。動畫可以關閉；macOS 遵循「減少動態效果」，Windows/Linux 預設關閉動畫。模式不影響偵測、提醒或歷史。
 
 專案顯示名稱改為 AI Usage Sentinel，副標 AI Quota Monitor & Reset Alerts。保留原 GitHub 網址、更新信任金鑰與資料位置；macOS 請以新名稱 App 取代舊版，避免同時執行兩份。
+
+設定採用獨立圖示分類；面板模式與可視化樣式僅在設定中選擇。開啟動畫時，用量圖形與百分比會從 0 同步增加至目前值；macOS「減少動態效果」會略過動畫。動畫不會修改用量歷史或重置判定。

@@ -192,23 +192,20 @@ class SentinelWindow(QMainWindow):
     def render(self):
         clear(self.usage_layout); clear(self.event_layout)
         header = QLabel("AI Usage Sentinel"+(" · MOCK" if self.mock else "")); header.setStyleSheet("font-size:20px;font-weight:600"); self.usage_layout.addWidget(header)
-        modes = QComboBox()
-        for key in ("professional", "intuitive", "compact"): modes.addItem(self.t(key.capitalize()), key)
-        modes.setCurrentIndex(("professional", "intuitive", "compact").index(self.settings["panel_mode"]))
-        modes.currentIndexChanged.connect(lambda i: self.change_visual("panel_mode", modes.itemData(i)))
-        self.usage_layout.addWidget(modes)
         menu = QMenu(self); menu.addAction("AI Usage Sentinel",self.show)
         if self.state:
             for row in self.state["buckets"]:
-                label = QLabel(f"{row['product']} · {self.t(row['name'])}     {row['remaining']:g}% "+self.t("remaining")); self.usage_layout.addWidget(label)
+                label = QLabel(f"{row['product']} · {self.t(row['name'])}"); self.usage_layout.addWidget(label)
                 if self.settings["panel_mode"] == "intuitive":
-                    previous = self.visual_values.get(row["id"])
+                    previous = None
                     self.usage_layout.addWidget(QuotaVisual(row["remaining"], self.settings["visual_style"], self.settings["animations"], previous))
                     status = "Almost empty" if row["remaining"] < 5 else "Running low" if row["remaining"] < 20 else "Keep an eye on usage" if row["remaining"] <= 50 else "Plenty remaining"
                     self.usage_layout.addWidget(QLabel(self.t(status)))
                     self.visual_values[row["id"]] = row["remaining"]
                 elif self.settings["panel_mode"] == "professional":
-                    bar = QProgressBar(); bar.setRange(0,100); bar.setValue(round(row["remaining"])); bar.setTextVisible(False); self.usage_layout.addWidget(bar)
+                    self.usage_layout.addWidget(QuotaVisual(row["remaining"], "bar", self.settings["animations"]))
+                else:
+                    self.usage_layout.addWidget(QuotaVisual(row["remaining"], "number", self.settings["animations"]))
                 reset = datetime.fromtimestamp(row["reset"]).astimezone().strftime("%b %d, %H:%M") if row["reset"] else self.t("unknown")
                 self.usage_layout.addWidget(QLabel(self.t("Next regular reset")+": "+reset))
                 if self.settings["panel_mode"] == "professional": self.usage_layout.addWidget(QLabel(row["source"]))
@@ -252,8 +249,18 @@ class SentinelWindow(QMainWindow):
     def option(self,key,value): self.settings[key] = value; self.save()
 
     def rebuild_settings(self):
+        selected = getattr(self, "settings_category", 0)
         clear(self.settings_layout)
-        scroll = QScrollArea(); scroll.setWidgetResizable(True); body = QWidget(); form = QFormLayout(body); scroll.setWidget(body); self.settings_layout.addWidget(scroll)
+        categories = QTabWidget(); categories.setUsesScrollButtons(True)
+        self.settings_layout.addWidget(categories)
+        forms = {}
+        for name in ("General", "Panel visualization", "Menu Bar Appearance", "Refresh", "Remaining quota reminders", "Notifications", "Sources", "Usage provider", "Updates", "Optional anonymous analytics", "Privacy & Diagnostics", "Testing"):
+            scroll = QScrollArea(); scroll.setWidgetResizable(True)
+            body = QWidget(); layout = QFormLayout(body); layout.setVerticalSpacing(16)
+            scroll.setWidget(body); categories.addTab(scroll, self.t(name)); forms[name] = layout
+        categories.setCurrentIndex(selected)
+        categories.currentChanged.connect(lambda index: setattr(self, "settings_category", index))
+        form = forms["Panel visualization"]
         mode = QComboBox()
         for key in ("professional", "intuitive", "compact"): mode.addItem(self.t(key.capitalize()), key)
         mode.setCurrentIndex(("professional", "intuitive", "compact").index(self.settings["panel_mode"]))
@@ -264,13 +271,15 @@ class SentinelWindow(QMainWindow):
         visual.currentIndexChanged.connect(lambda i: self.change_visual("visual_style", visual.itemData(i))); form.addRow(self.t("Visualization"), visual)
         animated = QCheckBox(self.t("Animate quota changes")); animated.setChecked(self.settings["animations"])
         animated.toggled.connect(lambda v: self.option("animations", v)); form.addRow(animated)
-        form.addRow(QLabel(self.t("Illustrative visualization preview")), QuotaVisual(72, self.settings["visual_style"]))
+        form.addRow(QLabel(self.t("Illustrative visualization preview")), QuotaVisual(72, self.settings["visual_style"], self.settings["animations"]))
+        form = forms["General"]
         language = QComboBox(); [language.addItem(name,code) for code,name in LANGUAGES.items()]; language.setCurrentIndex(list(LANGUAGES).index(self.settings["language"]))
         def change_language(index):
             self.option("language",language.itemData(index)); self.t.language = self.settings["language"]
             for i,key in enumerate(("Usage","Event History","Settings","Diagnostics")): self.tabs.setTabText(i,self.t(key))
             QTimer.singleShot(0, self.rebuild_settings); self.render(); self.build_debug()
         language.currentIndexChanged.connect(change_language); form.addRow(self.t("Language"),language)
+        form = forms["Usage provider"]
         agent = QComboBox(); agent.addItems(["Codex","Claude","Gemini","Grok","Custom"]); agent.setCurrentText(self.settings["agent"])
         def change_agent(value): self.option("agent",value); self.available=False; self.state=None; QTimer.singleShot(0,self.rebuild_settings); self.refresh_usage(); self.render()
         agent.currentTextChanged.connect(change_agent); form.addRow(self.t("AI agent"),agent)
@@ -284,12 +293,14 @@ class SentinelWindow(QMainWindow):
             if file: path.setText(file); save_path(); self.refresh_usage()
         choose.clicked.connect(choose_file); form.addRow(choose)
         guide = QPushButton(self.t("Agent setup guide")); guide.clicked.connect(lambda:QDesktopServices.openUrl(QUrl("https://github.com/Joe05520/usage-sentinel/blob/main/docs/AGENTS.md"))); form.addRow(guide)
+        form = forms["Updates"]
         self.checkbox(form,'Check for updates daily','update_checks')
         self.checkbox(form,'Include preview releases','preview_updates')
         check=QPushButton(self.t('Check for Updates')); check.clicked.connect(self.check_updates); check.setEnabled(not self.mock); form.addRow(check)
         if self.manifest:
             download=QPushButton(self.t('Download Verified Update')); download.clicked.connect(lambda:self.run('Update Download',lambda:extensions.download_update(self.manifest))); form.addRow(download)
         summary=QLabel(self.extension_status); summary.setWordWrap(True); form.addRow(summary)
+        form = forms["Optional anonymous analytics"]
         privacy=QLabel(self.t('Off by default. Sends country, platform, agent, reminder-stage count and a daily activity band. Quota bands require separate consent. No account ID, exact usage, reset time, prompts, tokens or cookies. Cloudflare processes your IP to determine country but this app does not store it in analytics.')); privacy.setWordWrap(True); form.addRow(privacy)
         consent=QCheckBox(self.t('Share anonymous daily usage habits')); consent.setChecked(self.settings['analytics']); consent.setEnabled(not self.mock and bool(extensions.CONFIG.get('analyticsEndpoint')))
         def consent_changed(value):
@@ -303,6 +314,7 @@ class SentinelWindow(QMainWindow):
         def delete_reports():
             self.option('analytics',False); self.option('share_quota',False); self.run('Delete Analytics',extensions.delete_analytics)
         remove.clicked.connect(delete_reports); remove.setEnabled(not self.mock); form.addRow(remove)
+        form = forms["Remaining quota reminders"]
         self.checkbox(form,"Remind me when quota runs low","reminders_enabled")
         values = core.thresholds(self.settings["stages"])
         for index,value in enumerate(values):
@@ -318,25 +330,35 @@ class SentinelWindow(QMainWindow):
         caption = QLabel(self.t("Add up to five distinct thresholds from 0–99%. Stages run from highest to lowest; the final stage is critical when more than one is set.")); caption.setWordWrap(True); form.addRow(caption)
         pause = QPushButton(self.t("Pause Quota Reminders for 1 Hour")); pause.clicked.connect(lambda:self.option("snooze",time.time()+3600)); form.addRow(pause)
         resume = QPushButton(self.t("Resume Quota Reminders")); resume.clicked.connect(lambda:self.option("snooze",0)); form.addRow(resume)
+        form = forms["Refresh"]
         for key in ("interval","news_interval"):
             combo = QComboBox(); [combo.addItem(self.t("%d min",v),v*60) for v in [2,5,10,15,30]]; combo.setCurrentIndex(combo.findData(self.settings[key])); combo.currentIndexChanged.connect(lambda i,c=combo,k=key:self.option(k,c.itemData(i)))
             form.addRow(self.t("Usage" if key=="interval" else "Signals"),combo)
+        form = forms["Notifications"]
         confidence = QComboBox(); [confidence.addItem(self.t(label),v) for label,v in [("Very Early ≥15%",.15),("Early ≥25%",.25),("Likely ≥60%",.6),("Official Only ≥90%",.9)]]; confidence.setCurrentIndex(confidence.findData(self.settings["confidence"])); confidence.currentIndexChanged.connect(lambda i:self.option("confidence",confidence.itemData(i))); form.addRow(self.t("Notify confidence"),confidence)
-        self.checkbox(form,"Unexpected personal reset","notify_personal"); self.checkbox(form,"Reset early signals","notify_signals"); self.checkbox(form,"Show reset signal count in menu bar","signal_count")
+        self.checkbox(form,"Unexpected personal reset","notify_personal"); self.checkbox(form,"Reset early signals","notify_signals")
+        form = forms["Menu Bar Appearance"]
+        self.checkbox(form,"Show reset signal count in menu bar","signal_count")
+        form = forms["Menu Bar Appearance"]
         style = QComboBox(); style.addItems(["Standard","Percentage"]); style.setCurrentText(self.settings["style"]); style.currentTextChanged.connect(lambda v:(self.option("style",v),self.render())); form.addRow(self.t("Display style"),style)
+        form = forms["Sources"]
         for name in CATALOG:
             checkbox = QCheckBox(name); checkbox.setChecked(name in self.settings["sources"])
             def enabled(value,n=name):
                 values=set(self.settings["sources"]); values.add(n) if value else values.discard(n); self.option("sources",sorted(values))
             checkbox.toggled.connect(enabled); form.addRow(checkbox)
+        form = forms["General"]
         login = QCheckBox(self.t("Launch at Login")); login.setChecked(autostart.enabled())
         def toggle_login(value):
             try: autostart.set_enabled(value)
             except OSError as error: QMessageBox.warning(self,"AI Usage Sentinel",str(error)); login.blockSignals(True); login.setChecked(autostart.enabled()); login.blockSignals(False)
             except RuntimeError as error: QMessageBox.information(self,"AI Usage Sentinel",str(error))
         login.toggled.connect(toggle_login); form.addRow(login)
+        form = forms["Testing"]
         test = QPushButton(self.t("Send Test")); test.clicked.connect(lambda:self.send("AI Usage Sentinel · "+self.t("Notification test"),self.t("All account data stays on this Mac. Public-source requests contain no account history or credentials. Official Codex handles its own authentication.").replace("Mac","device"))); form.addRow(test)
+        form = forms["Privacy & Diagnostics"]
         privacy = QLabel("All account data stays on this device. Public requests contain no usage history or credentials. X is unavailable without an authorized feed."); privacy.setWordWrap(True); form.addRow(privacy)
+        form = forms["Testing"]
         if self.mock:
             mock = QPushButton("[MOCK] Run reset + five-stage scenarios"); mock.clicked.connect(self.mock_test); form.addRow(mock)
 

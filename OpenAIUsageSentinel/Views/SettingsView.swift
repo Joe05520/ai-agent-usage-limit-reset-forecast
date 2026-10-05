@@ -6,6 +6,7 @@ struct SettingsView: View {
     @State private var loginEnabled = SMAppService.mainApp.status == .enabled
     @State private var loginMessage: String?
     @State private var showManual = false
+    @State private var selectedCategory: SettingsCategory = .general
     private func stageRange(_ index: Int) -> ClosedRange<Double> {
         let stages = store.settings.reminders.stages
         let lower = index + 1 < stages.count ? stages[index + 1] + 1 : 0
@@ -13,7 +14,28 @@ struct SettingsView: View {
         return lower...max(lower, upper)
     }
     var body: some View {
-        Form {
+        VStack(spacing: 0) {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 4) {
+                    ForEach(SettingsCategory.allCases) { category in
+                        Button { selectedCategory = category } label: {
+                            VStack(spacing: 7) {
+                                Image(systemName: category.symbol).font(.system(size: 24))
+                                Text(L10n.t(category.title)).font(.caption).lineLimit(2)
+                                    .multilineTextAlignment(.center).frame(height: 30)
+                            }
+                            .frame(width: 82, height: 78)
+                            .foregroundStyle(selectedCategory == category ? Color.accentColor : Color.secondary)
+                            .background(selectedCategory == category ? Color.accentColor.opacity(0.10) : Color.clear, in: RoundedRectangle(cornerRadius: 10))
+                            .contentShape(Rectangle())
+                        }.buttonStyle(.plain)
+                            .accessibilityValue(selectedCategory == category ? "✓" : "")
+                    }
+                }.padding(.horizontal, 16).padding(.vertical, 12)
+            }
+            Divider()
+            Form {
+            if selectedCategory == .general {
             Section(L10n.t("General")) {
                 Picker(L10n.t("Language"), selection: $store.settings.language) {
                     ForEach(AppLanguage.allCases) { language in Text(language.label).tag(language) }
@@ -25,17 +47,21 @@ struct SettingsView: View {
                 }
                 if let loginMessage { Text(loginMessage).font(.caption).foregroundStyle(.orange) }
             }
+            }
+            if selectedCategory == .panel {
             Section(L10n.t("Panel visualization")) {
                 PanelAppearanceControls(appearance: $store.settings.panel)
                 Toggle(L10n.t("Animate quota changes"), isOn: $store.settings.panel.animations)
                 Text(L10n.t("Animations respect Reduce Motion. Modes change presentation only; detection and reminders stay active.")).font(.caption).foregroundStyle(.secondary)
                 if let usage = store.usage, store.usageAvailable {
-                    ForEach(usage.buckets.prefix(2)) { bucket in QuotaVisualizationView(bucket: bucket, appearance: store.settings.panel) }
+                    ForEach(usage.buckets.prefix(2)) { bucket in QuotaVisualizationView(bucket: bucket, appearance: store.settings.panel).id("\(bucket.id)-\(store.settings.panel.mode.rawValue)-\(store.settings.panel.visualStyle.rawValue)") }
                 } else if let example = MenuBarDisplay.previewUsage.buckets.first {
                     Text(L10n.t("Illustrative visualization preview")).font(.caption).foregroundStyle(.secondary)
-                    QuotaVisualizationView(bucket: example, appearance: store.settings.panel, preview: true)
+                    QuotaVisualizationView(bucket: example, appearance: store.settings.panel, preview: true).id("\(store.settings.panel.mode.rawValue)-\(store.settings.panel.visualStyle.rawValue)")
                 }
             }
+            }
+            if selectedCategory == .menu {
             Section(L10n.t("Menu Bar Appearance")) {
                 Picker(L10n.t("Display style"), selection: $store.settings.appearance.style) {
                     ForEach(MenuBarStyle.allCases) { style in Text(style.label).tag(style) }
@@ -68,10 +94,14 @@ struct SettingsView: View {
                 Text(L10n.t(store.usageAvailable ? "Preview uses your latest quota. ⚡ counts current signals, not completed resets. These switches do not change detection or notifications." : "Illustrative preview only · 72% / 61% are sample values. These switches do not change detection or notifications."))
                     .font(.caption).foregroundStyle(.secondary)
             }
+            }
+            if selectedCategory == .refresh {
             Section(L10n.t("Refresh")) {
                 intervalPicker("Usage", selection: $store.settings.usageInterval)
                 intervalPicker("Signals", selection: $store.settings.signalInterval)
             }
+            }
+            if selectedCategory == .reminders {
             Section(L10n.t("Remaining quota reminders")) {
                 Toggle(L10n.t("Remind me when quota runs low"), isOn: $store.settings.reminders.enabled)
                 ForEach(Array(store.settings.reminders.stages.enumerated()), id: \.offset) { index, percent in
@@ -105,6 +135,8 @@ struct SettingsView: View {
                 Toggle(L10n.t("Show observed consumption today"), isOn: $store.settings.reminders.showDailyTrend)
                 Text(L10n.t("One reminder per stage per quota cycle. If several stages are crossed together, one alert covers them all. Existing low quota triggers on the next successful refresh. Reset alerts remain active while quota reminders are paused.")).font(.caption).foregroundStyle(.secondary)
             }
+            }
+            if selectedCategory == .notifications {
             Section(L10n.t("Notifications")) {
                 Toggle(L10n.t("Unexpected personal reset"), isOn: $store.settings.notifyUnexpected)
                 Toggle(L10n.t("Reset early signals"), isOn: $store.settings.notifyEarly)
@@ -119,6 +151,8 @@ struct SettingsView: View {
                     Button(L10n.t("Send Test")) { Task { do { try await store.notifications.test() } catch { store.errorMessage = error.localizedDescription } } }
                 }
             }
+            }
+            if selectedCategory == .sources {
             Section(L10n.t("Sources")) {
                 Toggle(L10n.t("OpenAI official"), isOn: $store.settings.official)
                 Toggle(L10n.t("GitHub · openai/codex"), isOn: $store.settings.github)
@@ -126,6 +160,8 @@ struct SettingsView: View {
                 Toggle(L10n.t("Hacker News"), isOn: $store.settings.hackerNews)
                 Text(L10n.t("X: unavailable until an authorized API/feed is configured. GitHub Discussions and other communities can be added as adapters.")).font(.caption).foregroundStyle(.secondary)
             }
+            }
+            if selectedCategory == .provider {
             Section(L10n.t("Usage provider")) {
                 Picker(L10n.t("AI agent"), selection: $store.settings.selectedAgent) {
                     ForEach(AgentKind.allCases) { agent in Text(agent.label).tag(agent) }
@@ -152,6 +188,8 @@ struct SettingsView: View {
                 }
                 Text(L10n.t("Record only when you apply a reset outside Sentinel. Annotation lasts 30 minutes; Sentinel never buys or consumes a reset.")).font(.caption).foregroundStyle(.secondary)
             }
+            }
+            if selectedCategory == .updates {
             Section(L10n.t("Updates")) {
                 Toggle(L10n.t("Check for updates daily"), isOn: Binding(get: { store.settings.automaticUpdateChecks != false }, set: { store.settings.automaticUpdateChecks = $0; store.saveSettings() }))
                 Toggle(L10n.t("Include preview releases"), isOn: Binding(get: { store.settings.includePreviewUpdates != false }, set: { store.settings.includePreviewUpdates = $0; store.saveSettings() }))
@@ -162,6 +200,8 @@ struct SettingsView: View {
                 Text(store.updateStatus).font(.caption).textSelection(.enabled)
                 Text(L10n.t("Downloads require an Ed25519 signature and SHA-256 match. Installation is manual; account data stays in Application Support.")).font(.caption).foregroundStyle(.secondary)
             }
+            }
+            if selectedCategory == .analytics {
             Section(L10n.t("Optional anonymous analytics")) {
                 Toggle(L10n.t("Share anonymous daily usage habits"), isOn: $store.settings.analytics.enabled).disabled(store.isMock || ServiceConfiguration.bundled.telemetryURL == nil)
                 Toggle(L10n.t("Also share coarse remaining-quota bands"), isOn: $store.settings.analytics.shareQuota).disabled(!store.settings.analytics.enabled)
@@ -170,10 +210,14 @@ struct SettingsView: View {
                 Link(L10n.t("Analytics privacy details"), destination: URL(string: "https://joe05520.github.io/usage-sentinel/insights.html")!)
                 Text(store.analyticsStatus).font(.caption).textSelection(.enabled)
             }
+            }
+            if selectedCategory == .privacy {
             Section(L10n.t("Privacy & Diagnostics")) {
                 Text(L10n.t("Account history stays local by default. Optional analytics sends only the daily fields shown above. Official Codex handles its own authentication.")).font(.caption)
                 HStack { Button(L10n.t("Diagnostics…")) { store.openWindow?("diagnostics") }; Button(L10n.t("Event History…")) { store.openWindow?("history") } }
             }
+            }
+            if selectedCategory == .testing {
             if store.isMock {
                 Section(L10n.t("Mock scenarios · no live account reads")) {
                     Button(L10n.t("Test Quota Reminders: 30 → 20 → 5 → reset")) { Task { await store.runReminderSelfTest() } }
@@ -187,11 +231,15 @@ struct SettingsView: View {
                     }
                 }
             }
+            }
             if let error = store.errorMessage { Text(error).font(.caption).foregroundStyle(.red).textSelection(.enabled) }
         }
         // Recreate picker option labels when the app language changes; ForEach identities otherwise cache them.
         .id(store.settings.language)
-        .formStyle(.grouped).frame(width: 590, height: 740)
+        .formStyle(.grouped).frame(maxWidth: 760, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(minWidth: 900, idealWidth: 1100, minHeight: 600, idealHeight: 740)
         .onChange(of: store.settings) { _, _ in store.saveSettings() }
         .sheet(isPresented: $showManual) { ManualUsageView().environmentObject(store) }
     }
@@ -199,6 +247,39 @@ struct SettingsView: View {
         Picker(L10n.t(title), selection: selection) { ForEach([2,5,10,15,30], id: \.self) { value in Text(L10n.f("%d min", value)).tag(Double(value*60)) } }
     }
 }
+private enum SettingsCategory: String, CaseIterable, Identifiable {
+    case general, panel, menu, refresh, reminders, notifications, sources, provider, updates, analytics, privacy, testing
+    var id: String { rawValue }
+    var title: String { switch self {
+        case .general: return "General"
+        case .panel: return "Panel visualization"
+        case .menu: return "Menu Bar Appearance"
+        case .refresh: return "Refresh"
+        case .reminders: return "Remaining quota reminders"
+        case .notifications: return "Notifications"
+        case .sources: return "Sources"
+        case .provider: return "Usage provider"
+        case .updates: return "Updates"
+        case .analytics: return "Optional anonymous analytics"
+        case .privacy: return "Privacy & Diagnostics"
+        case .testing: return "Testing"
+    } }
+    var symbol: String { switch self {
+        case .general: return "gearshape"
+        case .panel: return "chart.pie"
+        case .menu: return "menubar.rectangle"
+        case .refresh: return "arrow.clockwise"
+        case .reminders: return "bell.badge"
+        case .notifications: return "bell"
+        case .sources: return "link"
+        case .provider: return "cpu"
+        case .updates: return "arrow.down.circle"
+        case .analytics: return "chart.bar"
+        case .privacy: return "hand.raised"
+        case .testing: return "checkmark.seal"
+    } }
+}
+
 struct ManualUsageView: View {
     @EnvironmentObject var store: SentinelStore
     @Environment(\.dismiss) var dismiss

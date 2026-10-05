@@ -10,7 +10,6 @@ struct MenuView: View {
                 if store.isMock { Text(L10n.t("MOCK")).font(.caption.bold()).foregroundStyle(.orange) }
                 if let plan = store.usage?.plan { Text(plan.capitalized).font(.caption).foregroundStyle(.secondary) }
             }
-            PanelAppearanceControls(appearance: $store.settings.panel)
             if let usage = store.usage {
                 if !store.usageAvailable { Text(L10n.t("Last known values · live fetch unavailable")).font(.caption).foregroundStyle(.orange) }
                 if store.settings.manualMode { Text(L10n.t("Manual snapshot · user entered")).font(.caption).foregroundStyle(.orange) }
@@ -73,6 +72,7 @@ struct MenuView: View {
 struct BucketRow: View {
     @Environment(\.locale) private var locale
     let bucket: UsageBucket
+    var displayedValue: Double? = nil
     var color: Color { bucket.remainingPercent < 5 ? .red : bucket.remainingPercent < 20 ? .orange : bucket.remainingPercent <= 50 ? .yellow : .accentColor }
     var body: some View {
         let _ = locale.identifier
@@ -80,9 +80,9 @@ struct BucketRow: View {
             HStack {
                 Text(L10n.t(bucket.name)).font(.subheadline.weight(.medium))
                 if bucket.product != "Codex" { Text(bucket.product).font(.caption).foregroundStyle(.secondary) }
-                Spacer(); Text(L10n.f("%@%% left", String(Int(bucket.remainingPercent)))).font(.subheadline.monospacedDigit().weight(.semibold))
+                Spacer(); AnimatedQuotaPercent(value: displayedValue ?? bucket.remainingPercent, remainingLabel: true).font(.subheadline.monospacedDigit().weight(.semibold))
             }
-            ProgressView(value: bucket.remainingPercent, total: 100).tint(color)
+            ProgressView(value: displayedValue ?? bucket.remainingPercent, total: 100).tint(color)
             HStack {
                 Text(DateParsing.countdown(bucket.resetAt))
                 Spacer()
