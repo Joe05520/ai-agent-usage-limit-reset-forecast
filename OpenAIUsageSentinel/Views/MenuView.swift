@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MenuView: View {
     @EnvironmentObject var store: SentinelStore
+    @State private var presentationID = UUID()
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -16,6 +17,7 @@ struct MenuView: View {
                 ForEach(usage.buckets) { bucket in
                     VStack(alignment: .leading, spacing: 3) {
                         QuotaVisualizationView(bucket: bucket, appearance: store.settings.panel)
+                            .id("\(bucket.id)-\(presentationID)-\(store.settings.panel.mode.rawValue)-\(store.settings.panel.visualStyle.rawValue)")
                         if store.settings.reminders.showDailyTrend, let points = ObservedUsageTrend.consumedPoints(bucketID: bucket.id, history: store.history, now: Date()) {
                             Text(L10n.f("Observed today: %@ percentage points used", points.formatted(.number.precision(.fractionLength(0...1)).locale(L10n.locale)))).font(.caption2).foregroundStyle(.secondary)
                                 .help(L10n.t("Measured consumption only. Unsampled periods and reset jumps are excluded; this may be less than total daily usage."))
@@ -65,7 +67,7 @@ struct MenuView: View {
         }
         .padding(16).frame(width: 390)
         .onChange(of: store.settings.panel) { _, _ in store.saveSettings() }
-        .onAppear { Task { await store.refreshAll(force: false) } }
+        .onAppear { presentationID = UUID(); Task { await store.refreshAll(force: false) } }
     }
 }
 
@@ -82,7 +84,10 @@ struct BucketRow: View {
                 if bucket.product != "Codex" { Text(bucket.product).font(.caption).foregroundStyle(.secondary) }
                 Spacer(); AnimatedQuotaPercent(value: displayedValue ?? bucket.remainingPercent, remainingLabel: true).font(.subheadline.monospacedDigit().weight(.semibold))
             }
-            ProgressView(value: displayedValue ?? bucket.remainingPercent, total: 100).tint(color)
+            GeometryReader { geometry in
+                Capsule().fill(Color.secondary.opacity(0.18))
+                Capsule().fill(color).frame(width: geometry.size.width * min(100, max(0, displayedValue ?? bucket.remainingPercent)) / 100)
+            }.frame(height: 6).accessibilityHidden(true)
             HStack {
                 Text(DateParsing.countdown(bucket.resetAt))
                 Spacer()
