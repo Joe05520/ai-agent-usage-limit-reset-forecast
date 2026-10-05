@@ -65,7 +65,7 @@ public struct CodexCLIUsageProvider: UsageProvider {
             }
             throw SentinelError.unavailable("Codex usage request timed out after 25 seconds.")
         }
-        try send(["id": 1, "method": "initialize", "params": ["clientInfo": ["name": "openai_usage_sentinel", "title": "Usage Sentinel", "version": "1.0.0"]]])
+        try send(["id": 1, "method": "initialize", "params": ["clientInfo": ["name": "openai_usage_sentinel", "title": "AI Usage Sentinel", "version": "1.0.0"]]])
         _ = try response(1)
         try send(["method": "initialized", "params": [:]])
         try send(["id": 2, "method": "account/rateLimits/read"])

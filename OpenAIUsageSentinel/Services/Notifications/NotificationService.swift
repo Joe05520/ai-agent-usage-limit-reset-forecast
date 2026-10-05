@@ -46,7 +46,7 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate {
     }
     func test() async throws {
         guard await requestPermission() else { throw SentinelError.unavailable(L10n.t("Notification permission not granted.")) }
-        let content = UNMutableNotificationContent(); content.title = "Usage Sentinel · " + L10n.t("Notification test"); content.body = L10n.t("Notification test delivered. Click to open event history."); content.sound = .default
+        let content = UNMutableNotificationContent(); content.title = "AI Usage Sentinel · " + L10n.t("Notification test"); content.body = L10n.t("Notification test delivered. Click to open event history."); content.sound = .default
         try await center.add(UNNotificationRequest(identifier: "sentinel-test", content: content, trigger: nil))
     }
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) { completionHandler([.banner, .sound, .list]) }
