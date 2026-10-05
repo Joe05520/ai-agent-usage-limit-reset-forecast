@@ -1,14 +1,11 @@
-## 1.5.1 terminology update
+AI Usage Sentinel 1.6.0 introduces a clearer name and selectable quota visualizations.
 
-Traditional Chinese reset-signal labels now consistently use 「重置訊號」 in the app, settings, notification text and website. Already current clients no longer offer an unnecessary download button. Includes the 1.5 analytics, security and verified-update features below.
+- Professional, Intuitive and Compact panel modes; ring and battery visuals in Intuitive mode.
+- Live visualization preview in Settings, optional finite transitions and macOS Reduce Motion support.
+- Native macOS and Qt Windows/Linux presentation controls, localized in all five app languages.
+- Existing quota reminders, detection, history, bundle identifier and update trust keys are preserved.
+- Website demonstration and clearer AI quota monitor / reset alert descriptions.
 
-Usage Sentinel 1.5.0 adds consent-based analytics, a private administrator dashboard, and signed update downloads.
+macOS 14+, universal Apple Silicon/Intel. Ad-hoc signed, not notarized. Windows/Linux are unsigned beta ports; CI validation does not replace physical desktop validation. Existing installed versions retain their data in the same location. The macOS bundle is now named AI Usage Sentinel.app; replace the previous app rather than running both copies. Package filenames remain UsageSentinel for updater compatibility.
 
-- Optional analytics is OFF by default; coarse quota bands need separate consent. Monthly rotating IDs live in OS credential storage. No vendor account ID, token, cookie, prompt, exact quota or reset time is collected.
-- Country statistics describe consenting download clicks. GitHub asset download counts are a separate metric. Public categories require 10 anonymous contributors and expose no individual rows.
-- Check for updates daily or manually. Both stable and preview channels require an Ed25519 signature. Downloads must match signed SHA-256, size, and the exact repository asset URL. Installation is manual: quit the existing app, replace its bundle/folder, reopen. Existing account history remains in the OS application-data directory.
-- Security hardening: bounded HTTP reads, HTTPS redirects restricted to trusted hosts, external-link scheme checks, hardened macOS runtime, repaired numeric parser edge cases, pinned CI actions, trusted main-branch release artifacts and dependency vulnerability checks.
-
-macOS is a SwiftUI/MenuBarExtra universal build for macOS 14+. Windows/Linux are Qt beta ports; their desktop notifications and login behavior still need broader real-device validation. macOS is ad-hoc signed and not Apple-notarized; Windows is unsigned. No paid certificate or service has been purchased.
-
-SHA256SUMS.txt identifies the exact CI-built packages. Signing seeds and administrator credentials are excluded from source. See docs/ANALYTICS.md, docs/UPDATES.md and docs/SECURITY_REVIEW.md.
+Codex uses the official local app-server. Claude needs the status-line bridge. Gemini/Grok accept local JSON/manual data. Public reset feeds focus on OpenAI/Codex. No invented quota or future global reset dates.

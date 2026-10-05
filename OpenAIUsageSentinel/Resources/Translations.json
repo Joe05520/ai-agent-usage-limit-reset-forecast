@@ -1566,5 +1566,110 @@
     "zh-Hans": "默认关闭。分享国家／地区、平台、Agent、提醒阶段数及每日额度变化次数区间。额度区间须另外同意。不发送账号 ID、精确用量、重置时间、提示词、token 或 cookie。Cloudflare 用 IP 判断国家，本 App 的统计不保存 IP。",
     "ja": "既定では無効です。国・地域、OS、エージェント、通知段階数と日次の利用枠減少回数区分を共有します。残り枠の区分は別途同意が必要です。アカウントID、正確な使用量、リセット時刻、プロンプト、トークン、Cookieは送信しません。CloudflareはIPから国を判定しますが本統計にはIPを保存しません。",
     "ko": "기본적으로 꺼져 있습니다. 국가, 플랫폼, 에이전트, 알림 단계 수와 일일 한도 감소 횟수 구간을 공유합니다. 잔여 한도 구간은 별도 동의가 필요합니다. 계정 ID, 정확한 사용량, 초기화 시간, 프롬프트, 토큰, 쿠키는 전송하지 않습니다. Cloudflare는 IP로 국가를 판단하지만 이 통계에는 IP를 저장하지 않습니다."
+  },
+  "Professional": {
+    "en": "Professional",
+    "zh-Hant": "專業",
+    "zh-Hans": "专业",
+    "ja": "プロ",
+    "ko": "전문가"
+  },
+  "Intuitive": {
+    "en": "Intuitive",
+    "zh-Hant": "直覺",
+    "zh-Hans": "直观",
+    "ja": "直感的",
+    "ko": "직관적"
+  },
+  "Quota ring": {
+    "en": "Quota ring",
+    "zh-Hant": "額度圓環",
+    "zh-Hans": "额度圆环",
+    "ja": "残量リング",
+    "ko": "잔여량 링"
+  },
+  "Quota battery": {
+    "en": "Quota battery",
+    "zh-Hant": "額度電量",
+    "zh-Hans": "额度电量",
+    "ja": "残量バッテリー",
+    "ko": "잔여량 배터리"
+  },
+  "Panel mode": {
+    "en": "Panel mode",
+    "zh-Hant": "面板模式",
+    "zh-Hans": "面板模式",
+    "ja": "パネルモード",
+    "ko": "패널 모드"
+  },
+  "Visualization": {
+    "en": "Visualization",
+    "zh-Hant": "可視化樣式",
+    "zh-Hans": "可视化样式",
+    "ja": "表示スタイル",
+    "ko": "시각화 스타일"
+  },
+  "Panel visualization": {
+    "en": "Panel visualization",
+    "zh-Hant": "面板可視化",
+    "zh-Hans": "面板可视化",
+    "ja": "パネル表示",
+    "ko": "패널 시각화"
+  },
+  "Animate quota changes": {
+    "en": "Animate quota changes",
+    "zh-Hant": "額度變化動畫",
+    "zh-Hans": "额度变化动画",
+    "ja": "残量の変化をアニメーション表示",
+    "ko": "잔여량 변화 애니메이션"
+  },
+  "Used": {
+    "en": "Used",
+    "zh-Hant": "已使用",
+    "zh-Hans": "已使用",
+    "ja": "使用済み",
+    "ko": "사용됨"
+  },
+  "Almost empty": {
+    "en": "Almost empty",
+    "zh-Hant": "額度即將用完",
+    "zh-Hans": "额度即将用完",
+    "ja": "残量がわずかです",
+    "ko": "거의 소진됨"
+  },
+  "Running low": {
+    "en": "Running low",
+    "zh-Hant": "剩餘額度偏低",
+    "zh-Hans": "剩余额度偏低",
+    "ja": "残量が少なくなっています",
+    "ko": "잔여량 부족"
+  },
+  "Keep an eye on usage": {
+    "en": "Keep an eye on usage",
+    "zh-Hant": "留意用量",
+    "zh-Hans": "留意用量",
+    "ja": "使用量に注意",
+    "ko": "사용량 확인 필요"
+  },
+  "Plenty remaining": {
+    "en": "Plenty remaining",
+    "zh-Hant": "剩餘額度充足",
+    "zh-Hans": "剩余额度充足",
+    "ja": "十分な残量があります",
+    "ko": "잔여량 충분"
+  },
+  "Illustrative visualization preview": {
+    "en": "Illustrative visualization preview",
+    "zh-Hant": "可視化範例預覽",
+    "zh-Hans": "可视化示例预览",
+    "ja": "サンプル表示のプレビュー",
+    "ko": "예시 시각화 미리보기"
+  },
+  "Animations respect Reduce Motion. Modes change presentation only; detection and reminders stay active.": {
+    "en": "Animations respect Reduce Motion. Modes change presentation only; detection and reminders stay active.",
+    "zh-Hant": "動畫遵循「減少動態效果」。模式只改變顯示，偵測與提醒仍持續運作。",
+    "zh-Hans": "动画遵循“减少动态效果”。模式只改变显示，检测与提醒仍持续运行。",
+    "ja": "アニメーションは視差効果を減らす設定に従います。モードは表示のみを変更し、検出と通知は継続します。",
+    "ko": "애니메이션은 동작 줄이기 설정을 따릅니다. 모드는 표시만 바꾸며 감지와 알림은 계속 작동합니다。"
   }
 }

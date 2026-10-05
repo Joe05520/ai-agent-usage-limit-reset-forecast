@@ -11,7 +11,7 @@ final class WindowCoordinator {
         }
     }
     private func refreshTitles() {
-        for (page, window) in windows { window.title = "Usage Sentinel · " + L10n.t(page == "history" ? "Event History" : page.capitalized) }
+        for (page, window) in windows { window.title = "AI Usage Sentinel · " + L10n.t(page == "history" ? "Event History" : page.capitalized) }
     }
     private var windows: [String: NSWindow] = [:]
     func show(_ page: String, store: SentinelStore) {
@@ -23,7 +23,7 @@ final class WindowCoordinator {
         default: content = AnyView(HistoryView().environmentObject(store))
         }
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: page == "history" ? 900 : 600, height: page == "settings" ? 740 : 540), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
-        window.title = "Usage Sentinel · " + L10n.t(page == "history" ? "Event History" : page.capitalized)
+        window.title = "AI Usage Sentinel · " + L10n.t(page == "history" ? "Event History" : page.capitalized)
         window.contentView = NSHostingView(rootView: LocalizedWindowContent(content: content).environmentObject(store))
         window.isReleasedWhenClosed = false; window.center()
         windows[page] = window

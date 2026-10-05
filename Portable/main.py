@@ -9,7 +9,7 @@ from sentinel.ui import SentinelWindow
 
 def main():
     parser=argparse.ArgumentParser(); parser.add_argument("--mock",action="store_true"); parser.add_argument("--show",action="store_true"); parser.add_argument("--smoke-test",action="store_true"); args=parser.parse_args()
-    app=QApplication(sys.argv); app.setApplicationName("Usage Sentinel"); app.setOrganizationName("UsageSentinel"); app.setQuitOnLastWindowClosed(False)
+    app=QApplication(sys.argv); app.setApplicationName("AI Usage Sentinel"); app.setOrganizationName("UsageSentinel"); app.setQuitOnLastWindowClosed(False)
     window=SentinelWindow(mock=args.mock or args.smoke_test)
     if args.show or args.smoke_test: window.show()
     if args.smoke_test:

@@ -8,7 +8,7 @@ on:
       version:
         description: Version matching all three build artifacts
         required: true
-        default: '1.5.1'
+        default: '1.6.0'
       channel:
         type: choice
         options: [preview, stable]
@@ -72,7 +72,7 @@ jobs:
         run: |
           FLAGS=()
           if [[ "$CHANNEL" == preview ]]; then FLAGS+=(--prerelease); fi
-          gh release create "v$RELEASE_VERSION" release/* --target "$SOURCE_SHA" --title "Usage Sentinel $RELEASE_VERSION" "${FLAGS[@]}" --notes-file .github/RELEASE_NOTES.md
+          gh release create "v$RELEASE_VERSION" release/* --target "$SOURCE_SHA" --title "AI Usage Sentinel $RELEASE_VERSION" "${FLAGS[@]}" --notes-file .github/RELEASE_NOTES.md
       - name: Publish signed channel manifest and refresh Pages
         run: |
           git config user.name 'github-actions[bot]'

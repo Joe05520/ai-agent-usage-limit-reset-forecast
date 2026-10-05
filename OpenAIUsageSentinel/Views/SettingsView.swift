@@ -25,6 +25,17 @@ struct SettingsView: View {
                 }
                 if let loginMessage { Text(loginMessage).font(.caption).foregroundStyle(.orange) }
             }
+            Section(L10n.t("Panel visualization")) {
+                PanelAppearanceControls(appearance: $store.settings.panel)
+                Toggle(L10n.t("Animate quota changes"), isOn: $store.settings.panel.animations)
+                Text(L10n.t("Animations respect Reduce Motion. Modes change presentation only; detection and reminders stay active.")).font(.caption).foregroundStyle(.secondary)
+                if let usage = store.usage, store.usageAvailable {
+                    ForEach(usage.buckets.prefix(2)) { bucket in QuotaVisualizationView(bucket: bucket, appearance: store.settings.panel) }
+                } else if let example = MenuBarDisplay.previewUsage.buckets.first {
+                    Text(L10n.t("Illustrative visualization preview")).font(.caption).foregroundStyle(.secondary)
+                    QuotaVisualizationView(bucket: example, appearance: store.settings.panel, preview: true)
+                }
+            }
             Section(L10n.t("Menu Bar Appearance")) {
                 Picker(L10n.t("Display style"), selection: $store.settings.appearance.style) {
                     ForEach(MenuBarStyle.allCases) { style in Text(style.label).tag(style) }

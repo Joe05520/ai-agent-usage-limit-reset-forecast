@@ -1,12 +1,12 @@
 <div align="center">
 
-<img src="docs/favicon.svg" width="80" height="80" alt="Usage Sentinel logo">
+<img src="docs/favicon.svg" width="80" height="80" alt="AI Usage Sentinel logo">
 
-# Usage Sentinel
+# AI Usage Sentinel
 
-**Your AI allowance, a little more in sight.**
+**AI Quota Monitor & Reset Alerts — Codex, Claude Code and local quota imports.**
 
-Native menu bar / system tray companion for quota reminders and early reset signals.
+Track remaining AI usage, next regular resets and unexpected quota increases. Native macOS menu bar app; Windows/Linux tray beta. Five-stage reminders and source-linked reset alerts.
 
 [![Build and test](https://github.com/Joe05520/usage-sentinel/actions/workflows/build.yml/badge.svg)](https://github.com/Joe05520/usage-sentinel/actions/workflows/build.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-286d5b)](LICENSE)
@@ -17,13 +17,13 @@ Native menu bar / system tray companion for quota reminders and early reset sign
 
 </div>
 
-![Usage Sentinel website preview — illustrative usage values](docs/website-preview.jpg)
+![AI Usage Sentinel website preview — illustrative usage values](docs/website-preview.jpg)
 
 The website preview uses illustrative quota values. Actual account readings stay in the desktop app.
 
 ## Know what is left. Notice what changes.
 
-Usage Sentinel combines an actual usage meter, a personal reset detector and a public reset-signal monitor. It lives in the macOS menu bar or Windows/Linux system tray and keeps account data on your device.
+AI Usage Sentinel combines an actual usage meter, a personal reset detector and a public reset-signal monitor. It lives in the macOS menu bar or Windows/Linux system tray and keeps account data on your device.
 
 - **Actual quota windows:** Remaining percentage, next regular reset and last successful update. Missing limits are not invented. Failed reads show unknown/stale data explicitly.
 - **Up to five staged reminders:** Choose distinct remaining-quota thresholds such as **50 → 30 → 20 → 10 → 5%**. Add, remove or adjust stages. Delivered stages persist across restart. Crossing several at once sends one alert. Pause reminders for one hour.
@@ -44,9 +44,22 @@ Usage Sentinel combines an actual usage meter, a personal reset detector and a p
 | Windows 10/11 x64 | [Windows ZIP](https://github.com/Joe05520/usage-sentinel/releases/download/v1.5.1/UsageSentinel-1.5.1-Windows-x64.zip) | Native Qt beta. CI builds/tests; real desktop validation still needed. |
 | Linux x64, glibc 2.35+ | [Linux tar.gz](https://github.com/Joe05520/usage-sentinel/releases/download/v1.5.1/UsageSentinel-1.5.1-Linux-x64.tar.gz) | Native Qt beta. Desktop tray/notification support varies. |
 
-macOS: extract, move **Usage Sentinel.app** to Applications, then open. This release uses an ad-hoc signature and is **not Apple-notarized**. If macOS blocks it, use the explicit **System Settings → Privacy & Security → Open Anyway** flow after reviewing the release. Do not disable system security settings.
+macOS: extract, move **AI Usage Sentinel.app** to Applications, then open. This release uses an ad-hoc signature and is **not Apple-notarized**. If macOS blocks it, use the explicit **System Settings → Privacy & Security → Open Anyway** flow after reviewing the release. Do not disable system security settings.
 
 Windows: extract the **entire folder**, run `UsageSentinel.exe`. Linux: extract, run `./UsageSentinel/UsageSentinel`. Keep the executable with its runtime/shared-library directory. Python is bundled for the app; the optional Claude bridge separately requires Python 3.9+. Downloads are unsigned previews; see [release notes and SHA-256 checksums](https://github.com/Joe05520/usage-sentinel/releases/tag/v1.5.1) and the [portable installation guide](Portable/README.md).
+
+## Choose how you see your quota
+
+| Panel mode | Presentation |
+| --- | --- |
+| Professional | Remaining/used percentage, regular reset time and source in a compact technical view. |
+| Intuitive · ring | Remaining allowance as a ring, a plain-language status and reset countdown. |
+| Intuitive · battery | A battery-style fill with the same actual quota and reset data. |
+| Compact | Essential quota percentage and countdown with less visual detail. |
+
+Switch modes directly in the native panel or in Settings. Settings includes a live preview (clearly labeled sample values if live data is unavailable). Quota transitions are finite and optional; macOS respects Reduce Motion, and Qt animations are off by default. Changing a view does not change reminders, reset classification or stored history. All five app languages include the new controls.
+
+Previously named **Usage Sentinel**. The display name is now **AI Usage Sentinel**; repository URL, bundle identifier, storage paths, signed update trust keys and package filenames remain compatible. Replace the previous macOS app with the renamed bundle, rather than running both copies.
 
 ## AI agents and honest data support
 
@@ -85,17 +98,17 @@ swift test
 xcodebuild -project OpenAIUsageSentinel.xcodeproj -scheme OpenAIUsageSentinel \
   -configuration Release -derivedDataPath build/DerivedData \
   ARCHS='arm64 x86_64' ONLY_ACTIVE_ARCH=NO build
-open 'build/DerivedData/Build/Products/Release/Usage Sentinel.app'
+open 'build/DerivedData/Build/Products/Release/AI Usage Sentinel.app'
 ```
 
-Open `OpenAIUsageSentinel.xcodeproj` directly in Xcode. Internal module/bundle/data names retain the original project name for upgrade compatibility; the displayed name is Usage Sentinel.
+Open `OpenAIUsageSentinel.xcodeproj` directly in Xcode. Internal module/bundle/data names retain the original project name for upgrade compatibility; the displayed name is AI Usage Sentinel.
 
 Windows/Linux instructions and packaging: [Portable/README.md](Portable/README.md). GitHub Actions builds on native macOS, Windows and Ubuntu runners. [Validation record](docs/VALIDATION.md).
 
 Mock mode uses a separate database and no live account reads:
 
 ```sh
-open 'build/DerivedData/Build/Products/Release/Usage Sentinel.app' \
+open 'build/DerivedData/Build/Products/Release/AI Usage Sentinel.app' \
   --args --mock --self-test --show-settings
 python Portable/main.py --mock --show
 ```

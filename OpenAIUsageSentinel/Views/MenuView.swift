@@ -5,17 +5,18 @@ struct MenuView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Label("Usage Sentinel", systemImage: "gauge.with.dots.needle.50percent").font(.headline)
+                Label("AI Usage Sentinel", systemImage: "gauge.with.dots.needle.50percent").font(.headline)
                 Spacer()
                 if store.isMock { Text(L10n.t("MOCK")).font(.caption.bold()).foregroundStyle(.orange) }
                 if let plan = store.usage?.plan { Text(plan.capitalized).font(.caption).foregroundStyle(.secondary) }
             }
+            PanelAppearanceControls(appearance: $store.settings.panel)
             if let usage = store.usage {
                 if !store.usageAvailable { Text(L10n.t("Last known values · live fetch unavailable")).font(.caption).foregroundStyle(.orange) }
                 if store.settings.manualMode { Text(L10n.t("Manual snapshot · user entered")).font(.caption).foregroundStyle(.orange) }
                 ForEach(usage.buckets) { bucket in
                     VStack(alignment: .leading, spacing: 3) {
-                        BucketRow(bucket: bucket)
+                        QuotaVisualizationView(bucket: bucket, appearance: store.settings.panel)
                         if store.settings.reminders.showDailyTrend, let points = ObservedUsageTrend.consumedPoints(bucketID: bucket.id, history: store.history, now: Date()) {
                             Text(L10n.f("Observed today: %@ percentage points used", points.formatted(.number.precision(.fractionLength(0...1)).locale(L10n.locale)))).font(.caption2).foregroundStyle(.secondary)
                                 .help(L10n.t("Measured consumption only. Unsampled periods and reset jumps are excluded; this may be less than total daily usage."))

@@ -33,7 +33,7 @@ def set_enabled(value):
             def quote(arg):
                 return '"'+arg.replace('\\', '\\\\').replace('"', '\\"').replace('`', '\\`').replace('$', '\\$').replace('%', '%%')+'"'
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text("[Desktop Entry]\nType=Application\nName=Usage Sentinel\nExec="+" ".join(quote(v) for v in argv())+"\nX-GNOME-Autostart-enabled=true\n", encoding="utf-8")
+            path.write_text("[Desktop Entry]\nType=Application\nName=AI Usage Sentinel\nExec="+" ".join(quote(v) for v in argv())+"\nX-GNOME-Autostart-enabled=true\n", encoding="utf-8")
         else: path.unlink(missing_ok=True)
     else:
         raise RuntimeError("Use the native Swift macOS app for Launch at Login")

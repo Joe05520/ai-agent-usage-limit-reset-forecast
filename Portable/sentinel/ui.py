@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
 from . import __version__, core, autostart, extensions
 from .i18n import Translator, LANGUAGES
 from .storage import Database, data_dir
+from .visuals import QuotaVisual
 from .providers import codex_usage, export_usage
 from .sources import CATALOG, fetch
 
@@ -50,17 +51,19 @@ class SentinelWindow(QMainWindow):
         super().__init__(); self.mock = mock
         self.db = Database(data_dir()/("portable-mock.sqlite" if mock else "portable.sqlite"))
         self.settings = DEFAULT | self.db.load("settings", {})
+        self.settings.setdefault("panel_mode", "professional"); self.settings.setdefault("visual_style", "ring"); self.settings.setdefault("animations", False)
+        self.visual_values = {}
         self.t = Translator(self.settings["language"])
         self.engine = core.ReminderEngine(self.db.load("cycles", {}))
         self.events = self.db.load("events", [])
         self.analytics_state = self.db.load("analytics", {}); self.last_update = 0; self.manifest = None; self.extension_status = ""
         self.state = None; self.available = False; self.busy = set(); self.work = {}; self.last_usage = self.last_news = 0; self.diagnostics = {}; self.selected_event = None
-        self.setWindowTitle("Usage Sentinel"+(" · MOCK" if mock else "")); self.setWindowIcon(icon()); self.resize(520,700)
+        self.setWindowTitle("AI Usage Sentinel"+(" · MOCK" if mock else "")); self.setWindowIcon(icon()); self.resize(520,700)
         self.tabs = QTabWidget(); self.setCentralWidget(self.tabs)
         self.usage_page, self.events_page, self.settings_page, self.debug_page = (QWidget() for _ in range(4))
         self.usage_layout = QVBoxLayout(self.usage_page); self.event_layout = QVBoxLayout(self.events_page); self.settings_layout = QVBoxLayout(self.settings_page); self.debug_layout = QVBoxLayout(self.debug_page)
         for page, name in zip((self.usage_page,self.events_page,self.settings_page,self.debug_page), ("Usage","Event History","Settings","Diagnostics")): self.tabs.addTab(page,self.t(name))
-        self.tray = QSystemTrayIcon(icon(), self); self.tray.setToolTip("Usage Sentinel · Usage ?")
+        self.tray = QSystemTrayIcon(icon(), self); self.tray.setToolTip("AI Usage Sentinel · Usage ?")
         self.tray.activated.connect(self.activated); self.tray.messageClicked.connect(self.notification_clicked)
         self.tray.show(); self.rebuild_settings(); self.render(); self.build_debug()
         self.timer = QTimer(self); self.timer.setInterval(30000); self.timer.timeout.connect(self.tick); self.timer.start()
@@ -188,15 +191,27 @@ class SentinelWindow(QMainWindow):
 
     def render(self):
         clear(self.usage_layout); clear(self.event_layout)
-        header = QLabel("Usage Sentinel"+(" · MOCK" if self.mock else "")); header.setStyleSheet("font-size:20px;font-weight:600"); self.usage_layout.addWidget(header)
-        menu = QMenu(self); menu.addAction("Usage Sentinel",self.show)
+        header = QLabel("AI Usage Sentinel"+(" · MOCK" if self.mock else "")); header.setStyleSheet("font-size:20px;font-weight:600"); self.usage_layout.addWidget(header)
+        modes = QComboBox()
+        for key in ("professional", "intuitive", "compact"): modes.addItem(self.t(key.capitalize()), key)
+        modes.setCurrentIndex(("professional", "intuitive", "compact").index(self.settings["panel_mode"]))
+        modes.currentIndexChanged.connect(lambda i: self.change_visual("panel_mode", modes.itemData(i)))
+        self.usage_layout.addWidget(modes)
+        menu = QMenu(self); menu.addAction("AI Usage Sentinel",self.show)
         if self.state:
             for row in self.state["buckets"]:
                 label = QLabel(f"{row['product']} · {self.t(row['name'])}     {row['remaining']:g}% "+self.t("remaining")); self.usage_layout.addWidget(label)
-                bar = QProgressBar(); bar.setRange(0,100); bar.setValue(round(row["remaining"])); bar.setTextVisible(False); self.usage_layout.addWidget(bar)
+                if self.settings["panel_mode"] == "intuitive":
+                    previous = self.visual_values.get(row["id"])
+                    self.usage_layout.addWidget(QuotaVisual(row["remaining"], self.settings["visual_style"], self.settings["animations"], previous))
+                    status = "Almost empty" if row["remaining"] < 5 else "Running low" if row["remaining"] < 20 else "Keep an eye on usage" if row["remaining"] <= 50 else "Plenty remaining"
+                    self.usage_layout.addWidget(QLabel(self.t(status)))
+                    self.visual_values[row["id"]] = row["remaining"]
+                elif self.settings["panel_mode"] == "professional":
+                    bar = QProgressBar(); bar.setRange(0,100); bar.setValue(round(row["remaining"])); bar.setTextVisible(False); self.usage_layout.addWidget(bar)
                 reset = datetime.fromtimestamp(row["reset"]).astimezone().strftime("%b %d, %H:%M") if row["reset"] else self.t("unknown")
                 self.usage_layout.addWidget(QLabel(self.t("Next regular reset")+": "+reset))
-                self.usage_layout.addWidget(QLabel(row["source"]))
+                if self.settings["panel_mode"] == "professional": self.usage_layout.addWidget(QLabel(row["source"]))
                 menu.addAction(f"{row['product']} {self.t(row['name'])} {row['remaining']:g}%"+(" · stale" if not self.available else ""),self.show)
             stamp = datetime.fromtimestamp(self.state["timestamp"]).astimezone().strftime("%H:%M:%S")
             self.usage_layout.addWidget(QLabel(self.t("Last updated")+": "+stamp+(" · "+self.t("Last successful snapshot · stale") if not self.available else "")))
@@ -214,7 +229,7 @@ class SentinelWindow(QMainWindow):
         rows = self.state["buckets"] if self.available and self.state else []
         tooltip = " · ".join(f"{r['product']} {r['name']} {r['remaining']:g}%" for r in rows) or "Usage ?"
         if self.settings["signal_count"] and active: tooltip += f" · ⚡{len(active)}"
-        self.tray.setToolTip("Usage Sentinel · "+tooltip)
+        self.tray.setToolTip("AI Usage Sentinel · "+tooltip)
         self.tray.setIcon(icon(rows[0]["remaining"] if rows and self.settings["style"] == "Percentage" else None))
 
     def open_tab(self,page): self.show(); self.tabs.setCurrentWidget(page); self.raise_()
@@ -230,11 +245,26 @@ class SentinelWindow(QMainWindow):
             pieces.append(f"<hr><p><b>{escaped(s['platform'])}</b> · {escaped(stamp)}<br><a href='{escaped(s['url'],quote=True)}'>{escaped(s['title'])}</a></p><p>{escaped(s['snippet'])}</p><p>Fetched: {datetime.fromtimestamp(s['fetchedAt']).astimezone().isoformat()} · {escaped(s.get('author') or '')}</p>")
         browser.setHtml("".join(pieces)); dialog.setCentralWidget(browser); dialog.show(); self.event_dialog = dialog
 
+    def change_visual(self, key, value):
+        self.option(key, value); self.render()
+        QTimer.singleShot(0, self.rebuild_settings)
+
     def option(self,key,value): self.settings[key] = value; self.save()
 
     def rebuild_settings(self):
         clear(self.settings_layout)
         scroll = QScrollArea(); scroll.setWidgetResizable(True); body = QWidget(); form = QFormLayout(body); scroll.setWidget(body); self.settings_layout.addWidget(scroll)
+        mode = QComboBox()
+        for key in ("professional", "intuitive", "compact"): mode.addItem(self.t(key.capitalize()), key)
+        mode.setCurrentIndex(("professional", "intuitive", "compact").index(self.settings["panel_mode"]))
+        mode.currentIndexChanged.connect(lambda i: self.change_visual("panel_mode", mode.itemData(i))); form.addRow(self.t("Panel mode"), mode)
+        visual = QComboBox()
+        for key, title in (("ring", "Quota ring"), ("battery", "Quota battery")): visual.addItem(self.t(title), key)
+        visual.setCurrentIndex(0 if self.settings["visual_style"] == "ring" else 1); visual.setEnabled(self.settings["panel_mode"] == "intuitive")
+        visual.currentIndexChanged.connect(lambda i: self.change_visual("visual_style", visual.itemData(i))); form.addRow(self.t("Visualization"), visual)
+        animated = QCheckBox(self.t("Animate quota changes")); animated.setChecked(self.settings["animations"])
+        animated.toggled.connect(lambda v: self.option("animations", v)); form.addRow(animated)
+        form.addRow(QLabel(self.t("Illustrative visualization preview")), QuotaVisual(72, self.settings["visual_style"]))
         language = QComboBox(); [language.addItem(name,code) for code,name in LANGUAGES.items()]; language.setCurrentIndex(list(LANGUAGES).index(self.settings["language"]))
         def change_language(index):
             self.option("language",language.itemData(index)); self.t.language = self.settings["language"]
@@ -265,7 +295,7 @@ class SentinelWindow(QMainWindow):
         def consent_changed(value):
             if value:
                 try: extensions.identity()
-                except Exception as error: consent.setChecked(False); self.extension_status=str(error); QMessageBox.warning(self,'Usage Sentinel',str(error)); return
+                except Exception as error: consent.setChecked(False); self.extension_status=str(error); QMessageBox.warning(self,'AI Usage Sentinel',str(error)); return
             self.option('analytics',value)
         consent.toggled.connect(consent_changed); form.addRow(consent)
         self.checkbox(form,'Also share coarse remaining-quota bands','share_quota')
@@ -302,10 +332,10 @@ class SentinelWindow(QMainWindow):
         login = QCheckBox(self.t("Launch at Login")); login.setChecked(autostart.enabled())
         def toggle_login(value):
             try: autostart.set_enabled(value)
-            except OSError as error: QMessageBox.warning(self,"Usage Sentinel",str(error)); login.blockSignals(True); login.setChecked(autostart.enabled()); login.blockSignals(False)
-            except RuntimeError as error: QMessageBox.information(self,"Usage Sentinel",str(error))
+            except OSError as error: QMessageBox.warning(self,"AI Usage Sentinel",str(error)); login.blockSignals(True); login.setChecked(autostart.enabled()); login.blockSignals(False)
+            except RuntimeError as error: QMessageBox.information(self,"AI Usage Sentinel",str(error))
         login.toggled.connect(toggle_login); form.addRow(login)
-        test = QPushButton(self.t("Send Test")); test.clicked.connect(lambda:self.send("Usage Sentinel · "+self.t("Notification test"),self.t("All account data stays on this Mac. Public-source requests contain no account history or credentials. Official Codex handles its own authentication.").replace("Mac","device"))); form.addRow(test)
+        test = QPushButton(self.t("Send Test")); test.clicked.connect(lambda:self.send("AI Usage Sentinel · "+self.t("Notification test"),self.t("All account data stays on this Mac. Public-source requests contain no account history or credentials. Official Codex handles its own authentication.").replace("Mac","device"))); form.addRow(test)
         privacy = QLabel("All account data stays on this device. Public requests contain no usage history or credentials. X is unavailable without an authorized feed."); privacy.setWordWrap(True); form.addRow(privacy)
         if self.mock:
             mock = QPushButton("[MOCK] Run reset + five-stage scenarios"); mock.clicked.connect(self.mock_test); form.addRow(mock)

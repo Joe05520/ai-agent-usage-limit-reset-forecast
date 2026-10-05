@@ -1,10 +1,10 @@
-# Usage Sentinel
+# AI Usage Sentinel
 
 **讓 AI 剩餘額度，隨時看得見。**
 
 [官方專案網站與互動範例](https://joe05520.github.io/usage-sentinel/) · [下載](https://github.com/Joe05520/usage-sentinel/releases/tag/v1.5.1) · [English](../README.md)
 
-Usage Sentinel 是免費開源的選單列／系統匣工具，結合用量顯示、非例行 reset 偵測與社群初期重置訊號監控。macOS 採原生 SwiftUI / MenuBarExtra；Windows 與 Linux 使用原生 Qt，目前為 beta。
+AI Usage Sentinel 是免費開源的選單列／系統匣工具，結合用量顯示、非例行 reset 偵測與社群初期重置訊號監控。macOS 採原生 SwiftUI / MenuBarExtra；Windows 與 Linux 使用原生 Qt，目前為 beta。
 
 ## 主要功能
 
@@ -33,7 +33,7 @@ Usage Sentinel 是免費開源的選單列／系統匣工具，結合用量顯�
 
 [從 Release 下載](https://github.com/Joe05520/usage-sentinel/releases/tag/v1.5.1)，並查看 SHA-256 檔案雜湊。
 
-- macOS 14+：解壓縮後將 Usage Sentinel.app 移到 Applications。支援 Apple Silicon／Intel，實際在 Apple Silicon 執行驗證。此版為 ad-hoc 簽章，尚未 Apple notarize；依 macOS「隱私權與安全性」明確允許開啟，不停用系統安全機制。
+- macOS 14+：解壓縮後將 AI Usage Sentinel.app 移到 Applications。支援 Apple Silicon／Intel，實際在 Apple Silicon 執行驗證。此版為 ad-hoc 簽章，尚未 Apple notarize；依 macOS「隱私權與安全性」明確允許開啟，不停用系統安全機制。
 - Windows 10/11 x64：解壓縮完整資料夾，執行 UsageSentinel.exe。未使用付費程式簽章，請閱讀發布說明與系統信任提示。
 - Linux x64：解壓縮後執行 UsageSentinel/UsageSentinel。部分桌面需 Qt 系統套件或 tray 擴充，沒有 tray 時保留正常視窗。[完整平台指南](../Portable/README.md)。
 
@@ -45,7 +45,7 @@ Windows / Linux 為 beta。CI 建置與 offscreen smoke test 不代表所有桌�
 
 ## 技術、測試與參與
 
-可直接開啟根目錄的 OpenAIUsageSentinel.xcodeproj。原始模組與 bundle/data 名稱保留，確保升級不丟失既有設定。App 對外名稱為 Usage Sentinel。
+可直接開啟根目錄的 OpenAIUsageSentinel.xcodeproj。原始模組與 bundle/data 名稱保留，確保升級不丟失既有設定。App 對外名稱為 AI Usage Sentinel。
 
 [技術說明](TECHNICAL.md) · [驗證紀錄](VALIDATION.md) · [參與貢獻](../CONTRIBUTING.md) · [回報問題](https://github.com/Joe05520/usage-sentinel/issues)
 
@@ -54,3 +54,13 @@ MIT 授權。第三方 Qt / Python 授權見 [THIRD_PARTY_NOTICES.md](../THIRD_P
 ## 1.5 更新
 
 新增每日更新檢查、Ed25519 簽章與 SHA-256 驗證下載，安裝需手動替換 App，保留原資料。新增預設關閉的匿名每日統計，粗略額度須另行同意。公開圖表至少 10 個匿名參與識別碼；個別帳號歷史仍保留本機。[統計隱私](ANALYTICS.md) · [更新說明](UPDATES.md)。
+
+## 可視化模式（1.6）
+
+- 專業：剩餘／已使用百分比、重置時間與資料來源。
+- 直覺：可選圓環或電量，以簡單文字說明剩餘狀態。
+- 精簡：保留百分比與重置倒數，减少視覺資訊。
+
+在面板與設定直接切換，設定內有即時預覽。動畫可以關閉；macOS 遵循「減少動態效果」，Windows/Linux 預設關閉動畫。模式不影響偵測、提醒或歷史。
+
+專案顯示名稱改為 AI Usage Sentinel，副標 AI Quota Monitor & Reset Alerts。保留原 GitHub 網址、更新信任金鑰與資料位置；macOS 請以新名稱 App 取代舊版，避免同時執行兩份。

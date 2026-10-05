@@ -53,6 +53,11 @@ public struct AppSettings: Codable, Equatable, Sendable {
         get { analyticsConfiguration ?? AnalyticsPreferences() }
         set { analyticsConfiguration = newValue }
     }
+    public var panelConfiguration: PanelAppearance?
+    public var panel: PanelAppearance {
+        get { panelConfiguration ?? PanelAppearance() }
+        set { panelConfiguration = newValue }
+    }
     public var automaticUpdateChecks: Bool?
     public var includePreviewUpdates: Bool?
     public init() {}
