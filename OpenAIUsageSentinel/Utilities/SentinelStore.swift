@@ -243,7 +243,7 @@ final class SentinelStore: ObservableObject {
         }
         for event in events where NotificationPolicy.shouldNotify(event, settings: settings, now: Date()) {
             do {
-                if try await notifications.send(event, mock: isMock), let index = events.firstIndex(where: { $0.id == event.id }) {
+                if try await notifications.send(event, mock: isMock, reliableMode: settings.reliableAlerts), let index = events.firstIndex(where: { $0.id == event.id }) {
                     if settings.reliableAlerts && event.confidence >= 0.5 { events[index].notifiedReliable = true }
                     events[index].notifiedRank = max(events[index].notifiedRank, event.level.rank)
                     events[index].notifiedOwnReset = events[index].notifiedOwnReset || event.ownAccountReset

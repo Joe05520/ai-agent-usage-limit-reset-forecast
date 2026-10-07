@@ -18,7 +18,7 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate {
     func requestPermission() async -> Bool {
         (try? await center.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
     }
-    func send(_ event: ResetEvent, mock: Bool) async throws -> Bool {
+    func send(_ event: ResetEvent, mock: Bool, reliableMode: Bool = false) async throws -> Bool {
         guard await authorization() == "Authorized" else { return false }
         let content = UNMutableNotificationContent()
         let copy = NotificationText.event(event, mock: mock)
@@ -26,7 +26,8 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate {
         content.sound = .default
         content.userInfo = ["eventID": event.id.uuidString]
         content.threadIdentifier = event.id.uuidString
-        try await center.add(UNNotificationRequest(identifier: "\(event.id)-\(event.level.rank)-\(event.ownAccountReset)", content: content, trigger: nil))
+        let crossing = reliableMode && !event.ownAccountReset && event.notifiedReliable != true ? "-reliable50" : ""
+        try await center.add(UNNotificationRequest(identifier: "\(event.id)-\(event.level.rank)-\(event.ownAccountReset)" + crossing, content: content, trigger: nil))
         return true
     }
     func sendReminder(_ reminder: UsageReminder, mock: Bool) async throws -> Bool {
