@@ -91,7 +91,7 @@ The public [Insights page](https://joe05520.github.io/ai-agent-usage-limit-reset
 
 ## Build and test
 
-macOS requires Xcode with macOS 14+ SDK:
+Building requires Xcode 16+ with macOS 15+ SDK for the optional Translation framework. The app deployment target remains macOS 14:
 
 ```sh
 python3 Scripts/generate_project.py

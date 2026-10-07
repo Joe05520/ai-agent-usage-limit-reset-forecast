@@ -33,7 +33,7 @@ private struct OnDeviceSourceTranslation: View {
             HStack {
                 Button(L10n.t("Translate source")) {
                     failed = false; busy = true; showingTranslation = true
-                    if configuration == nil { configuration = .init(source: nil, target: Locale.Language(identifier: target)) }
+                    if configuration == nil { configuration = .init(source: nil, target: Locale.Language(identifier: target == "zh-Hant" ? "zh-TW" : target == "zh-Hans" ? "zh" : target)) }
                     else { configuration?.invalidate() }
                 }.disabled(busy)
                 if busy { ProgressView().controlSize(.small) }
