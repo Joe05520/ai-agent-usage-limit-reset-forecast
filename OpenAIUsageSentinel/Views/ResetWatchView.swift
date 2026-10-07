@@ -103,15 +103,14 @@ private struct ResetAnnouncementCalendar: View {
                         let day = calendar.date(byAdding: .day, value: number - 1, to: month)!
                         let entries = records(day)
                         Button { selectedDay = day } label: {
-                            VStack(spacing: 5) {
-                                Text("\(number)").font(.callout.monospacedDigit()).foregroundStyle(calendar.isDateInToday(day) ? Color.accentColor : Color.primary)
-                                HStack(spacing: 3) {
-                                    if entries.contains(where: { $0.behavior == .suspectedGlobal }) { Circle().fill(Color.accentColor).frame(width: 5, height: 5) }
-                                    if entries.contains(where: { $0.behavior == .banked }) { Circle().fill(Color.orange).frame(width: 5, height: 5) }
-                                    if entries.contains(where: { [.poll, .forecast].contains($0.behavior) }) { Circle().fill(Color.secondary).frame(width: 5, height: 5) }
-                                }.frame(height: 5)
-                            }.frame(maxWidth: .infinity).frame(height: 52)
-                                .background(Color.secondary.opacity(0.07), in: RoundedRectangle(cornerRadius: 5))
+                            let fill: Color? = entries.contains(where: { $0.behavior == .suspectedGlobal }) ? .accentColor
+                                : entries.contains(where: { $0.behavior == .banked }) ? .orange
+                                : entries.isEmpty ? nil : .gray
+                            Text("\(number)").font(.callout.monospacedDigit())
+                                .foregroundStyle(fill != nil ? Color.white : calendar.isDateInToday(day) ? Color.accentColor : Color.primary)
+                                .frame(maxWidth: .infinity).frame(height: 52)
+                                .background(fill ?? Color.secondary.opacity(0.07), in: RoundedRectangle(cornerRadius: 5))
+                                .overlay(RoundedRectangle(cornerRadius: 5).stroke(calendar.isDateInToday(day) ? Color.accentColor : .clear, lineWidth: 2))
                         }.buttonStyle(.plain).help(day.formatted(date: .complete, time: .omitted) + " · \(entries.count)")
                     }
                 }
