@@ -1,4 +1,5 @@
 import json
+from urllib.parse import urlencode
 from pathlib import Path
 import sys
 import time
@@ -13,7 +14,7 @@ from .visuals import QuotaVisual
 from .providers import codex_usage, export_usage
 from .sources import CATALOG, fetch
 
-DEFAULT = dict(analytics=False, share_quota=False, update_checks=True, preview_updates=True, agent="Codex", cli="", exports={}, stages=[20,5], reminders_enabled=True, language="en", interval=300, news_interval=300, confidence=.25, notify_personal=True, notify_signals=True, sources=["OpenAI Status","OpenAI News","Codex Releases","GitHub","Reddit","Codex Resets · 75%","Tibo radar · 85%"], style="Standard", signal_count=False, excluded=[], snooze=0)
+DEFAULT = dict(reliable_alerts=False, analytics=False, share_quota=False, update_checks=True, preview_updates=True, agent="Codex", cli="", exports={}, stages=[20,5], reminders_enabled=True, language="en", interval=300, news_interval=300, confidence=.25, notify_personal=True, notify_signals=True, sources=["OpenAI Status","OpenAI News","Codex Releases","GitHub","Reddit","Codex Resets · 75%","Tibo radar · 85%"], style="Standard", signal_count=False, excluded=[], snooze=0)
 TYPE_NAMES = dict(scheduled="Normal reset", banked="Banked reset", purchased="Purchased reset", automaticGlobal="Automatic / global reset", suspectedGlobal="Possible global reset", accountUnexpected="Unexpected account reset", complimentary="Complimentary reset offer", forecast="Reset forecast / teaser", poll="Reset-related poll", unknown="Unclassified quota increase")
 LEVEL_NAMES = ["Rumor", "Early Signal", "Likely", "Confirmed"]
 
@@ -185,7 +186,9 @@ class SentinelWindow(QMainWindow):
             if core.should_notify(event,self.settings,now):
                 title = self.t("⚡ Reset signal strengthened") if event["own"] and len(event["sources"])>1 else self.t("⚡ Unexpected usage reset detected") if event["own"] else "⚡ "+self.t(TYPE_NAMES[event["type"]])
                 body = f"{event['product']} · {event['confidence']:.0%} · {self.t(LEVEL_NAMES[core.level(event['confidence'])])}\n"+"\n".join(s["url"] for s in event["sources"][:2])
-                if self.send(title,body,event["id"]): event["notified"] = core.level(event["confidence"]); event["notified_own"] |= event["own"]
+                if self.send(title,body,event["id"]):
+                    event["notified"] = core.level(event["confidence"]); event["notified_own"] |= event["own"]
+                    if self.settings.get("reliable_alerts") and event["confidence"] >= .5: event["notified_reliable"] = True
         if self.available and self.state:
             for alert in self.engine.pending(self.state,self.settings,now):
                 row = alert["row"]; title = self.t("Low quota · critical reminder" if alert["critical"] else "Low quota reminder")
@@ -226,6 +229,7 @@ class SentinelWindow(QMainWindow):
         self.event_layout.addStretch(); self.usage_layout.addStretch()
         button = QPushButton(self.t("Refresh All")); button.clicked.connect(self.refresh_all); self.usage_layout.addWidget(button)
         for key, callback in (("Refresh All",self.refresh_all),("Settings",lambda:self.open_tab(self.settings_page)),("Event History",lambda:self.open_tab(self.events_page)),("Quit",QApplication.quit)): menu.addAction(self.t(key),callback)
+        alert_action = menu.addAction(self.t("Notify reset messages ≥50%")); alert_action.setCheckable(True); alert_action.setChecked(self.settings.get("reliable_alerts",False)); alert_action.toggled.connect(self.reliable_alerts)
         self.tray.setContextMenu(menu)
         rows = self.state["buckets"] if self.available and self.state else []
         tooltip = " · ".join(f"{r['product']} {r['name']} {r['remaining']:g}%" for r in rows) or "Usage ?"
@@ -267,6 +271,10 @@ class SentinelWindow(QMainWindow):
                 pieces.append(f"<p>Data from <a href='{escaped(s["viaURL"],quote=True)}'>{escaped(s["viaURL"])}</a> · source weight is not a reset probability.</p>")
             stamp = datetime.fromtimestamp(s["publishedAt"]).astimezone().isoformat() if s.get("publishedAt") else "unknown"
             pieces.append(f"<hr><p><b>{escaped(s['platform'])}</b> · {escaped(stamp)}<br><a href='{escaped(s['url'],quote=True)}'>{escaped(s['title'])}</a></p><p>{escaped(s['snippet'])}</p><p>Fetched: {datetime.fromtimestamp(s['fetchedAt']).astimezone().isoformat()} · {escaped(s.get('author') or '')}</p>")
+            if not s['platform'].startswith('Local ') and s['platform'] != 'Manual':
+                target={'zh-Hant':'zh-TW','zh-Hans':'zh-CN'}.get(self.settings['language'],self.settings['language'])
+                url='https://translate.google.com/?'+urlencode(dict(sl='auto',tl=target,text=(s['title']+'\n'+s['snippet'])[:8000],op='translate'))
+                pieces.append(f"<p><a href='{escaped(url,quote=True)}'>{escaped(self.t('Translate this public excerpt in Google Translate ↗'))}</a><br>{escaped(self.t('Only this public title and excerpt are sent after you click. No account usage or credentials.'))}</p>")
         browser.setHtml("".join(pieces))
         content = QWidget(); layout = QVBoxLayout(content)
         meter = QProgressBar(); meter.setRange(0,100); meter.setValue(round(event["confidence"]*100)); meter.setFormat("%p%"); layout.addWidget(meter); layout.addWidget(browser)
@@ -275,6 +283,10 @@ class SentinelWindow(QMainWindow):
     def change_visual(self, key, value):
         self.option(key, value); self.render()
         QTimer.singleShot(0, self.rebuild_settings)
+
+    def reliable_alerts(self, enabled):
+        self.settings["reliable_alerts"] = enabled; self.save()
+        if enabled: self.notify(); self.db.save("events",self.events)
 
     def option(self,key,value): self.settings[key] = value; self.save()
 
@@ -365,7 +377,8 @@ class SentinelWindow(QMainWindow):
             combo = QComboBox(); [combo.addItem(self.t("%d min",v),v*60) for v in [2,5,10,15,30]]; combo.setCurrentIndex(combo.findData(self.settings[key])); combo.currentIndexChanged.connect(lambda i,c=combo,k=key:self.option(k,c.itemData(i)))
             form.addRow(self.t("Usage" if key=="interval" else "Signals"),combo)
         form = forms["Notifications"]
-        confidence = QComboBox(); [confidence.addItem(self.t(label),v) for label,v in [("Very Early ≥15%",.15),("Early ≥25%",.25),("Likely ≥60%",.6),("Official Only ≥90%",.9)]]; confidence.setCurrentIndex(confidence.findData(self.settings["confidence"])); confidence.currentIndexChanged.connect(lambda i:self.option("confidence",confidence.itemData(i))); form.addRow(self.t("Notify confidence"),confidence)
+        confidence = QComboBox(); [confidence.addItem(self.t(label),v) for label,v in [("Very Early ≥15%",.15),("Early ≥25%",.25),("Reliable ≥50%",.5),("Likely ≥60%",.6),("Official Only ≥90%",.9)]]; confidence.setCurrentIndex(confidence.findData(self.settings["confidence"])); confidence.currentIndexChanged.connect(lambda i:self.option("confidence",confidence.itemData(i))); form.addRow(self.t("Notify confidence"),confidence)
+        self.checkbox(form,"Notify reset messages ≥50%","reliable_alerts")
         self.checkbox(form,"Unexpected personal reset","notify_personal"); self.checkbox(form,"Reset early signals","notify_signals")
         form = forms["Menu Bar Appearance"]
         self.checkbox(form,"Show reset signal count in menu bar","signal_count")

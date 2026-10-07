@@ -243,6 +243,7 @@ def should_notify(event, settings, now):
         return False
     if event["own"] and not event["notified_own"] and settings.get("notify_personal", True):
         return True
-    if not settings.get("notify_signals", True) or event["confidence"] < settings.get("confidence", .25):
+    reliable = settings.get("reliable_alerts", False)
+    if (not reliable and not settings.get("notify_signals", True)) or event["confidence"] < (.50 if reliable else settings.get("confidence", .25)):
         return False
-    return level(event["confidence"]) > event["notified"]
+    return (reliable and not event["own"] and not event.get("notified_reliable", False)) or level(event["confidence"]) > event["notified"]

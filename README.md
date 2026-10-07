@@ -133,3 +133,9 @@ MIT licensed original source. Qt/Python distributions retain their upstream lice
 - Original post URL and data-provider attribution are preserved. Observed entries without explicit X-post attribution are excluded. No source is promoted to official confirmation merely because it quotes Tibo. Duplicate mirrors do not add weight; polls and forecasts do not merge into your actual account-reset event.
 - Polls/hints expire (normally 24h); old historical announcements stay in the calendar without new notifications. No next irregular-reset date is invented. A source-supplied target is explicitly marked execution-unverified.
 - Settings → Sources can disable the priority watch. Native snapshots and account history remain local; the public page reads only public news.
+
+### Source translation and reliable-message alerts (1.8.2)
+
+Enable **Notify reset messages ≥50%** from the menu/tray or Notifications settings. This mode fixes the public-message threshold at 50%; personal reset alerts remain independent. It remembers the first 50% notification across restarts and only repeats for confidence-level upgrades or a correlated account reset. Older/expired posts remain quiet. Turning it off restores the existing configurable notification policy.
+
+Source cards retain original text and offer translation into the app language. macOS 15+ uses the Apple Translation framework on device and may ask to download a language. macOS 14, Windows/Linux and the website provide an explicitly labeled Google Translate link for public excerpts. Nothing is sent to Google until that link is clicked. Local account evidence is excluded from web translation. Translation does not change event scoring or stored original evidence.

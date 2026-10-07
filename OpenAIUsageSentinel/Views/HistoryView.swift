@@ -4,7 +4,7 @@ import Charts
 struct HistoryView: View {
     @EnvironmentObject var store: SentinelStore
     var body: some View {
-        NavigationSplitView {
+        HSplitView {
             List(selection: $store.selectedEventID) {
                 if let external = store.externalMockEvent { Text("[MOCK] " + external.type.label).tag(external.id) }
                 ForEach(store.events) { event in
@@ -13,9 +13,9 @@ struct HistoryView: View {
                         Text(event.detectedAt, format: .dateTime.month().day().hour().minute()).font(.caption2).foregroundStyle(.secondary)
                     }.padding(.vertical, 4).tag(event.id)
                 }
-            }.navigationTitle(L10n.t(store.isMock ? "Event History · MOCK" : "Event History")).navigationSplitViewColumnWidth(min: 260, ideal: 290)
-        } detail: {
-            if let event = (store.externalMockEvent?.id == store.selectedEventID ? store.externalMockEvent : nil) ?? store.events.first(where: { $0.id == store.selectedEventID }) { EventDetailView(event: event) }
+            }.frame(minWidth: 260, idealWidth: 290, maxWidth: 340)
+            Group {
+            if let event = (store.externalMockEvent?.id == store.selectedEventID ? store.externalMockEvent : nil) ?? store.events.first(where: { $0.id == store.selectedEventID }) { EventDetailView(event: event).id(event.id) }
             else {
                 ScrollView { VStack(alignment: .leading, spacing: 16) {
                     ResetWatchView()
@@ -37,6 +37,7 @@ struct HistoryView: View {
                     Spacer()
                 }.padding(24) }
             }
+            }.frame(minWidth: 440, maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading).clipped()
         }.frame(minWidth: 820, minHeight: 530)
     }
 }
@@ -89,7 +90,7 @@ struct EventDetailView: View {
                         if let target = source.announcedTarget { Text(L10n.t("Announced target · execution unverified") + ": " + target.localizedFormatted()).font(.caption) }
                         Text(source.title).font(.subheadline.weight(.medium))
                         if let author = source.author { Text(author).font(.caption).foregroundStyle(.secondary) }
-                        Text(source.snippet).font(.caption).textSelection(.enabled)
+                        SourceTranslationView(source: source)
                         if let modified = source.modifiedAt { Text(L10n.t("Document updated: ") + modified.localizedFormatted()).font(.caption2).foregroundStyle(.secondary) }
                         Text(L10n.f("Published: %@\nFetched: %@", source.publishedAt?.localizedFormatted() ?? L10n.t("unknown"), source.fetchedAt.localizedFormatted())).font(.caption2).foregroundStyle(.secondary)
                         Text(source.url.absoluteString).font(.caption2).foregroundStyle(.secondary).textSelection(.enabled)

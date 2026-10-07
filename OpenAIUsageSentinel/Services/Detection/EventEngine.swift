@@ -118,9 +118,9 @@ public enum NotificationPolicy {
         // Personal purchases/known banked redemption are history, not global alerts.
         if (event.type == .banked || event.type == .purchased) && event.sources.allSatisfy({ $0.isAccountEvidence }) { return false }
         if event.ownAccountReset && !event.notifiedOwnReset && settings.notifyUnexpected { return true }
-        guard event.confidence >= settings.threshold else { return false }
-        let enabled = event.level == .confirmed ? settings.notifyOfficial : event.level == .likely ? settings.notifyLikely : settings.notifyEarly
+        guard event.confidence >= (settings.reliableAlerts ? 0.50 : settings.threshold) else { return false }
+        let enabled = settings.reliableAlerts || (event.level == .confirmed ? settings.notifyOfficial : event.level == .likely ? settings.notifyLikely : settings.notifyEarly)
         guard enabled else { return false }
-        return event.notifiedRank < 0 || event.level.rank > event.notifiedRank
+        return (settings.reliableAlerts && !event.ownAccountReset && event.notifiedReliable != true) || event.notifiedRank < 0 || event.level.rank > event.notifiedRank
     }
 }

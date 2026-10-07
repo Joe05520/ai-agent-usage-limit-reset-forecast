@@ -255,3 +255,11 @@ Tibo is `thsottiaux`, not an unrelated account named Tibo. Codex Resets mirror/d
 `forecast` and `poll` are separate event types. Reset-related voting replies can use an explicit parent or clearly labeled secondary thread context. Unrelated polls, ordinary posts and negated resets are rejected. Completion wording upgrades the same original post and re-arms one announcement alert; a later completion expires previous hints. Personal account jumps only correlate with actual reset-report families, never polls. Old history is cached separately from notification events.
 
 Secondary coverage and radar schema are not guaranteed. X poll options/counts are not synthesized. Source failures remain visible, bounded HTTP reads/retry/backoff/cache are reused. Website requests omit credentials; no account data is sent to either feed.
+
+## Source translation and 50% alerts
+
+`SourceTranslationView` uses the macOS 15+ Translation framework; it is weak-linked so macOS 14 still launches. Translation runs only after a button click, targets the app language, and displays beside the immutable original excerpt. Language download prompts are handled by macOS. An explicit Google Translate fallback encodes at most 8,000 characters of a public title/excerpt and is never offered for local account evidence. Browser/Qt translations use this opt-in web link, not an unofficial translation endpoint.
+
+`AppSettings.reliableSignalAlerts` and `ResetEvent.notifiedReliable` are optional for backward-compatible decoding. The 50% mode overrides the public notification threshold without altering stored source scores. Delivery bookkeeping is updated only after successful notification submission. Stale, expired, scheduled and known personal paid/banked resets retain existing quiet handling. Turning the mode off restores existing preferences.
+
+Event History uses `HSplitView` rather than an automatically managed navigation toolbar. Each selected event has a separate scroll-view identity; app windows disallow automatic tab grouping to keep material/navigation overlays out of the detail pane.

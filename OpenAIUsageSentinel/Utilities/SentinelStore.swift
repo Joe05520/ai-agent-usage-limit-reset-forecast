@@ -96,6 +96,10 @@ final class SentinelStore: ObservableObject {
             } else { await refreshAll() }
         }
     }
+    func setReliableAlerts(_ enabled: Bool) {
+        settings.reliableAlerts = enabled; saveSettings()
+        if enabled { Task { _ = await notifications.requestPermission(); permission = await notifications.authorization(); await deliverNotifications() } }
+    }
     func saveSettings() { persist(settings, key: "settings") }
     private func persist<T: Encodable>(_ value: T, key: String) {
         do { try database?.save(value, key: key) } catch { errorMessage = error.localizedDescription }
@@ -240,6 +244,7 @@ final class SentinelStore: ObservableObject {
         for event in events where NotificationPolicy.shouldNotify(event, settings: settings, now: Date()) {
             do {
                 if try await notifications.send(event, mock: isMock), let index = events.firstIndex(where: { $0.id == event.id }) {
+                    if settings.reliableAlerts && event.confidence >= 0.5 { events[index].notifiedReliable = true }
                     events[index].notifiedRank = max(events[index].notifiedRank, event.level.rank)
                     events[index].notifiedOwnReset = events[index].notifiedOwnReset || event.ownAccountReset
                     saveEvents()

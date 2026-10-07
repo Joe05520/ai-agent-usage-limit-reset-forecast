@@ -7,6 +7,26 @@ import XCTest
 
 final class SentinelTests: XCTestCase {
     let now = Date(timeIntervalSince1970: 1791000000)
+    func testReliableAlertsCross50OnceAndKeepAccountAlertsSeparate() throws {
+        var settings = AppSettings(); settings.reliableAlerts = true
+        var event = DemoScenarios.run(3, now: now)[0]
+        event.notifiedRank = 1; event.confidence = 0.499
+        XCTAssertFalse(NotificationPolicy.shouldNotify(event, settings: settings, now: now))
+        event.confidence = 0.50
+        XCTAssertTrue(NotificationPolicy.shouldNotify(event, settings: settings, now: now))
+        event.notifiedReliable = true; event.confidence = 0.59
+        XCTAssertFalse(NotificationPolicy.shouldNotify(event, settings: settings, now: now))
+        event.confidence = 0.60
+        XCTAssertTrue(NotificationPolicy.shouldNotify(event, settings: settings, now: now))
+        event.notifiedRank = 2; event.updatedAt = now.addingTimeInterval(-90000)
+        XCTAssertFalse(NotificationPolicy.shouldNotify(event, settings: settings, now: now))
+        event = DemoScenarios.run(2, now: now)[0]; event.confidence = 0.20
+        XCTAssertTrue(NotificationPolicy.shouldNotify(event, settings: settings, now: now))
+        let saved = try JSONEncoder().encode(settings)
+        XCTAssertTrue(try JSONDecoder().decode(AppSettings.self, from: saved).reliableAlerts)
+        event = DemoScenarios.run(3, now: now)[0]; event.notifiedReliable = true
+        XCTAssertEqual(try JSONDecoder().decode(ResetEvent.self, from: JSONEncoder().encode(event)).notifiedReliable, true)
+    }
     func testScenario1Scheduled() { let event = DemoScenarios.run(1, now: now).first!; XCTAssertEqual(event.type, .scheduled); XCTAssertFalse(NotificationPolicy.shouldNotify(event, settings: AppSettings(), now: now)) }
     func testScenario2Unexpected() { let event = DemoScenarios.run(2, now: now).first!; XCTAssertEqual(event.type, .accountUnexpected); XCTAssertTrue(event.ownAccountReset); XCTAssertTrue(NotificationPolicy.shouldNotify(event, settings: AppSettings(), now: now)) }
     func testScenario3TwoReddit() { let events = DemoScenarios.run(3, now: now); XCTAssertEqual(events.count, 1); XCTAssertEqual(events[0].level, .early); XCTAssertEqual(events[0].reportCount, 2); XCTAssertTrue(NotificationPolicy.shouldNotify(events[0], settings: AppSettings(), now: now)) }

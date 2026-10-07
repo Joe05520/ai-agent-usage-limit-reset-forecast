@@ -16,7 +16,7 @@ jobs:
       - run: swift test
       - run: python3 Scripts/generate_project.py
       - run: xcodebuild -project OpenAIUsageSentinel.xcodeproj -scheme OpenAIUsageSentinel -configuration Release -derivedDataPath build/DerivedData ARCHS='arm64 x86_64' ONLY_ACTIVE_ARCH=NO build
-      - run: ditto -c -k --sequesterRsrc --keepParent 'build/DerivedData/Build/Products/Release/AI Usage Sentinel.app' build/UsageSentinel-1.8.1-macOS-universal.zip
+      - run: ditto -c -k --sequesterRsrc --keepParent 'build/DerivedData/Build/Products/Release/AI Usage Sentinel.app' build/UsageSentinel-1.8.2-macOS-universal.zip
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: macOS-universal

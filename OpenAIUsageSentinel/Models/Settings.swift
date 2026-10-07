@@ -7,6 +7,11 @@ public struct AppSettings: Codable, Equatable, Sendable {
     public var usageInterval = 300.0
     public var signalInterval = 300.0
     public var threshold = 0.25
+    public var reliableSignalAlerts: Bool? = nil
+    public var reliableAlerts: Bool {
+        get { reliableSignalAlerts ?? false }
+        set { reliableSignalAlerts = newValue }
+    }
     public var notifyUnexpected = true
     public var notifyEarly = true
     public var notifyLikely = true

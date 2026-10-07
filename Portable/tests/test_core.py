@@ -106,6 +106,15 @@ class SignalTests(unittest.TestCase):
         events=core.merge([],[core.classify(source(i)) for i in [1,2]],[],NOW)
         events=core.merge(events,[],own,NOW+60)
         self.assertEqual(len(events),1); self.assertGreaterEqual(events[0]['confidence'],.6)
+    def test_reliable_50_crossing_dedup_and_stale(self):
+        event=core.merge([],[core.classify(source(i)) for i in [1,2]],[],NOW)[0]
+        settings=dict(reliable_alerts=True);event['notified']=1;event['confidence']=.499
+        self.assertFalse(core.should_notify(event,settings,NOW))
+        event['confidence']=.5;self.assertTrue(core.should_notify(event,settings,NOW))
+        event['notified_reliable']=True;event['confidence']=.59
+        self.assertFalse(core.should_notify(event,settings,NOW))
+        event['confidence']=.6;self.assertTrue(core.should_notify(event,settings,NOW))
+        event['notified']=2;self.assertFalse(core.should_notify(event,settings,NOW+90000))
     def test_no_duplicate_notification_tiny_score_change(self):
         event=core.merge([],[core.classify(source(i)) for i in [1,2]],[],NOW)[0]; event['notified']=core.level(event['confidence'])
         event['confidence']+=.01; self.assertFalse(core.should_notify(event,{},NOW)); event['confidence']=.65; self.assertTrue(core.should_notify(event,{},NOW))

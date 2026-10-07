@@ -138,12 +138,14 @@ struct SettingsView: View {
             }
             if selectedCategory == .notifications {
             Section(L10n.t("Notifications")) {
+            Toggle(L10n.t("Notify reset messages ≥50%"), isOn: Binding(get: { store.settings.reliableAlerts }, set: { store.setReliableAlerts($0) }))
+                Text(L10n.t("When enabled, public reset messages use a 50% threshold. Personal reset alerts stay separate. Each event alerts once at 50%, then only on a confidence-level upgrade or an account reset.")).font(.caption).foregroundStyle(.secondary)
                 Toggle(L10n.t("Unexpected personal reset"), isOn: $store.settings.notifyUnexpected)
                 Toggle(L10n.t("Reset early signals"), isOn: $store.settings.notifyEarly)
                 Toggle(L10n.t("Likely reset"), isOn: $store.settings.notifyLikely)
                 Toggle(L10n.t("Official confirmation"), isOn: $store.settings.notifyOfficial)
                 Picker(L10n.t("Notify confidence"), selection: $store.settings.threshold) {
-                    Text(L10n.t("Very Early ≥15%")).tag(0.15); Text(L10n.t("Early ≥25%")).tag(0.25); Text(L10n.t("Likely ≥60%")).tag(0.60); Text(L10n.t("Official Only ≥90%")).tag(0.90)
+                    Text(L10n.t("Very Early ≥15%")).tag(0.15); Text(L10n.t("Early ≥25%")).tag(0.25); Text(L10n.t("Reliable ≥50%")).tag(0.50); Text(L10n.t("Likely ≥60%")).tag(0.60); Text(L10n.t("Official Only ≥90%")).tag(0.90)
                 }
                 LabeledContent(L10n.t("Permission"), value: L10n.t(store.permission))
                 HStack {

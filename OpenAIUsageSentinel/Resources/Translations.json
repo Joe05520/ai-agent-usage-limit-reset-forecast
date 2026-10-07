@@ -1853,5 +1853,75 @@
     "zh-Hans": "可信度",
     "ja": "信頼度",
     "ko": "신뢰도"
+  },
+  "Notify reset messages ≥50%": {
+    "en": "Notify reset messages ≥50%",
+    "zh-Hant": "通知可信度 ≥50% 的重置消息",
+    "zh-Hans": "通知可信度 ≥50% 的重置消息",
+    "ja": "信頼度50%以上のリセット情報を通知",
+    "ko": "신뢰도 50% 이상 초기화 소식 알림"
+  },
+  "Reliable ≥50%": {
+    "en": "Reliable ≥50%",
+    "zh-Hant": "可信度 ≥50%",
+    "zh-Hans": "可信度 ≥50%",
+    "ja": "信頼度50%以上",
+    "ko": "신뢰도 50% 이상"
+  },
+  "When enabled, public reset messages use a 50% threshold. Personal reset alerts stay separate. Each event alerts once at 50%, then only on a confidence-level upgrade or an account reset.": {
+    "en": "When enabled, public reset messages use a 50% threshold. Personal reset alerts stay separate. Each event alerts once at 50%, then only on a confidence-level upgrade or an account reset.",
+    "zh-Hant": "啟用後，公開重置消息的通知門檻固定為50%。個人重置通知獨立運作。每個事件在達到50%時通知一次，之後只在可信度等級提升或你的帳號重置時再通知。",
+    "zh-Hans": "启用后，公开重置消息的通知门槛固定为50%。个人重置通知独立运作。每个事件达到50%时通知一次，之后仅在可信度等级提升或你的账户重置时再次通知。",
+    "ja": "有効時は公開リセット情報の通知基準が50%になります。個人のリセット通知は別です。50%到達時に一度通知し、その後は信頼度の段階上昇やアカウントのリセット時のみ再通知します。",
+    "ko": "활성화하면 공개 초기화 소식의 알림 기준이 50%가 됩니다. 개인 초기화 알림은 별도로 유지됩니다. 이벤트당 50% 도달 시 한 번, 이후 신뢰도 단계 상승이나 계정 초기화 시 다시 알립니다."
+  },
+  "Translate source": {
+    "en": "Translate source",
+    "zh-Hant": "翻譯來源",
+    "zh-Hans": "翻译来源",
+    "ja": "出典を翻訳",
+    "ko": "출처 번역"
+  },
+  "Hide translation": {
+    "en": "Hide translation",
+    "zh-Hant": "隱藏翻譯",
+    "zh-Hans": "隐藏翻译",
+    "ja": "翻訳を隠す",
+    "ko": "번역 숨기기"
+  },
+  "Show translation": {
+    "en": "Show translation",
+    "zh-Hant": "顯示翻譯",
+    "zh-Hans": "显示翻译",
+    "ja": "翻訳を表示",
+    "ko": "번역 표시"
+  },
+  "Translation · original evidence retained": {
+    "en": "Translation · original evidence retained",
+    "zh-Hant": "翻譯 · 保留原始證據",
+    "zh-Hans": "翻译 · 保留原始证据",
+    "ja": "翻訳 · 原文の証拠を保持",
+    "ko": "번역 · 원본 근거 유지"
+  },
+  "On-device translation unavailable. Download the language when prompted, or use web translation for this public excerpt.": {
+    "en": "On-device translation unavailable. Download the language when prompted, or use web translation for this public excerpt.",
+    "zh-Hant": "本機翻譯暫時無法使用。可依系統提示下載語言，或使用網頁翻譯這段公開摘要。",
+    "zh-Hans": "本机翻译暂时不可用。可按系统提示下载语言，或通过网页翻译这段公开摘要。",
+    "ja": "端末内翻訳を利用できません。言語をダウンロードするか、この公開抜粋をウェブで翻訳できます。",
+    "ko": "기기 내 번역을 사용할 수 없습니다. 안내에 따라 언어를 다운로드하거나 공개 발췌문을 웹에서 번역하세요."
+  },
+  "Translate this public excerpt in Google Translate ↗": {
+    "en": "Translate this public excerpt in Google Translate ↗",
+    "zh-Hant": "在 Google 翻譯這段公開來源 ↗",
+    "zh-Hans": "在 Google 翻译这段公开来源 ↗",
+    "ja": "この公開抜粋をGoogleで翻訳 ↗",
+    "ko": "이 공개 발췌문을 Google 번역으로 열기 ↗"
+  },
+  "Only this public title and excerpt are sent after you click. No account usage or credentials.": {
+    "en": "Only this public title and excerpt are sent after you click. No account usage or credentials.",
+    "zh-Hant": "只有點擊後才會傳送這段公開標題與摘要，不包含帳號用量或憑證。",
+    "zh-Hans": "仅点击后才发送这段公开标题与摘要，不包含账户用量或凭证。",
+    "ja": "クリック後に公開タイトルと抜粋のみ送信します。利用量や認証情報は含みません。",
+    "ko": "클릭 후 공개 제목과 발췌문만 전송합니다. 계정 사용량이나 인증 정보는 포함하지 않습니다."
   }
 }

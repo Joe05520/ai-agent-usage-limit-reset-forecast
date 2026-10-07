@@ -29,7 +29,7 @@ struct ResetWatchView: View {
                     Label(L10n.t(fresh.isEmpty ? "Irregular reset: no known schedule" : "Possible reset · watch active"), systemImage: fresh.isEmpty ? "clock" : "eye").font(.headline)
                     if let latest = fresh.first {
                         Text(latest.behavior.label).foregroundStyle(.orange)
-                        Text(latest.source.snippet).font(.callout).lineLimit(4)
+                        SourceTranslationView(source: latest.source)
                         Link(L10n.t("Open ↗"), destination: latest.source.url)
                         if let target = latest.source.announcedTarget { Text(L10n.t("Announced target · execution unverified") + ": " + target.localizedFormatted()).font(.caption) }
                     }
@@ -51,7 +51,7 @@ struct ResetWatchView: View {
                     HStack { Text(signal.behavior.label).font(.subheadline.bold()); Spacer(); Text(signal.source.publishedAt?.localizedFormatted() ?? L10n.t("unknown")).font(.caption).foregroundStyle(.secondary) }
                     let confidence = EventEngine.score(sources: [signal.source], ownReset: false, now: Date())
                     MessageConfidenceBar(value: confidence)
-                    Text(signal.source.snippet).font(.callout).lineLimit(3)
+                    SourceTranslationView(source: signal.source)
                     HStack {
                         Link(L10n.t("Original X post ↗"), destination: signal.source.url)
                         if let via = signal.source.viaURL { Link("Data · " + (via.host ?? ""), destination: via) }
@@ -124,7 +124,7 @@ private struct ResetAnnouncementCalendar: View {
                     ForEach(entries, id: \.source.id) { signal in
                         Text(signal.behavior.label).font(.caption.bold())
                         MessageConfidenceBar(value: EventEngine.score(sources: [signal.source], ownReset: false, now: Date()))
-                        Text(signal.source.snippet).font(.callout).lineLimit(4)
+                        SourceTranslationView(source: signal.source)
                         Link(L10n.t("Original X post ↗"), destination: signal.source.url)
                         if let via = signal.source.viaURL { Link(L10n.t("Data attribution ↗") + " · " + (via.host ?? ""), destination: via) }
                     }

@@ -27,6 +27,7 @@ final class WindowCoordinator {
         if page == "settings" { window.minSize = NSSize(width: 900, height: 600) }
         window.title = "AI Usage Sentinel · " + L10n.t(page == "history" ? "Event History" : page == "resets" ? "Reset Watch & Forecast" : page.capitalized)
         window.contentView = NSHostingView(rootView: LocalizedWindowContent(content: content).environmentObject(store))
+        window.tabbingMode = .disallowed
         window.isReleasedWhenClosed = false; window.center()
         windows[page] = window
         window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps: true)

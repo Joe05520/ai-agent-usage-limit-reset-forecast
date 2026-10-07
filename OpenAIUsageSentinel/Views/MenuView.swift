@@ -41,6 +41,7 @@ struct MenuView: View {
             }
             Divider()
             HStack { Label(L10n.t("Reset Signals"), systemImage: "bolt.fill").font(.headline); Spacer(); Button { store.openWindow?("resets") } label: { Image(systemName: "waveform.path").help(L10n.t("Reset Watch & Forecast")) }.buttonStyle(.link); Button(L10n.t("History")) { store.openWindow?("history") }.buttonStyle(.link) }
+            Toggle(L10n.t("Notify reset messages ≥50%"), isOn: Binding(get: { store.settings.reliableAlerts }, set: { store.setReliableAlerts($0) }))
             if store.activeEvents.isEmpty {
                 Text(L10n.t("No fresh irregular reset signal")).font(.subheadline).foregroundStyle(.secondary)
                 Text(L10n.t("Irregular reset: no known schedule")).font(.caption).foregroundStyle(.secondary)

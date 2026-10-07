@@ -75,6 +75,7 @@ public struct ResetEvent: Codable, Identifiable, Equatable, Sendable {
     public var explanation: String
     public var ownAccountReset: Bool
     public var timeline: [ConfidencePoint]
+    public var notifiedReliable: Bool? = nil
     public var notifiedRank: Int = -1
     public var notifiedOwnReset: Bool = false
     public var ownEvidenceConfidence: Double? = nil
