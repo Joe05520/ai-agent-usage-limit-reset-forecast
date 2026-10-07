@@ -49,6 +49,7 @@ struct EventDetailView: View {
                 Text((event.isMockEvidence ? "[MOCK] " : "") + event.type.label).font(.title2.bold())
                 if event.isMockEvidence { Text(L10n.t("Test fixture · no real quota was changed.")).font(.caption).foregroundStyle(.orange) }
                 HStack { Text(event.product); if let model = event.model { Text(model.capitalized) }; Spacer(); Label("\(Int(event.confidence*100))% · \(event.level.label)", systemImage: "circle.fill").foregroundStyle(event.level.color) }
+                ProgressView(value: event.confidence).tint(event.level.color).accessibilityLabel(L10n.t("Confidence %"))
                 LabeledContent(L10n.t("First detected"), value: event.detectedAt.localizedFormatted())
                 LabeledContent(L10n.t("Last evidence update"), value: event.updatedAt.localizedFormatted())
                 LabeledContent(L10n.t("Reports"), value: String(event.reportCount))

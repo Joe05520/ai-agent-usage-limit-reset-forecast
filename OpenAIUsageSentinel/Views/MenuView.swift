@@ -109,6 +109,7 @@ struct EventRow: View {
                 Spacer()
             }
             Text(L10n.f("%@ · %d%% · %d reports · %@", event.product, Int(event.confidence*100), event.reportCount, event.level.label)).font(.caption).foregroundStyle(.secondary)
+            ProgressView(value: event.confidence).tint(event.level.color)
         }.contentShape(Rectangle())
     }
 }

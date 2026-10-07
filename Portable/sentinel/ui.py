@@ -267,7 +267,10 @@ class SentinelWindow(QMainWindow):
                 pieces.append(f"<p>Data from <a href='{escaped(s["viaURL"],quote=True)}'>{escaped(s["viaURL"])}</a> · source weight is not a reset probability.</p>")
             stamp = datetime.fromtimestamp(s["publishedAt"]).astimezone().isoformat() if s.get("publishedAt") else "unknown"
             pieces.append(f"<hr><p><b>{escaped(s['platform'])}</b> · {escaped(stamp)}<br><a href='{escaped(s['url'],quote=True)}'>{escaped(s['title'])}</a></p><p>{escaped(s['snippet'])}</p><p>Fetched: {datetime.fromtimestamp(s['fetchedAt']).astimezone().isoformat()} · {escaped(s.get('author') or '')}</p>")
-        browser.setHtml("".join(pieces)); dialog.setCentralWidget(browser); dialog.show(); self.event_dialog = dialog
+        browser.setHtml("".join(pieces))
+        content = QWidget(); layout = QVBoxLayout(content)
+        meter = QProgressBar(); meter.setRange(0,100); meter.setValue(round(event["confidence"]*100)); meter.setFormat("%p%"); layout.addWidget(meter); layout.addWidget(browser)
+        dialog.setCentralWidget(content); dialog.show(); self.event_dialog = dialog
 
     def change_visual(self, key, value):
         self.option(key, value); self.render()

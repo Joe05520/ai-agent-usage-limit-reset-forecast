@@ -1818,5 +1818,33 @@
     "zh-Hans": "公开转载可能遗漏帖文、投票选项或票数。请打开原始 X 投票查看实时结果。App 不会自动投票。",
     "ja": "転載には投稿や投票項目・票数の欠落があり得ます。最新結果は元のX投票で確認。自動投票は行いません。",
     "ko": "공개 피드는 게시물, 투표 선택지나 득표 수를 누락할 수 있습니다. 실시간 결과는 원본 X 투표에서 확인하세요. 자동 투표는 하지 않습니다."
+  },
+  "Previous month": {
+    "en": "Previous month",
+    "zh-Hant": "上一月",
+    "zh-Hans": "上一月",
+    "ja": "前の月",
+    "ko": "이전 달"
+  },
+  "Next month": {
+    "en": "Next month",
+    "zh-Hant": "下一月",
+    "zh-Hans": "下一月",
+    "ja": "次の月",
+    "ko": "다음 달"
+  },
+  "No announcements recorded for this date.": {
+    "en": "No announcements recorded for this date.",
+    "zh-Hant": "這一天沒有收錄公告。",
+    "zh-Hans": "这一天没有收录公告。",
+    "ja": "この日の発表記録はありません。",
+    "ko": "이 날짜에 기록된 발표가 없습니다."
+  },
+  "Source credibility": {
+    "en": "Source credibility",
+    "zh-Hant": "來源可信度",
+    "zh-Hans": "来源可信度",
+    "ja": "情報源の信頼度",
+    "ko": "출처 신뢰도"
   }
 }
