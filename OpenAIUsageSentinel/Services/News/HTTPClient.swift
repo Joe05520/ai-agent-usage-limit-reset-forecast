@@ -29,7 +29,7 @@ public actor HTTPClient {
             if let modified = entry.modified { request.setValue(modified, forHTTPHeaderField: "If-Modified-Since") }
         }
         do {
-            let (data, response) = try await SecureTransport.read(request, limit: 5_000_000, redirectHosts: ["openai.com", "www.openai.com", "help.openai.com", "status.openai.com", "developers.openai.com", "api.github.com", "github.com", "www.reddit.com", "reddit.com", "hn.algolia.com"])
+            let (data, response) = try await SecureTransport.read(request, limit: 5_000_000, redirectHosts: ["openai.com", "www.openai.com", "help.openai.com", "status.openai.com", "developers.openai.com", "api.github.com", "github.com", "www.reddit.com", "reddit.com", "hn.algolia.com", "codex-resets.com", "codex-reset.com"])
             let http = response
             if http.statusCode == 304, let saved = cache[key] { failures[key] = 0; blockedUntil[key] = nil; return saved.data }
             guard http.statusCode == 200 else {

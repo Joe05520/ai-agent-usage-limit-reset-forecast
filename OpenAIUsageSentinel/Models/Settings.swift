@@ -15,6 +15,11 @@ public struct AppSettings: Codable, Equatable, Sendable {
     public var github = true
     public var reddit = true
     public var hackerNews = false
+    public var resetWatchEnabled: Bool? = nil
+    public var watchResets: Bool {
+        get { resetWatchEnabled ?? true }
+        set { resetWatchEnabled = newValue }
+    }
     public var cliPath = ""
     public var manualMode = false
     public var agentSelection: AgentKind?

@@ -2,9 +2,9 @@
 
 <img src="docs/favicon.svg" width="80" height="80" alt="AI Usage Sentinel logo">
 
-# AI Agent Usage Sentinel
+# AI Agent Usage Limit Monitor & Reset Forecast
 
-**AI Agent Quota Monitor & Reset Alerts — Codex, Claude Code, Gemini & Grok local imports.**
+**AI Usage Sentinel · Agent Usage Limit Monitor & Reset Forecast — Codex, Claude Code, Gemini & Grok local imports.**
 
 Track remaining AI usage, next regular resets and unexpected quota increases. Native macOS menu bar app; Windows/Linux tray beta. Five-stage reminders and source-linked reset alerts.
 
@@ -122,3 +122,14 @@ Scenarios cover scheduled reset, unexpected personal reset, early Reddit reports
 Please share the project if it helps, report reproducible problems, improve translations or add a **documented** provider adapter. [Contribution guide](CONTRIBUTING.md) · [Issue templates](https://github.com/Joe05520/usage-sentinel/issues/new/choose).
 
 MIT licensed original source. Qt/Python distributions retain their upstream licenses; see [third-party notices](THIRD_PARTY_NOTICES.md). An independent community project, not affiliated with or endorsed by OpenAI, Anthropic, Google or xAI.
+
+
+### Priority reset watch (1.8)
+
+- Tibo is **[@thsottiaux](https://x.com/thsottiaux)**. His reset-related polls, hints and replies are tracked separately from completed reset announcements. Open the original X poll for options and live counts.
+- **[@codex_resets](https://x.com/codex_resets)** has a user-requested **75% source weight**. The priority Tibo radar has an editorial **85%** weight. These are not calibrated probabilities that a reset will happen. Age decay still applies.
+- [Reset Watch & Forecast](https://joe05520.github.io/usage-sentinel/resets.html) includes a sourced latest announcement, watch outlook, calendar, filters, and five languages.
+- Data from [Codex Resets](https://codex-resets.com), via its [free documented v1 API](https://codex-resets.com/api/docs); Tibo radar data from [Codex Reset](https://codex-reset.com), via a public read-only feed. These secondary services may omit posts and do **not** provide full direct X-account monitoring. The radar schema is best effort. No paid X API, cookies or credentials are used.
+- Original post URL and data-provider attribution are preserved. Observed entries without explicit X-post attribution are excluded. No source is promoted to official confirmation merely because it quotes Tibo. Duplicate mirrors do not add weight; polls and forecasts do not merge into your actual account-reset event.
+- Polls/hints expire (normally 24h); old historical announcements stay in the calendar without new notifications. No next irregular-reset date is invented. A source-supplied target is explicitly marked execution-unverified.
+- Settings → Sources can disable the priority watch. Native snapshots and account history remain local; the public page reads only public news.

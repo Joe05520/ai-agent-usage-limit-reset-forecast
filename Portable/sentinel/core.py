@@ -138,6 +138,9 @@ def level(score):
 
 
 def classify(source):
+    from .reset_watch import classify_watch
+    watched = classify_watch(source)
+    if watched: return watched
     text = (source["title"]+" "+source["snippet"]).lower()
     if any(v in text for v in ("password reset", "factory reset", "not reset", "didn't reset", "when will", "how to reset", "doesn't reset", "no reset", "never reset")):
         return None
@@ -152,7 +155,8 @@ def classify(source):
 
 def dedup(sources):
     result, urls, texts, authors = [], set(), set(), set()
-    for s in sources:
+    from .reset_watch import weight
+    for s in sorted(sources, key=lambda row: (row.get("official",False),weight(row) or 0), reverse=True):
         normalized = re.sub(r"[^a-z0-9]+", " ", re.sub(r"https?://\S+", "", (s["title"]+" "+s["snippet"]).lower())).strip()
         author = (s["platform"], s.get("author")) if s.get("author") else None
         if s["url"] in urls or normalized in texts or (author and author in authors):
@@ -169,7 +173,11 @@ def confidence(sources, own, now, own_confidence=.6):
     if official:
         return .95
     reports = [s for s in sources if not s["platform"].startswith("Local ") and not s["official"]]
-    score = own_confidence if own else 0
+    from .reset_watch import weight
+    watched = [s for s in reports if weight(s) is not None]
+    watch_score = max(((weight(s) or 0) * (1 if now-(s.get("publishedAt") or 0) <= 3600 else .9 if now-(s.get("publishedAt") or 0) <= 10800 else .7 if now-(s.get("publishedAt") or 0) <= 43200 else .5 if now-(s.get("publishedAt") or 0) <= 86400 else .25) for s in watched if s.get("expiresAt",float("inf")) > now), default=0)
+    reports = [s for s in reports if weight(s) is None]
+    score = (own_confidence if own else 0)+watch_score
     for s in reports:
         age = max(0, now-(s.get("publishedAt") or s["fetchedAt"])) / 3600
         decay = 1 if age <= 1 else .9 if age <= 3 else .7 if age <= 12 else .5 if age <= 24 else .25
@@ -183,6 +191,13 @@ def confidence(sources, own, now, own_confidence=.6):
 
 def merge(events, signals, personal, now):
     events = json.loads(json.dumps(events))
+    from .reset_watch import weight
+    completions = [sig["source"]["publishedAt"] for sig in signals if sig["type"] == "suspectedGlobal" and weight(sig["source"]) is not None and sig["source"].get("publishedAt")]
+    latest = max(completions,default=0)
+    for event in events:
+        if event["type"] in ("forecast","poll") and event["product"] == "Codex":
+            for source in event["sources"]:
+                if (source.get("publishedAt") or float("inf")) < latest: source["expiresAt"] = latest
     for entry in personal:
         match = next((e for e in events if e["product"] == entry["product"] and e["type"] in ("suspectedGlobal", "accountUnexpected") and abs(now-e["updated"]) < 21600), None) if entry["own"] else None
         if match:
@@ -191,10 +206,21 @@ def merge(events, signals, personal, now):
             match["confidence"] = max(match["confidence"], confidence(match["sources"], True, now, match.get("own_confidence",.6)))
             match["timeline"].append(dict(at=now, score=match["confidence"]))
         else: events.append(entry)
-    for signal in signals:
+    from .reset_watch import weight
+    for signal in sorted(signals,key=lambda sig: weight(sig["source"]) or 0,reverse=True):
         s = signal["source"]
         when = s.get("publishedAt")
-        if when is None or now-when > 86400 or when > now+300:
+        if signal["type"] in ("forecast","poll") and when is not None and when < latest: continue
+        if when is None or now-when > 86400 or when > now+300 or s.get("expiresAt",float("inf")) <= now:
+            continue
+        prior_event = next((e for e in events if any(v["url"] == s["url"] for v in e["sources"])),None)
+        if prior_event:
+            prior = next(v for v in prior_event["sources"] if v["url"] == s["url"])
+            if (weight(s) or 0) >= (weight(prior) or 0):
+                prior_event["sources"] = [s if v["url"] == s["url"] else v for v in prior_event["sources"]]
+                if prior_event["type"] in ("forecast","poll") and signal["type"] not in ("forecast","poll"):
+                    prior_event.update(type=signal["type"],notified=-1,updated=now)
+                prior_event["confidence"] = confidence(prior_event["sources"],prior_event["own"],now,prior_event.get("own_confidence",.6))
             continue
         family = ("suspectedGlobal", "automaticGlobal", "accountUnexpected")
         match = next((e for e in events if e["product"] == signal["product"] and e.get("model") == signal["model"] and (e["type"] == signal["type"] or e["type"] in family and signal["type"] in family) and abs(when-e["at"]) < 21600), None)
@@ -203,13 +229,14 @@ def merge(events, signals, personal, now):
             events.append(match)
         previous = match["confidence"]
         match["sources"] = dedup(match["sources"]+[s]); match["updated"] = max(match["updated"], when)
-        match["confidence"] = max(previous, confidence(match["sources"], match["own"], now, match.get("own_confidence",.6)))
+        match["confidence"] = confidence(match["sources"], match["own"], now, match.get("own_confidence",.6))
         if s["official"]: match["type"] = signal["type"]
         if match["confidence"] != previous: match["timeline"].append(dict(at=now, score=match["confidence"]))
     return [e for e in events if now-e["at"] < 365*86400]
 
 
 def should_notify(event, settings, now):
+    if event["type"] in ("forecast","poll") and all(s.get("expiresAt",float("inf")) <= now for s in event["sources"]): return False
     if event["type"] in ("scheduled", "banked", "purchased") or now-event["updated"] > 86400:
         return False
     if event["own"] and not event["notified_own"] and settings.get("notify_personal", True):

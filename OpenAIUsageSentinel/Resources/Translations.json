@@ -1671,5 +1671,152 @@
     "zh-Hans": "动画遵循“减少动态效果”。模式只改变显示，检测与提醒仍持续运行。",
     "ja": "アニメーションは視差効果を減らす設定に従います。モードは表示のみを変更し、検出と通知は継続します。",
     "ko": "애니메이션은 동작 줄이기 설정을 따릅니다. 모드는 표시만 바꾸며 감지와 알림은 계속 작동합니다。"
+  },
+  "Reset forecast / teaser": {
+    "en": "Reset forecast / teaser",
+    "zh-Hant": "重置預告／展望",
+    "zh-Hans": "重置预告／展望",
+    "ja": "リセット予告／見通し",
+    "ko": "초기화 예고／전망"
+  },
+  "Reset-related poll": {
+    "en": "Reset-related poll",
+    "zh-Hant": "重置相關投票",
+    "zh-Hans": "重置相关投票",
+    "ja": "リセット関連の投票",
+    "ko": "초기화 관련 투표"
+  },
+  "Priority reset watch · Tibo / Codex Resets": {
+    "en": "Priority reset watch · Tibo / Codex Resets",
+    "zh-Hant": "優先重置追蹤 · Tibo / Codex Resets",
+    "zh-Hans": "优先重置追踪 · Tibo / Codex Resets",
+    "ja": "優先リセット監視 · Tibo / Codex Resets",
+    "ko": "우선 초기화 추적 · Tibo / Codex Resets"
+  },
+  "Tibo @thsottiaux: 85% priority weight. @codex_resets: 75% source weight. Public secondary feeds include polls and teasers; no X login or paid API. Weights are not reset probabilities.": {
+    "en": "Tibo @thsottiaux: 85% priority weight. @codex_resets: 75% source weight. Public secondary feeds include polls and teasers; no X login or paid API. Weights are not reset probabilities.",
+    "zh-Hant": "Tibo @thsottiaux：85% 優先權重；@codex_resets：75% 來源權重。公開轉載包含投票與預告，不需 X 登入或付費 API。權重不是重置機率。",
+    "zh-Hans": "Tibo @thsottiaux：85% 优先权重；@codex_resets：75% 来源权重。公开转载包含投票与预告，无需 X 登录或付费 API。权重不是重置概率。",
+    "ja": "Tibo @thsottiaux：優先重み85%、@codex_resets：重み75%。公開転載から投票と予告を取得。Xログインや有料APIは不要。重みはリセット確率ではありません。",
+    "ko": "Tibo @thsottiaux 우선 가중치 85%, @codex_resets 출처 가중치 75%. 공개 피드로 투표와 예고를 확인합니다. X 로그인이나 유료 API는 필요하지 않으며 가중치는 확률이 아닙니다."
+  },
+  "Data attribution ↗": {
+    "en": "Data attribution ↗",
+    "zh-Hant": "資料來源 ↗",
+    "zh-Hans": "数据来源 ↗",
+    "ja": "データ出典 ↗",
+    "ko": "데이터 출처 ↗"
+  },
+  "Source weight: %d%% · not a reset probability": {
+    "en": "Source weight: %d%% · not a reset probability",
+    "zh-Hant": "來源權重：%d%% · 不是重置機率",
+    "zh-Hans": "来源权重：%d%% · 不是重置概率",
+    "ja": "情報源の重み：%d%% · リセット確率ではありません",
+    "ko": "출처 가중치: %d%% · 초기화 확률 아님"
+  },
+  "Watch expires": {
+    "en": "Watch expires",
+    "zh-Hant": "關注到期時間",
+    "zh-Hans": "关注到期时间",
+    "ja": "監視の有効期限",
+    "ko": "관찰 만료"
+  },
+  "Announced target · execution unverified": {
+    "en": "Announced target · execution unverified",
+    "zh-Hant": "公告目標 · 執行尚未核實",
+    "zh-Hans": "公告目标 · 执行尚未核实",
+    "ja": "発表された目標 · 実施未確認",
+    "ko": "발표된 목표 · 실행 미확인"
+  },
+  "Reset Watch & Forecast": {
+    "en": "Reset Watch & Forecast",
+    "zh-Hant": "重置追蹤與展望",
+    "zh-Hans": "重置追踪与展望",
+    "ja": "リセット監視と見通し",
+    "ko": "초기화 추적 및 전망"
+  },
+  "Polls and teasers are early evidence, not completed resets. Source weights are not probabilities of a future reset.": {
+    "en": "Polls and teasers are early evidence, not completed resets. Source weights are not probabilities of a future reset.",
+    "zh-Hant": "投票與預告是早期消息，並非重置完成。來源權重不是未來重置的機率。",
+    "zh-Hans": "投票与预告是早期消息，并非重置完成。来源权重不是未来重置的概率。",
+    "ja": "投票や予告は初期情報であり、完了を意味しません。重みは将来のリセット確率ではありません。",
+    "ko": "투표와 예고는 초기 정보이며 완료된 초기화가 아닙니다. 가중치는 미래 초기화 확률이 아닙니다."
+  },
+  "Priority watch": {
+    "en": "Priority watch",
+    "zh-Hant": "優先關注",
+    "zh-Hans": "优先关注",
+    "ja": "優先監視",
+    "ko": "우선 관찰"
+  },
+  "85% editorial weight · polls & replies": {
+    "en": "85% editorial weight · polls & replies",
+    "zh-Hant": "85% 編輯權重 · 投票與回覆",
+    "zh-Hans": "85% 编辑权重 · 投票与回复",
+    "ja": "編集上の重み85% · 投票と返信",
+    "ko": "편집 가중치 85% · 투표와 답글"
+  },
+  "Trusted community tracker": {
+    "en": "Trusted community tracker",
+    "zh-Hant": "重點社群追蹤來源",
+    "zh-Hans": "重点社区追踪来源",
+    "ja": "注目のコミュニティ情報源",
+    "ko": "주요 커뮤니티 출처"
+  },
+  "75% user-selected source weight": {
+    "en": "75% user-selected source weight",
+    "zh-Hant": "75% 使用者指定來源權重",
+    "zh-Hans": "75% 用户指定来源权重",
+    "ja": "指定の情報源重み75%",
+    "ko": "사용자 지정 출처 가중치 75%"
+  },
+  "Possible reset · watch active": {
+    "en": "Possible reset · watch active",
+    "zh-Hant": "可能重置 · 關注中",
+    "zh-Hans": "可能重置 · 关注中",
+    "ja": "リセットの可能性 · 監視中",
+    "ko": "초기화 가능성 · 관찰 중"
+  },
+  "Announcement calendar · last 84 days": {
+    "en": "Announcement calendar · last 84 days",
+    "zh-Hant": "公告月曆 · 最近 84 天",
+    "zh-Hans": "公告日历 · 最近 84 天",
+    "ja": "発表カレンダー · 過去84日",
+    "ko": "발표 달력 · 최근 84일"
+  },
+  "Accent: reported reset announcement · orange: banked offer · empty: no record. Historical posts do not trigger new alerts.": {
+    "en": "Accent: reported reset announcement · orange: banked offer · empty: no record. Historical posts do not trigger new alerts.",
+    "zh-Hant": "主色：轉載重置公告 · 橘色：banked 額度 · 空白：沒有紀錄。歷史貼文不觸發新通知。",
+    "zh-Hans": "主色：转载重置公告 · 橙色：banked 额度 · 空白：没有记录。历史帖文不触发新通知。",
+    "ja": "主色：転載発表 · 橙：banked枠 · 空白：記録なし。過去の投稿は新着通知になりません。",
+    "ko": "기본색: 전달된 초기화 발표 · 주황: banked 한도 · 빈칸: 기록 없음. 과거 게시물은 새 알림이 아닙니다."
+  },
+  "Latest polls, teasers & announcements": {
+    "en": "Latest polls, teasers & announcements",
+    "zh-Hant": "最新投票、預告與公告",
+    "zh-Hans": "最新投票、预告与公告",
+    "ja": "最新の投票・予告・発表",
+    "ko": "최신 투표, 예고 및 발표"
+  },
+  "No public watch data yet. Refresh or check Diagnostics; missing data stays unknown.": {
+    "en": "No public watch data yet. Refresh or check Diagnostics; missing data stays unknown.",
+    "zh-Hant": "尚無公開追蹤資料。請更新或查看診斷；缺少資料保持未知。",
+    "zh-Hans": "暂无公开追踪数据。请更新或查看诊断；缺少数据保持未知。",
+    "ja": "公開データなし。更新または診断を確認してください。欠落データは不明のままです。",
+    "ko": "공개 추적 데이터가 없습니다. 새로고침하거나 진단을 확인하세요. 누락된 데이터는 알 수 없음으로 표시됩니다."
+  },
+  "Original X post ↗": {
+    "en": "Original X post ↗",
+    "zh-Hant": "原始 X 貼文 ↗",
+    "zh-Hans": "原始 X 帖文 ↗",
+    "ja": "元の X 投稿 ↗",
+    "ko": "원본 X 게시물 ↗"
+  },
+  "Secondary public feeds may omit posts, poll options or vote counts. Open the original poll on X for live results. No automated votes are cast.": {
+    "en": "Secondary public feeds may omit posts, poll options or vote counts. Open the original poll on X for live results. No automated votes are cast.",
+    "zh-Hant": "公開轉載可能漏掉貼文、投票選項或票數。請開啟原始 X 投票查看即時結果。App 不會自動投票。",
+    "zh-Hans": "公开转载可能遗漏帖文、投票选项或票数。请打开原始 X 投票查看实时结果。App 不会自动投票。",
+    "ja": "転載には投稿や投票項目・票数の欠落があり得ます。最新結果は元のX投票で確認。自動投票は行いません。",
+    "ko": "공개 피드는 게시물, 투표 선택지나 득표 수를 누락할 수 있습니다. 실시간 결과는 원본 X 투표에서 확인하세요. 자동 투표는 하지 않습니다."
   }
 }

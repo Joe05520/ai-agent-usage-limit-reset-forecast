@@ -18,6 +18,7 @@ public enum NotificationText {
         let body = "\(event.product) · \(Int(event.confidence*100))% · \(event.level.label)\n"
             + (changes.isEmpty ? L10n.f("%d public reports", event.reportCount) : changes) + "\n"
             + L10n.f("Sources: %@. %@", platforms, L10n.t(event.level == .confirmed ? "Read source for eligibility." : "No official confirmation in monitored sources."))
+            + "\n" + event.sources.prefix(2).map { $0.url.absoluteString }.joined(separator: "\n")
         return NotificationCopy(title: title, body: body)
     }
     public static func reminder(_ reminder: UsageReminder, mock: Bool) -> NotificationCopy {

@@ -3,6 +3,7 @@ import CryptoKit
 
 public enum SignalClassifier {
     public static func classify(_ source: SignalSource) -> ResetSignal? {
+        if let watched = ResetWatchPolicy.classify(source) { return watched }
         let text = (source.title + " " + source.snippet).lowercased()
         let context = ["claude", "gemini", "grok", "codex", "chatgpt", "openai", "astra", "work", "quota", "usage", "allowance", "weekly", "limit"].contains { text.contains($0) }
         let negative = ["password reset", "reset password", "factory reset", "doesn't reset", "didn't reset", "not reset", "did not reset", "never reset", "no reset", "hasn't reset", "when does", "when will", "how do i reset", "how to reset"].contains { text.contains($0) }

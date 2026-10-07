@@ -7,3 +7,6 @@ Windows/Linux distributions dynamically load Qt for Python (PySide6, Shiboken6 a
 PyInstaller is distributed under GPL v2 with a bootloader exception allowing distribution of bundled applications under their own terms. Its included license and exception remain with the binaries. Python is covered by the PSF license. The package also includes upstream component license files from the installed wheels.
 
 Vendor names are used only to identify integrations. This project is independent and is not affiliated with or endorsed by OpenAI, Anthropic, Google or xAI.
+
+
+Public reset metadata: Data from [Codex Resets](https://codex-resets.com), whose [free API documentation](https://codex-resets.com/api/docs) requires linked attribution wherever data appears. Tibo radar metadata is linked to [Codex Reset](https://codex-reset.com) and the original X post. These are independent secondary sources. No site branding, illustrations, proprietary scoring model or layout code is copied. Website excerpts are limited and linked to originals.

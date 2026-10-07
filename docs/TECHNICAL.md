@@ -244,3 +244,14 @@ open -n '~/Applications/Usage Sentinel.app' \
 ```
 
 It uses isolated mock state, runs all five scenarios, records each classification and successful notification submission, and retains those mock events for notification-click inspection. It leaves the mock instance running; quit that instance after testing. The live instance can open a mock notification's event from the separate mock database without adding it to live history. Native delivered-notification records are asynchronous; Diagnostics queries the latest Notification Center state.
+
+
+## Priority watch and forecast semantics (1.8)
+
+`ResetWatchSources.swift` isolates the documented free `codex-resets.com/api/v1/{status,resets}` API and best-effort public `codex-reset.com/api/feed` radar. Each retains `viaURL` attribution plus a validated original X status URL, author, publication/fetch timestamp and optional expiry/announced target. Only explicitly attributed X posts are imported; observed-only mirror records are skipped.
+
+Tibo is `thsottiaux`, not an unrelated account named Tibo. Codex Resets mirror/direct handle weight is 0.75; Tibo priority radar weight is 0.85. These are user/editorial trust policies, not empirical likelihoods. Time decay applies; mirrored copies contribute the maximum weight once, never a sum. Official confirmation still requires official evidence.
+
+`forecast` and `poll` are separate event types. Reset-related voting replies can use an explicit parent or clearly labeled secondary thread context. Unrelated polls, ordinary posts and negated resets are rejected. Completion wording upgrades the same original post and re-arms one announcement alert; a later completion expires previous hints. Personal account jumps only correlate with actual reset-report families, never polls. Old history is cached separately from notification events.
+
+Secondary coverage and radar schema are not guaranteed. X poll options/counts are not synthesized. Source failures remain visible, bounded HTTP reads/retry/backoff/cache are reused. Website requests omit credentials; no account data is sent to either feed.

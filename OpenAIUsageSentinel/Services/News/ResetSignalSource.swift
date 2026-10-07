@@ -119,6 +119,7 @@ public enum SourceCatalog {
         }
         if settings.github { sources.append(GitHubCodexSource()) }
         if settings.reddit { sources += [RedditSource(), RedditSource(subreddit: "OpenaiCodex")] }
+        if settings.watchResets { sources += [CodexResetsSource(), TiboRadarSource()] }
         if settings.hackerNews { sources.append(HackerNewsSource()) }
         return sources
     }

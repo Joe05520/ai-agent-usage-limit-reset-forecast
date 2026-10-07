@@ -1,7 +1,7 @@
 import Foundation
 
 public enum ResetEventType: String, Codable, CaseIterable, Sendable {
-    case scheduled, banked, purchased, automaticGlobal, suspectedGlobal, accountUnexpected, complimentary, unknown
+    case scheduled, banked, purchased, automaticGlobal, suspectedGlobal, accountUnexpected, complimentary, forecast, poll, unknown
     public var label: String { L10n.t(englishLabel) }
     public var englishLabel: String {
         switch self {
@@ -12,6 +12,8 @@ public enum ResetEventType: String, Codable, CaseIterable, Sendable {
         case .suspectedGlobal: return "Possible global reset"
         case .accountUnexpected: return "Unexpected account reset"
         case .complimentary: return "Complimentary reset offer"
+        case .forecast: return "Reset forecast / teaser"
+        case .poll: return "Reset-related poll"
         case .unknown: return "Unclassified quota increase"
         }
     }
@@ -34,6 +36,11 @@ public struct SignalSource: Codable, Identifiable, Equatable, Sendable {
     public var author: String?
     public var snippet: String
     public var official: Bool
+    // Optional additions preserve old persisted source records.
+    public var viaURL: URL? = nil
+    public var watchContext: String? = nil
+    public var expiresAt: Date? = nil
+    public var announcedTarget: Date? = nil
     public var isAccountEvidence: Bool { platform.hasPrefix("Local ") || platform == "Manual" }
     public var screenshotEvidence: Bool = false
     public var modifiedAt: Date? = nil
@@ -74,7 +81,7 @@ public struct ResetEvent: Codable, Identifiable, Equatable, Sendable {
     public var level: ConfidenceLevel { .from(confidence) }
     public var isMockEvidence: Bool { sources.contains { ($0.url.host == "example.com" && $0.url.path.hasPrefix("/mock/")) || $0.author == "OpenAI (MOCK)" || $0.snippet.contains("Mock · scenario") } }
     public var reportCount: Int { sources.filter { !$0.official && !$0.platform.hasPrefix("Local ") && $0.platform != "Manual" }.count }
-    public var isActive: Bool { updatedAt > Date().addingTimeInterval(-86400) && type != .scheduled && type != .banked && type != .purchased }
+    public var isActive: Bool { !([ResetEventType.forecast, .poll].contains(type) && sources.allSatisfy { $0.expiresAt.map { $0 <= Date() } ?? false }) && updatedAt > Date().addingTimeInterval(-86400) && type != .scheduled && type != .banked && type != .purchased }
 }
 public struct ResetIntent: Codable, Sendable {
     public var type: ResetEventType

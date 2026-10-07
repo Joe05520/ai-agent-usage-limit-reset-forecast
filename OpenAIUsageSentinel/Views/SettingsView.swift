@@ -158,7 +158,8 @@ struct SettingsView: View {
                 Toggle(L10n.t("GitHub · openai/codex"), isOn: $store.settings.github)
                 Toggle(L10n.t("Reddit · r/codex"), isOn: $store.settings.reddit)
                 Toggle(L10n.t("Hacker News"), isOn: $store.settings.hackerNews)
-                Text(L10n.t("X: unavailable until an authorized API/feed is configured. GitHub Discussions and other communities can be added as adapters.")).font(.caption).foregroundStyle(.secondary)
+                Toggle(L10n.t("Priority reset watch · Tibo / Codex Resets"), isOn: $store.settings.watchResets)
+                Text(L10n.t("Tibo @thsottiaux: 85% priority weight. @codex_resets: 75% source weight. Public secondary feeds include polls and teasers; no X login or paid API. Weights are not reset probabilities.")).font(.caption).foregroundStyle(.secondary)
             }
             }
             if selectedCategory == .provider {

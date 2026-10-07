@@ -14,6 +14,8 @@ CATALOG = {
     "Codex Releases": ("https://github.com/openai/codex/releases.atom", "rss", True),
     "GitHub": ("https://api.github.com/repos/openai/codex/issues?state=all&sort=created&direction=desc&per_page=50", "github", False),
     "Reddit": ("https://www.reddit.com/r/codex/new.json?limit=50", "reddit", False),
+    "Codex Resets · 75%": ("https://codex-resets.com/api/v1/status", "reset_status", False),
+    "Tibo radar · 85%": ("https://codex-reset.com/api/feed", "radar", False),
     "Hacker News": ("https://hn.algolia.com/api/v1/search_by_date?query=codex%20reset&tags=story&hitsPerPage=30", "hn", False),
 }
 
@@ -44,7 +46,10 @@ def fetch(name, cache=None):
                 except (ValueError, TypeError): published = None
             if link.startswith("https://"):
                 sources.append(dict(title=text(title), url=link, platform=name if official else name, publishedAt=published, fetchedAt=now, author=author, snippet=text(snippet), official=official))
-        if kind == "github":
+        if kind in ("reset_status", "radar"):
+            from .reset_watch import parse_feed
+            sources = [s["source"] for s in parse_feed(json.loads(body),kind,now)]
+        elif kind == "github":
             for row in json.loads(body):
                 if "pull_request" in row: continue
                 source(row["title"], row["html_url"], row.get("created_at"), row.get("body"), (row.get("user") or {}).get("login"))

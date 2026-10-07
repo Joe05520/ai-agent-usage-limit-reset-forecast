@@ -8,6 +8,7 @@ final class SentinelStore: ObservableObject {
     @Published var settings = AppSettings() { didSet { L10n.language = settings.language } }
     @Published var usage: UsageState?
     @Published var usageAvailable = false
+    @Published var watchSignals: [ResetSignal] = []
     @Published var events: [ResetEvent] = []
     @Published var history: [UsageSnapshot] = []
     @Published var diagnostics: [SourceDiagnostic] = []
@@ -54,6 +55,7 @@ final class SentinelStore: ObservableObject {
         do {
             database = try LocalDatabase(url: root.appendingPathComponent(isMock ? "mock.sqlite" : "sentinel.sqlite"))
             if let saved = try database?.load(AppSettings.self, key: "settings") { settings = saved }
+            watchSignals = try database?.load([ResetSignal].self, key: "resetWatch") ?? []
             events = try database?.load([ResetEvent].self, key: "events") ?? []
             // Reclassify stored public evidence after classifier improvements; keep its history.
             for index in events.indices where !events[index].ownAccountReset {
@@ -208,6 +210,12 @@ final class SentinelStore: ObservableObject {
             var signals: [ResetSignal] = []
             for await (name, start, result, error) in group {
                 signals += result ?? []
+                if let result, name.hasPrefix("Codex Resets") || name.hasPrefix("Tibo radar") {
+                    let host = name.hasPrefix("Codex Resets") ? "codex-resets.com" : "codex-reset.com"
+                    watchSignals.removeAll { $0.source.viaURL?.host == host }
+                    watchSignals += result
+                    persist(watchSignals, key: "resetWatch")
+                }
                 recordDiagnostic(name, status: error ?? "OK · \(result?.count ?? 0) matching reports", started: start, success: error == nil)
             }
             events = EventEngine.merge(signals: signals, personal: [], into: events, now: Date())

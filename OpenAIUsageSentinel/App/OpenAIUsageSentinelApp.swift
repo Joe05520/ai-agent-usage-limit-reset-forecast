@@ -12,6 +12,9 @@ struct OpenAIUsageSentinelApp: App {
         model.openWindow = { [weak model] page in if let model { windows.show(page, store: model) } }
         _store = StateObject(wrappedValue: model)
         delegate.onReopen = { [weak model] in model?.openWindow?("settings") }
+        if ProcessInfo.processInfo.arguments.contains("--show-resets") {
+            Task { @MainActor in windows.show("resets", store: model) }
+        }
         if ProcessInfo.processInfo.arguments.contains("--show-settings") {
             Task { @MainActor in windows.show("settings", store: model) }
         }

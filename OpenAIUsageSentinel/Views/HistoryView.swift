@@ -17,7 +17,9 @@ struct HistoryView: View {
         } detail: {
             if let event = (store.externalMockEvent?.id == store.selectedEventID ? store.externalMockEvent : nil) ?? store.events.first(where: { $0.id == store.selectedEventID }) { EventDetailView(event: event) }
             else {
-                VStack(alignment: .leading, spacing: 16) {
+                ScrollView { VStack(alignment: .leading, spacing: 16) {
+                    ResetWatchView()
+                    Divider()
                     Text(L10n.t("Usage History")).font(.title2.bold())
                     Text(L10n.t("35 days of local snapshots. Select an event to inspect its evidence.")).foregroundStyle(.secondary)
                     if store.history.isEmpty { Text(L10n.t("Snapshots appear after the first successful account read.")) }
@@ -33,7 +35,7 @@ struct HistoryView: View {
                     }
                     Text(L10n.t("Irregular reset: no known schedule")).font(.caption).foregroundStyle(.secondary)
                     Spacer()
-                }.padding(24)
+                }.padding(24) }
             }
         }.frame(minWidth: 820, minHeight: 530)
     }
@@ -78,6 +80,12 @@ struct EventDetailView: View {
                 ForEach(event.sources) { source in
                     VStack(alignment: .leading, spacing: 5) {
                         HStack { Text(source.platform).font(.headline); Spacer(); if SafeURL.external(source.url) { Link(L10n.t("Open ↗"), destination: source.url) } }
+                        if let via = source.viaURL, SafeURL.external(via) {
+                            Link(L10n.t("Data attribution ↗") + " · " + (via.host ?? ""), destination: via).font(.caption)
+                        }
+                        if let weight = ResetWatchPolicy.weight(source) { Text(L10n.f("Source weight: %d%% · not a reset probability", Int(weight * 100))).font(.caption).foregroundStyle(.secondary) }
+                        if let expiry = source.expiresAt { Text(L10n.t("Watch expires") + ": " + expiry.localizedFormatted()).font(.caption) }
+                        if let target = source.announcedTarget { Text(L10n.t("Announced target · execution unverified") + ": " + target.localizedFormatted()).font(.caption) }
                         Text(source.title).font(.subheadline.weight(.medium))
                         if let author = source.author { Text(author).font(.caption).foregroundStyle(.secondary) }
                         Text(source.snippet).font(.caption).textSelection(.enabled)

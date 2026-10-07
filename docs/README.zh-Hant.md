@@ -1,4 +1,4 @@
-# AI Agent Usage Sentinel
+# AI Agent Usage Limit Monitor & Reset Forecast
 
 **讓 AI 剩餘額度，隨時看得見。**
 
@@ -66,3 +66,10 @@ MIT 授權。第三方 Qt / Python 授權見 [THIRD_PARTY_NOTICES.md](../THIRD_P
 專案顯示名稱改為 AI Usage Sentinel，副標 AI Quota Monitor & Reset Alerts。保留原 GitHub 網址、更新信任金鑰與資料位置；macOS 請以新名稱 App 取代舊版，避免同時執行兩份。
 
 設定採用獨立圖示分類；面板模式與可視化樣式僅在設定中選擇。開啟動畫時，用量圖形與百分比會從 0 同步增加至目前值；macOS「減少動態效果」會略過動畫。動畫不會修改用量歷史或重置判定。
+
+
+## 重置追蹤與展望（1.8）
+
+[重置頁](https://joe05520.github.io/usage-sentinel/resets.html) 提供公告月曆、投票／預告篩選和五種語言。Tibo 使用 Codex 相關帳號 [@thsottiaux](https://x.com/thsottiaux)，以 85% 編輯權重優先關注；[@codex_resets](https://x.com/codex_resets) 依指定採 75% 來源權重。權重不是「重置會發生」的機率，且仍隨時間衰減。
+
+使用 [Codex Resets](https://codex-resets.com) 的[免費公開 API](https://codex-resets.com/api/docs)，以及 [Codex Reset](https://codex-reset.com) 的公開雷達轉載。資料保留原始 X 連結與轉載來源；這不是直接登入 X，也不保證完整收錄每則貼文。投票選項與即時票數需開啟原始投票查看。投票不會被當成已完成重置，新公告會使舊預告失效。設定中的來源頁可關閉這組追蹤。

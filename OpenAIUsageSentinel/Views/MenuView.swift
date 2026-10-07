@@ -40,7 +40,7 @@ struct MenuView: View {
                 Text(L10n.t("Sign in to official Codex, then refresh. No missing limits are estimated.")).font(.caption).foregroundStyle(.secondary)
             }
             Divider()
-            HStack { Label(L10n.t("Reset Signals"), systemImage: "bolt.fill").font(.headline); Spacer(); Button(L10n.t("History")) { store.openWindow?("history") }.buttonStyle(.link) }
+            HStack { Label(L10n.t("Reset Signals"), systemImage: "bolt.fill").font(.headline); Spacer(); Button { store.openWindow?("resets") } label: { Image(systemName: "waveform.path").help(L10n.t("Reset Watch & Forecast")) }.buttonStyle(.link); Button(L10n.t("History")) { store.openWindow?("history") }.buttonStyle(.link) }
             if store.activeEvents.isEmpty {
                 Text(L10n.t("No fresh irregular reset signal")).font(.subheadline).foregroundStyle(.secondary)
                 Text(L10n.t("Irregular reset: no known schedule")).font(.caption).foregroundStyle(.secondary)

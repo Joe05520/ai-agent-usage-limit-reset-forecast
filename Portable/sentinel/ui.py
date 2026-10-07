@@ -13,8 +13,8 @@ from .visuals import QuotaVisual
 from .providers import codex_usage, export_usage
 from .sources import CATALOG, fetch
 
-DEFAULT = dict(analytics=False, share_quota=False, update_checks=True, preview_updates=True, agent="Codex", cli="", exports={}, stages=[20,5], reminders_enabled=True, language="en", interval=300, news_interval=300, confidence=.25, notify_personal=True, notify_signals=True, sources=["OpenAI Status","OpenAI News","Codex Releases","GitHub","Reddit"], style="Standard", signal_count=False, excluded=[], snooze=0)
-TYPE_NAMES = dict(scheduled="Normal reset", banked="Banked reset", purchased="Purchased reset", automaticGlobal="Automatic / global reset", suspectedGlobal="Possible global reset", accountUnexpected="Unexpected account reset", complimentary="Complimentary reset offer", unknown="Unclassified quota increase")
+DEFAULT = dict(analytics=False, share_quota=False, update_checks=True, preview_updates=True, agent="Codex", cli="", exports={}, stages=[20,5], reminders_enabled=True, language="en", interval=300, news_interval=300, confidence=.25, notify_personal=True, notify_signals=True, sources=["OpenAI Status","OpenAI News","Codex Releases","GitHub","Reddit","Codex Resets · 75%","Tibo radar · 85%"], style="Standard", signal_count=False, excluded=[], snooze=0)
+TYPE_NAMES = dict(scheduled="Normal reset", banked="Banked reset", purchased="Purchased reset", automaticGlobal="Automatic / global reset", suspectedGlobal="Possible global reset", accountUnexpected="Unexpected account reset", complimentary="Complimentary reset offer", forecast="Reset forecast / teaser", poll="Reset-related poll", unknown="Unclassified quota increase")
 LEVEL_NAMES = ["Rumor", "Early Signal", "Likely", "Confirmed"]
 
 
@@ -51,6 +51,9 @@ class SentinelWindow(QMainWindow):
         super().__init__(); self.mock = mock
         self.db = Database(data_dir()/("portable-mock.sqlite" if mock else "portable.sqlite"))
         self.settings = DEFAULT | self.db.load("settings", {})
+        if not self.settings.get("reset_watch_schema"):
+            self.settings["sources"] = list(dict.fromkeys(self.settings["sources"]+["Codex Resets · 75%","Tibo radar · 85%"]))
+            self.settings["reset_watch_schema"] = 1
         self.settings.setdefault("panel_mode", "professional"); self.settings.setdefault("visual_style", "ring"); self.settings.setdefault("animations", False)
         self.visual_values = {}
         self.t = Translator(self.settings["language"])
@@ -231,6 +234,27 @@ class SentinelWindow(QMainWindow):
 
     def open_tab(self,page): self.show(); self.tabs.setCurrentWidget(page); self.raise_()
 
+    def show_reset_watch(self):
+        import html
+        from .reset_watch import weight
+        escaped = html.escape
+        dialog = QMainWindow(self); dialog.setWindowTitle(self.t("Reset Watch & Forecast")); dialog.resize(760,650)
+        browser = QTextBrowser(); browser.setOpenExternalLinks(False); browser.anchorClicked.connect(lambda url: QDesktopServices.openUrl(url) if extensions.safe_url(url.toString()) else None)
+        signals = []
+        for name in ("Codex Resets · 75%","Tibo radar · 85%"):
+            if name in self.settings["sources"]: signals += self.db.load("cache:"+name,{}).get("signals",[])
+        sources = {sig["source"]["url"]: sig for sig in sorted(signals,key=lambda sig: weight(sig["source"]) or 0)}
+        signals = sorted(sources.values(),key=lambda sig: sig["source"].get("publishedAt") or 0,reverse=True)
+        latest = max((sig["source"]["publishedAt"] for sig in signals if sig["type"] == "suspectedGlobal"),default=0)
+        fresh = [sig for sig in signals if sig["type"] in ("forecast","poll") and sig["source"].get("expiresAt",0)>time.time() and sig["source"].get("publishedAt",0)>latest]
+        heading = self.t("Possible reset · watch active" if fresh else "Irregular reset: no known schedule")
+        pieces = [f"<h2>{escaped(heading)}</h2>",f"<p>{escaped(self.t('Polls and teasers are early evidence, not completed resets. Source weights are not probabilities of a future reset.'))}</p>","<p>Tibo @thsottiaux · 85% / @codex_resets · 75%</p>"]
+        for sig in signals[:20]:
+            source = sig["source"]; stamp = datetime.fromtimestamp(source["publishedAt"]).astimezone().isoformat()
+            pieces.append(f"<hr><b>{escaped(self.t(TYPE_NAMES[sig['type']]))}</b> · {escaped(stamp)}<p>{escaped(source['snippet'])}</p><a href='{escaped(source['url'],quote=True)}'>Original X post ↗</a> · <a href='{escaped(source.get('viaURL',''),quote=True)}'>Data attribution ↗</a>")
+        pieces.append(f"<p>{escaped(self.t('Secondary public feeds may omit posts, poll options or vote counts. Open the original poll on X for live results. No automated votes are cast.'))}</p>")
+        browser.setHtml(''.join(pieces)); dialog.setCentralWidget(browser); dialog.show(); self.reset_dialog = dialog
+
     def show_event(self,event):
         dialog = QMainWindow(self); dialog.setWindowTitle(self.t(TYPE_NAMES[event["type"]])); dialog.resize(600,550)
         browser = QTextBrowser(); browser.setOpenExternalLinks(False); browser.anchorClicked.connect(lambda url: QDesktopServices.openUrl(url) if extensions.safe_url(url.toString()) else None)
@@ -238,6 +262,8 @@ class SentinelWindow(QMainWindow):
         escaped = html.escape
         pieces = [f"<h2>{escaped(event['product'])} · {escaped(self.t(TYPE_NAMES[event['type']]))}</h2>",f"<p>{event['confidence']:.0%} · {escaped(self.t(LEVEL_NAMES[core.level(event['confidence'])]))}</p>",f"<p>{escaped(event['explanation'])}</p>"]
         for s in event["sources"]:
+            if s.get("viaURL"):
+                pieces.append(f"<p>Data from <a href='{escaped(s["viaURL"],quote=True)}'>{escaped(s["viaURL"])}</a> · source weight is not a reset probability.</p>")
             stamp = datetime.fromtimestamp(s["publishedAt"]).astimezone().isoformat() if s.get("publishedAt") else "unknown"
             pieces.append(f"<hr><p><b>{escaped(s['platform'])}</b> · {escaped(stamp)}<br><a href='{escaped(s['url'],quote=True)}'>{escaped(s['title'])}</a></p><p>{escaped(s['snippet'])}</p><p>Fetched: {datetime.fromtimestamp(s['fetchedAt']).astimezone().isoformat()} · {escaped(s.get('author') or '')}</p>")
         browser.setHtml("".join(pieces)); dialog.setCentralWidget(browser); dialog.show(); self.event_dialog = dialog
@@ -357,7 +383,7 @@ class SentinelWindow(QMainWindow):
         form = forms["Testing"]
         test = QPushButton(self.t("Send Test")); test.clicked.connect(lambda:self.send("AI Usage Sentinel · "+self.t("Notification test"),self.t("All account data stays on this Mac. Public-source requests contain no account history or credentials. Official Codex handles its own authentication.").replace("Mac","device"))); form.addRow(test)
         form = forms["Privacy & Diagnostics"]
-        privacy = QLabel("All account data stays on this device. Public requests contain no usage history or credentials. X is unavailable without an authorized feed."); privacy.setWordWrap(True); form.addRow(privacy)
+        privacy = QLabel("All account data stays on this device. Public requests contain no usage history or credentials. Tibo polls and reset hints use public secondary feeds (codex-reset.com / codex-resets.com). Weights are not reset probabilities. Full X coverage and live poll counts are unavailable."); privacy.setWordWrap(True); form.addRow(privacy)
         form = forms["Testing"]
         if self.mock:
             mock = QPushButton("[MOCK] Run reset + five-stage scenarios"); mock.clicked.connect(self.mock_test); form.addRow(mock)
