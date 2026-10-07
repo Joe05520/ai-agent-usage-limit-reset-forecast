@@ -219,6 +219,7 @@ class SentinelWindow(QMainWindow):
         active = [e for e in self.events if time.time()-e["updated"]<86400 and e["type"] not in ("scheduled","banked","purchased")]
         self.usage_layout.addWidget(QLabel(self.t("Reset Signals")+f" · {len(active)}"))
         if not active: self.usage_layout.addWidget(QLabel(self.t("No current irregular reset signals")))
+        watch_button = QPushButton(self.t("Reset Watch & Forecast")); watch_button.clicked.connect(self.show_reset_watch); self.event_layout.addWidget(watch_button)
         for event in sorted(self.events,key=lambda e:e["updated"],reverse=True)[:100]:
             button = QPushButton(f"{event['product']} · {self.t(TYPE_NAMES[event['type']])}\n{event['confidence']:.0%} · {self.t(LEVEL_NAMES[core.level(event['confidence'])])} · {datetime.fromtimestamp(event['at']).strftime('%m/%d %H:%M')}")
             button.clicked.connect(lambda checked=False,e=event:self.show_event(e)); self.event_layout.addWidget(button)

@@ -113,6 +113,7 @@ public enum EventEngine {
 
 public enum NotificationPolicy {
     public static func shouldNotify(_ event: ResetEvent, settings: AppSettings, now: Date) -> Bool {
+        if !settings.watchResets && !event.ownAccountReset && event.sources.allSatisfy({ ResetWatchPolicy.weight($0) != nil }) { return false }
         guard !([ResetEventType.forecast, .poll].contains(event.type) && event.sources.allSatisfy { $0.expiresAt.map { $0 <= now } ?? false }), event.type != .scheduled, event.updatedAt > now.addingTimeInterval(-86400) else { return false }
         // Personal purchases/known banked redemption are history, not global alerts.
         if (event.type == .banked || event.type == .purchased) && event.sources.allSatisfy({ $0.isAccountEvidence }) { return false }

@@ -72,6 +72,8 @@ final class ResetWatchTests: XCTestCase {
         XCTAssertEqual(events.count, 2)
         let polled = events.first { $0.type == .poll }!
         XCTAssertTrue(NotificationPolicy.shouldNotify(polled, settings: AppSettings(), now: now))
+        var disabled = AppSettings(); disabled.watchResets = false
+        XCTAssertFalse(NotificationPolicy.shouldNotify(polled, settings: disabled, now: now))
         XCTAssertFalse(NotificationPolicy.shouldNotify(polled, settings: AppSettings(), now: now.addingTimeInterval(86401)))
         XCTAssertTrue(EventEngine.merge(signals: [poll], personal: [], into: [], now: now.addingTimeInterval(86401)).isEmpty)
     }

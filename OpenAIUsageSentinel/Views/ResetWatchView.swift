@@ -29,7 +29,7 @@ struct ResetWatchView: View {
                 }
             }
             let latestCompletion = signals.filter { $0.behavior == .suspectedGlobal }.compactMap(\.source.publishedAt).max() ?? .distantPast
-            let fresh = signals.filter { [ResetEventType.poll, .forecast].contains($0.behavior) && ($0.source.publishedAt ?? .distantPast) > Date().addingTimeInterval(-86400) && ($0.source.publishedAt ?? .distantPast) > latestCompletion && ($0.source.expiresAt ?? .distantFuture) > Date() }
+            let fresh = signals.filter { store.settings.watchResets && [ResetEventType.poll, .forecast].contains($0.behavior) && ($0.source.publishedAt ?? .distantPast) > Date().addingTimeInterval(-86400) && ($0.source.publishedAt ?? .distantPast) > latestCompletion && ($0.source.expiresAt ?? .distantFuture) > Date() }
             GroupBox {
                 VStack(alignment: .leading, spacing: 8) {
                     Label(L10n.t(fresh.isEmpty ? "Irregular reset: no known schedule" : "Possible reset · watch active"), systemImage: fresh.isEmpty ? "clock" : "eye").font(.headline)

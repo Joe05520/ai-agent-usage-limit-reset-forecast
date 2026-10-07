@@ -236,6 +236,8 @@ def merge(events, signals, personal, now):
 
 
 def should_notify(event, settings, now):
+    from .reset_watch import weight
+    if not event["own"] and event["sources"] and all(weight(s) is not None for s in event["sources"]) and not any(name in settings.get("sources",["Codex Resets · 75%","Tibo radar · 85%"]) for name in ("Codex Resets · 75%","Tibo radar · 85%")): return False
     if event["type"] in ("forecast","poll") and all(s.get("expiresAt",float("inf")) <= now for s in event["sources"]): return False
     if event["type"] in ("scheduled", "banked", "purchased") or now-event["updated"] > 86400:
         return False
