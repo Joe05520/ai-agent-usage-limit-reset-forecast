@@ -1784,12 +1784,12 @@
     "ja": "発表カレンダー · 過去84日",
     "ko": "발표 달력 · 최근 84일"
   },
-  "Accent: reported reset announcement · orange: banked offer · empty: no record. Historical posts do not trigger new alerts.": {
-    "en": "Accent: reported reset announcement · orange: banked offer · empty: no record. Historical posts do not trigger new alerts.",
-    "zh-Hant": "主色：轉載重置公告 · 橘色：banked 額度 · 空白：沒有紀錄。歷史貼文不觸發新通知。",
-    "zh-Hans": "主色：转载重置公告 · 橙色：banked 额度 · 空白：没有记录。历史帖文不触发新通知。",
-    "ja": "主色：転載発表 · 橙：banked枠 · 空白：記録なし。過去の投稿は新着通知になりません。",
-    "ko": "기본색: 전달된 초기화 발표 · 주황: banked 한도 · 빈칸: 기록 없음. 과거 게시물은 새 알림이 아닙니다."
+  "Accent: reported reset announcement · orange: banked offer · gray: poll/forecast · empty: no record. Historical posts do not trigger new alerts.": {
+    "en": "Accent: reported reset announcement · orange: banked offer · gray: poll/forecast · empty: no record. Historical posts do not trigger new alerts.",
+    "zh-Hant": "主色：轉載重置公告 · 橘色：banked 額度 · 灰色：投票／預告 · 未填色：沒有紀錄。歷史貼文不觸發新通知。",
+    "zh-Hans": "主色：转载重置公告 · 橙色：banked 额度 · 灰色：投票／预告 · 未填色：没有记录。历史帖文不触发新通知。",
+    "ja": "主色：転載発表 · 橙：banked枠 · 灰：投票／予告 · 無色：記録なし。過去の投稿は新着通知になりません。",
+    "ko": "기본색: 전달된 초기화 발표 · 주황: banked 한도 · 회색: 투표／예고 · 무색: 기록 없음. 과거 게시물은 새 알림이 아닙니다."
   },
   "Latest polls, teasers & announcements": {
     "en": "Latest polls, teasers & announcements",
