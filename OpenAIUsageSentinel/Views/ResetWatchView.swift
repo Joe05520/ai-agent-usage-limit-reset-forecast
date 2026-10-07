@@ -20,12 +20,6 @@ struct ResetWatchView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(L10n.t("Priority watch")).font(.caption).foregroundStyle(.secondary)
                     Link("Tibo · @thsottiaux", destination: URL(string: "https://x.com/thsottiaux")!).font(.headline)
-                    SourceCredibilityBar(value: 0.85)
-                }.frame(maxWidth: .infinity, alignment: .leading)
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(L10n.t("Sources")).font(.caption).foregroundStyle(.secondary)
-                    Link("@codex_resets", destination: URL(string: "https://x.com/codex_resets")!).font(.headline)
-                    SourceCredibilityBar(value: 0.75)
                 }.frame(maxWidth: .infinity, alignment: .leading)
             }
             let latestCompletion = signals.filter { $0.behavior == .suspectedGlobal }.compactMap(\.source.publishedAt).max() ?? .distantPast
@@ -55,6 +49,8 @@ struct ResetWatchView: View {
             ForEach(Array(signals.prefix(12).enumerated()), id: \.element.source.id) { _, signal in
                 VStack(alignment: .leading, spacing: 5) {
                     HStack { Text(signal.behavior.label).font(.subheadline.bold()); Spacer(); Text(signal.source.publishedAt?.localizedFormatted() ?? L10n.t("unknown")).font(.caption).foregroundStyle(.secondary) }
+                    let confidence = EventEngine.score(sources: [signal.source], ownReset: false, now: Date())
+                    MessageConfidenceBar(value: confidence)
                     Text(signal.source.snippet).font(.callout).lineLimit(3)
                     HStack {
                         Link(L10n.t("Original X post ↗"), destination: signal.source.url)
@@ -128,6 +124,7 @@ private struct ResetAnnouncementCalendar: View {
                     if entries.isEmpty { Text(L10n.t("No announcements recorded for this date.")).foregroundStyle(.secondary) }
                     ForEach(entries, id: \.source.id) { signal in
                         Text(signal.behavior.label).font(.caption.bold())
+                        MessageConfidenceBar(value: EventEngine.score(sources: [signal.source], ownReset: false, now: Date()))
                         Text(signal.source.snippet).font(.callout).lineLimit(4)
                         Link(L10n.t("Original X post ↗"), destination: signal.source.url)
                         if let via = signal.source.viaURL { Link(L10n.t("Data attribution ↗") + " · " + (via.host ?? ""), destination: via) }
@@ -139,16 +136,16 @@ private struct ResetAnnouncementCalendar: View {
 }
 
 
-struct SourceCredibilityBar: View {
+struct MessageConfidenceBar: View {
     let value: Double
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
-                Text(L10n.t("Source credibility")).font(.caption).foregroundStyle(.secondary)
+                Text(L10n.t("Confidence")).font(.caption).foregroundStyle(.secondary)
                 Spacer()
                 Text("\(Int(value * 100))%").font(.caption.bold().monospacedDigit())
             }
-            ProgressView(value: value).tint(.orange)
-        }.frame(maxWidth: 280).accessibilityElement(children: .combine)
+            ProgressView(value: value).tint(ConfidenceLevel.from(value).color)
+        }.accessibilityElement(children: .combine)
     }
 }
