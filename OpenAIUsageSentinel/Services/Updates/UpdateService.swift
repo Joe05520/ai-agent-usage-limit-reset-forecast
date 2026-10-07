@@ -46,11 +46,11 @@ public struct UpdateManifest: Codable, Equatable, Sendable {
               let key = try? Curve25519.Signing.PublicKey(rawRepresentation: keyData), key.isValidSignature(signatureData, for: data) else { throw SentinelError.unavailable("Update signature invalid") }
         let manifest = try JSONDecoder().decode(Self.self, from: data)
         guard manifest.schema == 1, manifest.channel == channel, ["stable", "preview"].contains(channel), versionParts(manifest.version) != nil,
-              manifest.releaseURL == "https://github.com/Joe05520/usage-sentinel/releases/tag/v\(manifest.version)", manifest.assets.count == 3,
+              manifest.releaseURL == "https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v\(manifest.version)", manifest.assets.count == 3,
               Set(manifest.assets.map(\.platform)) == Set(["macOS", "Windows", "Linux"]) else { throw SentinelError.unavailable("Invalid update manifest") }
         for asset in manifest.assets {
             let suffix = asset.platform == "macOS" ? "macOS-universal.zip" : asset.platform == "Windows" ? "Windows-x64.zip" : "Linux-x64.tar.gz"
-            guard asset.url == "https://github.com/Joe05520/usage-sentinel/releases/download/v\(manifest.version)/UsageSentinel-\(manifest.version)-\(suffix)",
+            guard asset.url == "https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/download/v\(manifest.version)/UsageSentinel-\(manifest.version)-\(suffix)",
                   asset.sha256.count == 64, asset.sha256.allSatisfy({ $0.isASCII && $0.isHexDigit }), asset.size > 1_000_000, asset.size <= 250_000_000 else { throw SentinelError.unavailable("Invalid update asset") }
         }
         return manifest
@@ -59,7 +59,7 @@ public struct UpdateManifest: Codable, Equatable, Sendable {
 public enum UpdateService {
     public static func check(preview: Bool) async throws -> UpdateManifest? {
         let channel = preview ? "preview" : "stable"
-        let base = "https://joe05520.github.io/usage-sentinel/updates/\(channel).json"
+        let base = "https://joe05520.github.io/ai-agent-usage-limit-reset-forecast/updates/\(channel).json"
         let (data, response) = try await SecureTransport.read(URLRequest(url: URL(string: base)!), limit: 100_000)
         if response.statusCode == 404 { return nil }
         guard response.statusCode == 200 else { throw SentinelError.unavailable("Update server unavailable") }

@@ -177,7 +177,7 @@ struct SettingsView: View {
                         if panel.runModal() == .OK, let url = panel.url { store.settings.selectedExportPath = url.path; Task { await store.refreshUsage(force: true) } }
                     }
                     Text(L10n.t("Claude supports the official status-line bridge. Gemini and Grok use a user-provided local export or manual snapshot. No cookies or private APIs are accessed. Files older than ten minutes are marked stale.")).font(.caption).foregroundStyle(.secondary)
-                    Link(L10n.t("Agent setup guide"), destination: URL(string: "https://github.com/Joe05520/usage-sentinel/blob/main/docs/AGENTS.md")!)
+                    Link(L10n.t("Agent setup guide"), destination: URL(string: "https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/blob/main/docs/AGENTS.md")!)
                 }
                 TextField(L10n.t("Codex executable (optional)"), text: $store.settings.cliPath)
                 Toggle(L10n.t("Use manual snapshot"), isOn: $store.settings.manualMode)
@@ -208,7 +208,7 @@ struct SettingsView: View {
                 Toggle(L10n.t("Also share coarse remaining-quota bands"), isOn: $store.settings.analytics.shareQuota).disabled(!store.settings.analytics.enabled)
                 Text(L10n.t("Off by default. Sends country, platform, agent, reminder-stage count and a daily activity band. Quota bands require separate consent. No account ID, exact usage, reset time, prompts, tokens or cookies. Cloudflare processes your IP to determine country but this app does not store it in analytics.")).font(.caption).foregroundStyle(.secondary)
                 Button(L10n.t("Delete shared reports and turn off")) { Task { await store.deleteAnalytics() } }.disabled(store.isMock)
-                Link(L10n.t("Analytics privacy details"), destination: URL(string: "https://joe05520.github.io/usage-sentinel/insights.html")!)
+                Link(L10n.t("Analytics privacy details"), destination: URL(string: "https://joe05520.github.io/ai-agent-usage-limit-reset-forecast/insights.html")!)
                 Text(store.analyticsStatus).font(.caption).textSelection(.enabled)
             }
             }

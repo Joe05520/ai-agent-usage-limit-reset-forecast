@@ -8,8 +8,8 @@ import CryptoKit
 final class SecurityAndUpdateTests: XCTestCase {
     func fixture(_ changes: [String: Any] = [:]) throws -> Data {
         let version = "1.5.0"
-        let assets = ["macOS", "Windows", "Linux"].map { p in ["platform": p, "url": "https://github.com/Joe05520/usage-sentinel/releases/download/v\(version)/UsageSentinel-\(version)-\(p == "macOS" ? "macOS-universal.zip" : p == "Windows" ? "Windows-x64.zip" : "Linux-x64.tar.gz")", "sha256": String(repeating:"a",count:64), "size":2_000_000] as [String:Any] }
-        var value: [String:Any] = ["schema":1,"version":version,"channel":"preview","releaseURL":"https://github.com/Joe05520/usage-sentinel/releases/tag/v\(version)","assets":assets]
+        let assets = ["macOS", "Windows", "Linux"].map { p in ["platform": p, "url": "https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/download/v\(version)/UsageSentinel-\(version)-\(p == "macOS" ? "macOS-universal.zip" : p == "Windows" ? "Windows-x64.zip" : "Linux-x64.tar.gz")", "sha256": String(repeating:"a",count:64), "size":2_000_000] as [String:Any] }
+        var value: [String:Any] = ["schema":1,"version":version,"channel":"preview","releaseURL":"https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v\(version)","assets":assets]
         changes.forEach { value[$0] = $1 }; return try JSONSerialization.data(withJSONObject:value)
     }
     func testSignedManifestRejectsTamperingWrongChannelAndForeignAssets() throws {
@@ -21,6 +21,15 @@ final class SecurityAndUpdateTests: XCTestCase {
         XCTAssertThrowsError(try UpdateManifest.verified(data:data,signature:signature,publicKey:publicKey,channel:"stable"))
         let evil = try fixture(["assets":[["platform":"macOS","url":"https://evil.test/app.zip","size":2_000_000,"sha256":String(repeating:"a",count:64)]]])
         XCTAssertThrowsError(try UpdateManifest.verified(data:evil,signature:Data(try key.signature(for:evil).base64EncodedString().utf8),publicKey:publicKey,channel:"preview"))
+    }
+    func testRenamedRepositoryStillRequiresExactSignedAssetURLs() throws {
+        let key = Curve25519.Signing.PrivateKey()
+        let publicKey = key.publicKey.rawRepresentation.base64EncodedString()
+        let valid = try fixture()
+        let old = Data(String(decoding: valid, as: UTF8.self).replacingOccurrences(of: "ai-agent-usage-limit-reset-forecast", with: "usage-sentinel").utf8)
+        XCTAssertThrowsError(try UpdateManifest.verified(data: old, signature: Data(try key.signature(for: old).base64EncodedString().utf8), publicKey: publicKey, channel: "preview"))
+        let other = Data(String(decoding: valid, as: UTF8.self).replacingOccurrences(of: "Joe05520", with: "someone-else").utf8)
+        XCTAssertThrowsError(try UpdateManifest.verified(data: other, signature: Data(try key.signature(for: other).base64EncodedString().utf8), publicKey: publicKey, channel: "preview"))
     }
     func testVersionAndExternalSchemes() {
         for version in ["1", "1.2", "1.2.3.4", "1.2.-3", "one.2.3", "1.2.٣", "1000.1.1"] { XCTAssertNil(UpdateManifest.versionParts(version)) }

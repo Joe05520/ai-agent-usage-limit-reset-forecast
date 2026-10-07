@@ -322,7 +322,7 @@ class SentinelWindow(QMainWindow):
             file,_ = QFileDialog.getOpenFileName(self,self.t("Choose JSON Export…"),"","JSON (*.json)")
             if file: path.setText(file); save_path(); self.refresh_usage()
         choose.clicked.connect(choose_file); form.addRow(choose)
-        guide = QPushButton(self.t("Agent setup guide")); guide.clicked.connect(lambda:QDesktopServices.openUrl(QUrl("https://github.com/Joe05520/usage-sentinel/blob/main/docs/AGENTS.md"))); form.addRow(guide)
+        guide = QPushButton(self.t("Agent setup guide")); guide.clicked.connect(lambda:QDesktopServices.openUrl(QUrl("https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/blob/main/docs/AGENTS.md"))); form.addRow(guide)
         form = forms["Updates"]
         self.checkbox(form,'Check for updates daily','update_checks')
         self.checkbox(form,'Include preview releases','preview_updates')

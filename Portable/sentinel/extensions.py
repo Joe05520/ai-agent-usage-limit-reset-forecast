@@ -49,18 +49,18 @@ def verify_manifest(data,signature,public_key,channel):
     if len(data)>100_000: raise ValueError('Manifest too large')
     Ed25519PublicKey.from_public_bytes(base64.b64decode(public_key,validate=True)).verify(base64.b64decode(signature.strip(),validate=True),data)
     m=json.loads(data); version(m['version'])
-    v=m['version']; release=f'https://github.com/Joe05520/usage-sentinel/releases/tag/v{v}'
+    v=m['version']; release=f'https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v{v}'
     if m.get('schema')!=1 or m.get('channel')!=channel or channel not in ('preview','stable') or m.get('releaseURL')!=release or len(m.get('assets',[]))!=3 or {a['platform'] for a in m['assets']}!={'macOS','Windows','Linux'}: raise ValueError('Invalid manifest')
     for a in m['assets']:
         suffix={'macOS':'macOS-universal.zip','Windows':'Windows-x64.zip','Linux':'Linux-x64.tar.gz'}[a['platform']]
-        expected=f'https://github.com/Joe05520/usage-sentinel/releases/download/v{v}/UsageSentinel-{v}-{suffix}'
+        expected=f'https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/download/v{v}/UsageSentinel-{v}-{suffix}'
         if a['url']!=expected or not re.fullmatch('[0-9a-fA-F]{64}',a['sha256']) or type(a['size']) is not int or not 1_000_000<a['size']<=250_000_000: raise ValueError('Invalid asset')
     return m
 
 
 def check_update(preview=True):
     channel='preview' if preview else 'stable'
-    url=f'https://joe05520.github.io/usage-sentinel/updates/{channel}.json'
+    url=f'https://joe05520.github.io/ai-agent-usage-limit-reset-forecast/updates/{channel}.json'
     try: data=request(url)
     except urllib.error.HTTPError as e:
         if e.code==404: return None

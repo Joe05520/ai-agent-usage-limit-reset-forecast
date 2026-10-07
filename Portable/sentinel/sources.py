@@ -29,7 +29,7 @@ def fetch(name, cache=None):
     if cache.get("retry", 0) > now:
         return cache, cache.get("signals", []), "Backoff · cached metadata"
     url, kind, official = CATALOG[name]
-    headers = {"User-Agent": "UsageSentinel/1.4.0 (+https://github.com/Joe05520/usage-sentinel)", "Accept": "application/json, application/xml, text/xml"}
+    headers = {"User-Agent": "UsageSentinel/1.4.0 (+https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast)", "Accept": "application/json, application/xml, text/xml"}
     if cache.get("etag"): headers["If-None-Match"] = cache["etag"]
     if cache.get("modified"): headers["If-Modified-Since"] = cache["modified"]
     started = time.monotonic()

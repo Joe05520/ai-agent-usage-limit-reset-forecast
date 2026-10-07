@@ -1,5 +1,5 @@
 import {dashboard} from './dashboard.mjs';
-const REPO = 'https://api.github.com/repos/Joe05520/usage-sentinel/releases?per_page=100';
+const REPO = 'https://api.github.com/repos/Joe05520/ai-agent-usage-limit-reset-forecast/releases?per_page=100';
 const platforms = new Set(['macOS','Windows','Linux']);
 const agents = new Set(['codex','claude','gemini','grok','custom']);
 const bands = new Set(['unknown','0-4','5-19','20-49','50-100']);

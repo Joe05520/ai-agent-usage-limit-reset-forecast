@@ -2,7 +2,7 @@
 
 **讓 AI 剩餘額度，隨時看得見。**
 
-[官方專案網站與互動範例](https://joe05520.github.io/usage-sentinel/) · [下載](https://github.com/Joe05520/usage-sentinel/releases/tag/v1.8.0) · [English](../README.md)
+[官方專案網站與互動範例](https://joe05520.github.io/ai-agent-usage-limit-reset-forecast/) · [下載](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v1.8.0) · [English](../README.md)
 
 AI Usage Sentinel 是免費開源的選單列／系統匣工具，結合用量顯示、非例行 reset 偵測與社群初期重置訊號監控。macOS 採原生 SwiftUI / MenuBarExtra；Windows 與 Linux 使用原生 Qt，目前為 beta。
 
@@ -31,7 +31,7 @@ AI Usage Sentinel 是免費開源的選單列／系統匣工具，結合用量�
 
 ## 安裝
 
-[從 Release 下載](https://github.com/Joe05520/usage-sentinel/releases/tag/v1.8.0)，並查看 SHA-256 檔案雜湊。
+[從 Release 下載](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v1.8.0)，並查看 SHA-256 檔案雜湊。
 
 - macOS 14+：解壓縮後將 AI Usage Sentinel.app 移到 Applications。支援 Apple Silicon／Intel，實際在 Apple Silicon 執行驗證。此版為 ad-hoc 簽章，尚未 Apple notarize；依 macOS「隱私權與安全性」明確允許開啟，不停用系統安全機制。
 - Windows 10/11 x64：解壓縮完整資料夾，執行 UsageSentinel.exe。未使用付費程式簽章，請閱讀發布說明與系統信任提示。
@@ -47,7 +47,7 @@ Windows / Linux 為 beta。CI 建置與 offscreen smoke test 不代表所有桌�
 
 可直接開啟根目錄的 OpenAIUsageSentinel.xcodeproj。原始模組與 bundle/data 名稱保留，確保升級不丟失既有設定。App 對外名稱為 AI Usage Sentinel。
 
-[技術說明](TECHNICAL.md) · [驗證紀錄](VALIDATION.md) · [參與貢獻](../CONTRIBUTING.md) · [回報問題](https://github.com/Joe05520/usage-sentinel/issues)
+[技術說明](TECHNICAL.md) · [驗證紀錄](VALIDATION.md) · [參與貢獻](../CONTRIBUTING.md) · [回報問題](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/issues)
 
 MIT 授權。第三方 Qt / Python 授權見 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。獨立社群專案，與 OpenAI、Anthropic、Google、xAI 無隸屬或背書關係。
 
@@ -70,6 +70,6 @@ MIT 授權。第三方 Qt / Python 授權見 [THIRD_PARTY_NOTICES.md](../THIRD_P
 
 ## 重置追蹤與展望（1.8）
 
-[重置頁](https://joe05520.github.io/usage-sentinel/resets.html) 提供公告月曆、投票／預告篩選和五種語言。Tibo 使用 Codex 相關帳號 [@thsottiaux](https://x.com/thsottiaux)，以 85% 編輯權重優先關注；[@codex_resets](https://x.com/codex_resets) 依指定採 75% 來源權重。權重不是「重置會發生」的機率，且仍隨時間衰減。
+[重置頁](https://joe05520.github.io/ai-agent-usage-limit-reset-forecast/resets.html) 提供公告月曆、投票／預告篩選和五種語言。Tibo 使用 Codex 相關帳號 [@thsottiaux](https://x.com/thsottiaux)，以 85% 編輯權重優先關注；[@codex_resets](https://x.com/codex_resets) 依指定採 75% 來源權重。權重不是「重置會發生」的機率，且仍隨時間衰減。
 
 使用 [Codex Resets](https://codex-resets.com) 的[免費公開 API](https://codex-resets.com/api/docs)，以及 [Codex Reset](https://codex-reset.com) 的公開雷達轉載。資料保留原始 X 連結與轉載來源；這不是直接登入 X，也不保證完整收錄每則貼文。投票選項與即時票數需開啟原始投票查看。投票不會被當成已完成重置，新公告會使舊預告失效。設定中的來源頁可關閉這組追蹤。

@@ -3,8 +3,8 @@
 GitHub project name: **AI Agent Usage Sentinel**
 App display name: **AI Usage Sentinel**
 Subtitle: **AI Agent Quota Monitor & Reset Alerts**
-Repository: https://github.com/Joe05520/usage-sentinel
-Website: https://joe05520.github.io/usage-sentinel/
+Repository: https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast
+Website: https://joe05520.github.io/ai-agent-usage-limit-reset-forecast/
 Share image: [social-preview.png](social-preview.png)
 
 ## English introduction

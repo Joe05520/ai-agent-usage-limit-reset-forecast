@@ -17,7 +17,7 @@ let publicKey=key.publicKey.rawRepresentation.base64EncodedString()
 var config: [String:Any] = (try? Data(contentsOf: URL(fileURLWithPath:"OpenAIUsageSentinel/Resources/ServiceConfig.json"))).flatMap { try? JSONSerialization.jsonObject(with:$0) as? [String:Any] } ?? ["schema":1,"analyticsEndpoint":NSNull()]
 config["updatePublicKey"] = publicKey
 try JSONSerialization.data(withJSONObject:config,options:[.prettyPrinted,.sortedKeys]).write(to:URL(fileURLWithPath:"OpenAIUsageSentinel/Resources/ServiceConfig.json"),options:.atomic)
-let process=Process(), pipe=Pipe();process.executableURL=URL(fileURLWithPath:"/usr/bin/env");process.arguments=["gh","secret","set","UPDATES_ED25519_KEY","--repo","Joe05520/usage-sentinel"];process.standardInput=pipe
+let process=Process(), pipe=Pipe();process.executableURL=URL(fileURLWithPath:"/usr/bin/env");process.arguments=["gh","secret","set","UPDATES_ED25519_KEY","--repo","Joe05520/ai-agent-usage-limit-reset-forecast"];process.standardInput=pipe
 try process.run();try pipe.fileHandleForWriting.write(contentsOf:Data(key.rawRepresentation.base64EncodedString().utf8));try pipe.fileHandleForWriting.close();process.waitUntilExit()
 guard process.terminationStatus==0 else{fatalError("Could not configure repository signing secret")}
 print("Public signing key: \(publicKey). Private signing key retained in Keychain and GitHub Actions Secrets.")

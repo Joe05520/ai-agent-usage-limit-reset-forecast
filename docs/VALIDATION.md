@@ -18,7 +18,7 @@ The release is built from public source. Private local account readings, databas
 
 - 29 portable core tests passed locally: reminders, personal/reset classification, signal confidence, source clustering, stale reports, threshold upgrades, SQLite and official Claude bridge data minimization.
 - Local Qt offscreen smoke passed: window, settings, quota rendering, unexpected personal reset event and five-stage engine.
-- GitHub Actions [run 37192161755](https://github.com/Joe05520/usage-sentinel/actions/runs/37192161755) passed all three jobs. It built target-OS executable packages and smoke-tested source and bundled clients on Windows and Ubuntu. Both portable jobs ran 29 core tests.
+- GitHub Actions [run 37192161755](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/actions/runs/37192161755) passed all three jobs. It built target-OS executable packages and smoke-tested source and bundled clients on Windows and Ubuntu. Both portable jobs ran 29 core tests.
 - Offscreen tests verify startup and logic, not actual system-tray rendering or OS notification banners. Windows/Linux real desktop notifications, DND, login, sleep/wake and broad Wayland/desktop compatibility remain beta validation tasks.
 
 Native mock scenarios 1–5 were rerun in the isolated database: scheduled was quiet; unexpected account, early community, strengthened signal and official confirmation each submitted a notification. A live-mode native test notification was recorded as delivered in Notification Center. No private measurements are included here.
