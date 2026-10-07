@@ -61,7 +61,7 @@ Settings uses separate icon categories. Panel mode and quota visualization choic
 
 Switch modes directly in the native panel or in Settings. Settings includes a live preview (clearly labeled sample values if live data is unavailable). Quota transitions are finite and optional; macOS respects Reduce Motion, and Qt animations are off by default. Changing a view does not change reminders, reset classification or stored history. All five app languages include the new controls.
 
-Previously named **Usage Sentinel**. The display name is now **AI Usage Sentinel**; repository URL, bundle identifier, storage paths, signed update trust keys and package filenames remain compatible. Replace the previous macOS app with the renamed bundle, rather than running both copies.
+Previously named **Usage Sentinel**. The display name is now **AI Usage Sentinel**; bundle identifier, storage paths, signed update trust keys and package filenames remain compatible. The repository is now `ai-agent-usage-limit-reset-forecast`; see the [repository/update migration](docs/REPOSITORY_MIGRATION.md) for old-link compatibility. Replace the previous macOS app with the renamed bundle, rather than running both copies.
 
 ## AI agents and honest data support
 
