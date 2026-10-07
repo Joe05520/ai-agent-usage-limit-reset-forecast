@@ -41,7 +41,10 @@ struct ResetWatchView: View {
                     }
                     Text(L10n.t("Your account")).font(.caption.bold())
                     if let event = store.events.first(where: { $0.ownAccountReset && $0.isActive }) {
-                        Text(event.type.label).foregroundStyle(.orange)
+                        Text(L10n.t("Unexpected account reset")).foregroundStyle(.orange)
+                        ForEach(event.affectedBuckets, id: \.self) { id in
+                            Text("\(id): \(Int(event.beforeValue[id] ?? 0))% → \(Int(event.afterValue[id] ?? 0))%").font(.caption.monospacedDigit())
+                        }
                     } else { Text(L10n.t("No correlated unexpected account reset observed.")).font(.caption).foregroundStyle(.secondary) }
                 }.frame(maxWidth: .infinity, alignment: .leading)
             }

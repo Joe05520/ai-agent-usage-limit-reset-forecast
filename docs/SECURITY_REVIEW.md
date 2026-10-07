@@ -33,3 +33,7 @@ This is a repository review, dependency scan and adversarial test record. It is 
 Publisher GitHub/signing-key compromise, a malicious selected CLI, OS credential-store compromise or another process with the same local user access can still defeat these protections. Report ingestion cannot prove authentic AI account usage; malicious clients can fabricate data. Cloudflare edge rate limits are local/eventually consistent, not an exact worldwide cap. Free quotas can be exhausted; collection must fail or pause rather than silently upgrade. Request logging is disabled intentionally, while platform operational metadata may still exist under Cloudflare's policies. Core quota monitoring is independent of backend availability.
 
 No paid plan, domain, signing certificate or security add-on was enabled. Paid changes require the owner's approval.
+
+### 2026-10-07 dependency advisory
+
+CI caught [GHSA-wq5f-xc86-pv6w](https://github.com/advisories/GHSA-wq5f-xc86-pv6w) in the local Wrangler → Miniflare → sharp development dependency. `sharp` is pinned by npm override to patched **0.35.5**, preserving Wrangler 4.147.0. The lockfile includes the patched image binaries. `npm audit` reports zero vulnerabilities; backend tests and local D1 migration checks pass. The audit gate stays enabled. This is a development-tool dependency repair; the deployed Worker does not parse images or ship sharp.
