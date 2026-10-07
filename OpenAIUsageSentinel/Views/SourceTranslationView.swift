@@ -49,7 +49,6 @@ private struct OnDeviceSourceTranslation: View {
             }
         }.translationTask(configuration) { session in
             do {
-                try await session.prepareTranslation()
                 let result = try await session.translate(String((source.title + "\n" + source.snippet).prefix(8000)))
                 translated = result.targetText
             } catch { failed = true }
