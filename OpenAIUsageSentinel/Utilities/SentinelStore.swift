@@ -24,6 +24,7 @@ final class SentinelStore: ObservableObject {
     @Published var newsBusy = false
     @Published var permission = "Checking…"
     @Published var selectedEventID: UUID?
+    @Published var calendarFocusDate: Date?
     @Published var externalMockEvent: ResetEvent?
     @Published var lastSignalRefresh: Date?
     let isMock: Bool

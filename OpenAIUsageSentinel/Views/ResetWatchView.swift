@@ -65,7 +65,8 @@ struct ResetWatchView: View {
 }
 
 
-private struct ResetAnnouncementCalendar: View {
+struct ResetAnnouncementCalendar: View {
+    var focusDate: Date? = nil
     let signals: [ResetSignal]
     @State private var monthOffset = 0
     @State private var selectedDay: Date?
@@ -78,6 +79,13 @@ private struct ResetAnnouncementCalendar: View {
     private var month: Date {
         let current = calendar.date(from: calendar.dateComponents([.year, .month], from: Date()))!
         return calendar.date(byAdding: .month, value: monthOffset, to: current)!
+    }
+    private func focusMonth() {
+        guard let focusDate else { monthOffset = 0; return }
+        let start = calendar.date(from: calendar.dateComponents([.year, .month], from: Date()))!
+        let target = calendar.date(from: calendar.dateComponents([.year, .month], from: focusDate))!
+        monthOffset = calendar.dateComponents([.month], from: start, to: target).month ?? 0
+        selectedDay = nil
     }
     private var leading: Int { (calendar.component(.weekday, from: month) - 1) % 7 }
     private var count: Int { calendar.range(of: .day, in: .month, for: month)!.count }
@@ -115,7 +123,9 @@ private struct ResetAnnouncementCalendar: View {
                     }
                 }
             }
-        }.popover(isPresented: Binding(get: { selectedDay != nil }, set: { if !$0 { selectedDay = nil } })) {
+        }.onAppear { focusMonth() }
+        .onChange(of: focusDate) { _, _ in focusMonth() }
+        .popover(isPresented: Binding(get: { selectedDay != nil }, set: { if !$0 { selectedDay = nil } })) {
             if let selectedDay {
                 VStack(alignment: .leading, spacing: 12) {
                     Text(selectedDay.formatted(.dateTime.year().month().day().locale(L10n.locale))).font(.headline)
@@ -146,5 +156,22 @@ struct MessageConfidenceBar: View {
             }
             ProgressView(value: value).tint(ConfidenceLevel.from(value).color)
         }.accessibilityElement(children: .combine)
+    }
+}
+
+struct AnnouncementCalendarView: View {
+    @EnvironmentObject var store: SentinelStore
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Label(L10n.t("Announcement Calendar"), systemImage: "calendar").font(.title2.bold())
+            ResetAnnouncementCalendar(focusDate: store.calendarFocusDate, signals: store.watchSignals)
+            if let date = store.calendarFocusDate {
+                Text(date.formatted(.dateTime.year().month().day().locale(L10n.locale))).font(.headline)
+                ForEach(store.events.filter { Calendar.current.isDate($0.detectedAt, inSameDayAs: date) }) { event in
+                    Button { store.selectedEventID = event.id; store.openWindow?("history") } label: { EventRow(event: event) }.buttonStyle(.plain)
+                }
+            }
+            Text(L10n.t("Accent: reported reset announcement · orange: banked offer · empty: no record. Historical posts do not trigger new alerts.")).font(.caption).foregroundStyle(.secondary)
+        }.padding(24).frame(minWidth: 680, minHeight: 480)
     }
 }

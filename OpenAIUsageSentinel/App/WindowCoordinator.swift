@@ -11,7 +11,7 @@ final class WindowCoordinator {
         }
     }
     private func refreshTitles() {
-        for (page, window) in windows { window.title = "AI Usage Sentinel · " + L10n.t(page == "history" ? "Event History" : page == "resets" ? "Reset Watch & Forecast" : page.capitalized) }
+        for (page, window) in windows { window.title = "AI Usage Sentinel · " + L10n.t(page == "history" ? "Event History" : page == "resets" ? "Reset Watch & Forecast" : page == "calendar" ? "Announcement Calendar" : page.capitalized) }
     }
     private var windows: [String: NSWindow] = [:]
     func show(_ page: String, store: SentinelStore) {
@@ -20,12 +20,13 @@ final class WindowCoordinator {
         switch page {
         case "settings": content = AnyView(SettingsView().environmentObject(store))
         case "resets": content = AnyView(ScrollView { ResetWatchView().padding(24) }.frame(minWidth: 680, minHeight: 530).environmentObject(store))
+        case "calendar": content = AnyView(AnnouncementCalendarView().environmentObject(store))
         case "diagnostics": content = AnyView(DiagnosticsView().environmentObject(store))
         default: content = AnyView(HistoryView().environmentObject(store))
         }
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: page == "settings" ? 1100 : page == "history" ? 900 : page == "resets" ? 820 : 600, height: page == "settings" ? 740 : 540), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
         if page == "settings" { window.minSize = NSSize(width: 900, height: 600) }
-        window.title = "AI Usage Sentinel · " + L10n.t(page == "history" ? "Event History" : page == "resets" ? "Reset Watch & Forecast" : page.capitalized)
+        window.title = "AI Usage Sentinel · " + L10n.t(page == "history" ? "Event History" : page == "resets" ? "Reset Watch & Forecast" : page == "calendar" ? "Announcement Calendar" : page.capitalized)
         window.contentView = NSHostingView(rootView: LocalizedWindowContent(content: content).environmentObject(store))
         window.tabbingMode = .disallowed
         window.isReleasedWhenClosed = false; window.center()

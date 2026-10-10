@@ -4,6 +4,13 @@ import Charts
 struct HistoryView: View {
     @EnvironmentObject var store: SentinelStore
     var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text(L10n.t("Event History")).font(.headline)
+                Spacer()
+                Button { store.calendarFocusDate = nil; store.openWindow?("calendar") } label: { Label(L10n.t("Announcement Calendar"), systemImage: "calendar") }
+            }.padding(12)
+            Divider()
         HSplitView {
             List(selection: $store.selectedEventID) {
                 if let external = store.externalMockEvent { Text("[MOCK] " + external.type.label).tag(external.id) }
@@ -38,6 +45,7 @@ struct HistoryView: View {
                 }.padding(24) }
             }
             }.frame(minWidth: 440, maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading).clipped()
+        }
         }.frame(minWidth: 820, minHeight: 530)
     }
 }
@@ -52,6 +60,7 @@ struct EventDetailView: View {
                 HStack { Text(event.product); if let model = event.model { Text(model.capitalized) }; Spacer(); Label("\(Int(event.confidence*100))% · \(event.level.label)", systemImage: "circle.fill").foregroundStyle(event.level.color) }
                 ProgressView(value: event.confidence).tint(event.level.color).accessibilityLabel(L10n.t("Confidence %"))
                 LabeledContent(L10n.t("First detected"), value: event.detectedAt.localizedFormatted())
+                Button { store.calendarFocusDate = event.detectedAt; store.openWindow?("calendar") } label: { Label(L10n.t("View in Calendar"), systemImage: "calendar.badge.clock") }
                 LabeledContent(L10n.t("Last evidence update"), value: event.updatedAt.localizedFormatted())
                 LabeledContent(L10n.t("Reports"), value: String(event.reportCount))
                 if !event.plans.isEmpty { LabeledContent(L10n.t("Plans mentioned"), value: event.plans.joined(separator: ", ")) }
