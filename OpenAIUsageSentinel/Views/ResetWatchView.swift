@@ -118,7 +118,7 @@ struct ResetAnnouncementCalendar: View {
                                 .foregroundStyle(fill != nil ? Color.white : calendar.isDateInToday(day) ? Color.accentColor : Color.primary)
                                 .frame(maxWidth: .infinity).frame(height: 52)
                                 .background(fill ?? Color.secondary.opacity(0.07), in: RoundedRectangle(cornerRadius: 5))
-                                .overlay(RoundedRectangle(cornerRadius: 5).stroke(calendar.isDateInToday(day) ? Color.accentColor : .clear, lineWidth: 2))
+                                .overlay(RoundedRectangle(cornerRadius: 5).stroke((calendar.isDateInToday(day) || focusDate.map { calendar.isDate($0, inSameDayAs: day) } == true) ? Color.accentColor : .clear, lineWidth: 2))
                         }.buttonStyle(.plain).help(day.formatted(date: .complete, time: .omitted) + " · \(entries.count)")
                     }
                 }

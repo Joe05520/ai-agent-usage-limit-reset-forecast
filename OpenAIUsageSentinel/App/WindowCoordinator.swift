@@ -20,7 +20,7 @@ final class WindowCoordinator {
         switch page {
         case "settings": content = AnyView(SettingsView().environmentObject(store))
         case "resets": content = AnyView(ScrollView { ResetWatchView().padding(24) }.frame(minWidth: 680, minHeight: 530).environmentObject(store))
-        case "calendar": content = AnyView(AnnouncementCalendarView().environmentObject(store))
+        case "calendar": content = AnyView(ScrollView { AnnouncementCalendarView() }.environmentObject(store))
         case "diagnostics": content = AnyView(DiagnosticsView().environmentObject(store))
         default: content = AnyView(HistoryView().environmentObject(store))
         }
