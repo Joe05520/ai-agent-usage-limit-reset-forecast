@@ -13,7 +13,7 @@ Track remaining AI usage, next regular resets and unexpected quota increases. Na
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B-163832)](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases)
 [![Windows / Linux beta](https://img.shields.io/badge/Windows%20%2F%20Linux-beta-987c35)](Portable/README.md)
 
-[**Website & interactive demo**](https://joe05520.github.io/ai-agent-usage-limit-reset-forecast/) · [**Download**](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v1.8.2) · [Agent setup](docs/AGENTS.md) · [繁體中文](docs/README.zh-Hant.md)
+[**Website & interactive demo**](https://joe05520.github.io/ai-agent-usage-limit-reset-forecast/) · [**Download**](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v1.8.3) · [Agent setup](docs/AGENTS.md) · [繁體中文](docs/README.zh-Hant.md)
 
 </div>
 
@@ -40,13 +40,13 @@ AI Usage Sentinel combines an actual usage meter, a personal reset detector and 
 
 | Platform | Package | Status |
 | --- | --- | --- |
-| macOS 14+, Apple Silicon / Intel | [Universal ZIP](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/download/v1.8.2/UsageSentinel-1.8.2-macOS-universal.zip) | Native SwiftUI/MenuBarExtra. Built and run on Apple Silicon; Intel build included. |
-| Windows 10/11 x64 | [Windows ZIP](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/download/v1.8.2/UsageSentinel-1.8.2-Windows-x64.zip) | Native Qt beta. CI builds/tests; real desktop validation still needed. |
-| Linux x64, glibc 2.35+ | [Linux tar.gz](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/download/v1.8.2/UsageSentinel-1.8.2-Linux-x64.tar.gz) | Native Qt beta. Desktop tray/notification support varies. |
+| macOS 14+, Apple Silicon / Intel | [Universal ZIP](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/download/v1.8.3/UsageSentinel-1.8.3-macOS-universal.zip) | Native SwiftUI/MenuBarExtra. Built and run on Apple Silicon; Intel build included. |
+| Windows 10/11 x64 | [Windows ZIP](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/download/v1.8.3/UsageSentinel-1.8.3-Windows-x64.zip) | Native Qt beta. CI builds/tests; real desktop validation still needed. |
+| Linux x64, glibc 2.35+ | [Linux tar.gz](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/download/v1.8.3/UsageSentinel-1.8.3-Linux-x64.tar.gz) | Native Qt beta. Desktop tray/notification support varies. |
 
 macOS: extract, move **AI Usage Sentinel.app** to Applications, then open. This release uses an ad-hoc signature and is **not Apple-notarized**. If macOS blocks it, use the explicit **System Settings → Privacy & Security → Open Anyway** flow after reviewing the release. Do not disable system security settings.
 
-Windows: extract the **entire folder**, run `UsageSentinel.exe`. Linux: extract, run `./UsageSentinel/UsageSentinel`. Keep the executable with its runtime/shared-library directory. Python is bundled for the app; the optional Claude bridge separately requires Python 3.9+. Downloads are unsigned previews; see [release notes and SHA-256 checksums](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v1.8.2) and the [portable installation guide](Portable/README.md).
+Windows: extract the **entire folder**, run `UsageSentinel.exe`. Linux: extract, run `./UsageSentinel/UsageSentinel`. Keep the executable with its runtime/shared-library directory. Python is bundled for the app; the optional Claude bridge separately requires Python 3.9+. Downloads are unsigned previews; see [release notes and SHA-256 checksums](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v1.8.3) and the [portable installation guide](Portable/README.md).
 
 ## Choose how you see your quota
 
@@ -134,7 +134,7 @@ MIT licensed original source. Qt/Python distributions retain their upstream lice
 - Polls/hints expire (normally 24h); old historical announcements stay in the calendar without new notifications. No next irregular-reset date is invented. A source-supplied target is explicitly marked execution-unverified.
 - Settings → Sources can disable the priority watch. Native snapshots and account history remain local; the public page reads only public news.
 
-### Source translation and reliable-message alerts (1.8.2)
+### Source translation and reliable-message alerts (1.8.3)
 
 Enable **Notify reset messages ≥50%** from the menu/tray or Notifications settings. This mode fixes the public-message threshold at 50%; personal reset alerts remain independent. It remembers the first 50% notification across restarts and only repeats for confidence-level upgrades or a correlated account reset. Older/expired posts remain quiet. Turning it off restores the existing configurable notification policy.
 

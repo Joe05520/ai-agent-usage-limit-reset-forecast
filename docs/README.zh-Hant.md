@@ -2,7 +2,7 @@
 
 **讓 AI 剩餘額度，隨時看得見。**
 
-[官方專案網站與互動範例](https://joe05520.github.io/ai-agent-usage-limit-reset-forecast/) · [下載](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v1.8.2) · [English](../README.md)
+[官方專案網站與互動範例](https://joe05520.github.io/ai-agent-usage-limit-reset-forecast/) · [下載](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v1.8.3) · [English](../README.md)
 
 AI Usage Sentinel 是免費開源的選單列／系統匣工具，結合用量顯示、非例行 reset 偵測與社群初期重置訊號監控。macOS 採原生 SwiftUI / MenuBarExtra；Windows 與 Linux 使用原生 Qt，目前為 beta。
 
@@ -31,7 +31,7 @@ AI Usage Sentinel 是免費開源的選單列／系統匣工具，結合用量�
 
 ## 安裝
 
-[從 Release 下載](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v1.8.2)，並查看 SHA-256 檔案雜湊。
+[從 Release 下載](https://github.com/Joe05520/ai-agent-usage-limit-reset-forecast/releases/tag/v1.8.3)，並查看 SHA-256 檔案雜湊。
 
 - macOS 14+：解壓縮後將 AI Usage Sentinel.app 移到 Applications。支援 Apple Silicon／Intel，實際在 Apple Silicon 執行驗證。此版為 ad-hoc 簽章，尚未 Apple notarize；依 macOS「隱私權與安全性」明確允許開啟，不停用系統安全機制。
 - Windows 10/11 x64：解壓縮完整資料夾，執行 UsageSentinel.exe。未使用付費程式簽章，請閱讀發布說明與系統信任提示。
