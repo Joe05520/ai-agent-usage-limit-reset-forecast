@@ -152,6 +152,8 @@ def classify(source):
         return None
     product = next((v for v in ("Claude", "Gemini", "Grok", "Codex", "ChatGPT") if v.lower() in text), "OpenAI (unspecified)")
     kind = "banked" if "banked reset" in text else "purchased" if "purchased reset" in text else "complimentary" if any(v in text for v in ("complimentary", "one-time", "free reset")) else "automaticGlobal" if source["official"] else "suspectedGlobal"
+    meaning=(assess(text) or {}).get("label")
+    if kind in ("automaticGlobal","suspectedGlobal") and meaning in ("poll","forecast"):kind=meaning
     return dict(source=source, product=product, model=next((v for v in ("astra", "terra", "sol") if re.search(r"\b"+v+r"\b", text)), None), type=kind)
 
 

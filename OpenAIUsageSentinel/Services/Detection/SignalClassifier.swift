@@ -24,7 +24,9 @@ public enum SignalClassifier {
         let firsthand = !deniedAccountReset && ["my ", "i got", "mine ", "just reset", "returned to", "back to 100", "suddenly", "anyone else"].contains { text.contains($0) }
         var enriched = source
         enriched.reportedPlan = plan; enriched.reportedModel = model
-        return ResetSignal(source: enriched, product: product, model: model, plan: plan, behavior: ResetSemanticModel.assess(text)?.label == "poll" ? .poll : ResetSemanticModel.assess(text)?.label == "forecast" ? .forecast : type, isFirsthand: firsthand)
+        let meaning = ResetSemanticModel.assess(text)?.label
+        let semanticType: ResetEventType = [.suspectedGlobal, .automaticGlobal].contains(type) ? (meaning == "poll" ? .poll : meaning == "forecast" ? .forecast : type) : type
+        return ResetSignal(source: enriched, product: product, model: model, plan: plan, behavior: semanticType, isFirsthand: firsthand)
     }
     public static func normalized(_ text: String) -> String {
         text.lowercased().replacingOccurrences(of: "https?://\\S+", with: "", options: .regularExpression).replacingOccurrences(of: "[^a-z0-9]+", with: " ", options: .regularExpression).trimmingCharacters(in: .whitespaces)
