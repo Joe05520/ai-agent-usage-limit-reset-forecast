@@ -18,6 +18,9 @@ final class ResetSemanticTests: XCTestCase {
         var source = DemoScenarios.reports(1, platform: "Reddit", now: now)[0].source
         source.title = "Codex"; source.snippet = "No global reset is planned"
         XCTAssertNil(SignalClassifier.classify(source))
+        var watched = source
+        watched.url = URL(string: "https://x.com/thsottiaux/status/123456")!; watched.author = "thsottiaux"; watched.snippet = "Put the reset in the bag. All propagated."
+        XCTAssertEqual(ResetWatchPolicy.classify(watched)?.behavior, .suspectedGlobal)
         XCTAssertEqual(EventEngine.score(sources: [source], ownReset: false, now: now), 0)
         XCTAssertEqual(EventEngine.score(sources: [source], ownReset: true, now: now), 0.6)
         source.snippet = "Hopefully we get a reset"

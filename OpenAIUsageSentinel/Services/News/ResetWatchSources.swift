@@ -26,7 +26,7 @@ public enum ResetWatchPolicy {
         let context = (source.watchContext ?? "").lowercased()
         guard text.contains("reset") || (context.contains("reset") && (text.contains("vote") || text.contains("poll"))) else { return nil }
         guard !["password", "factory reset", "no reset", "not reset", "won't reset", "can't really give a reset", "didn't get the reset", "did not get the reset"].contains(where: text.contains) else { return nil }
-        let completed = ["reset all propagated", "resets all propagated", "reset has been processed", "limits have been reset", "all reset for everyone", "reset is complete"].contains(where: text.contains)
+        let completed = ResetSemanticModel.assess(source.snippet)?.label == "completed" || ["reset all propagated", "resets all propagated", "reset has been processed", "limits have been reset", "all reset for everyone", "reset is complete"].contains(where: text.contains)
         let banked = text.contains("banked")
         let voting = !completed && !banked && ["vote", "voting", "poll", "choose", "how was day"].contains(where: text.contains)
         let kind: ResetEventType = banked ? .banked : completed ? .suspectedGlobal : voting ? .poll : .forecast

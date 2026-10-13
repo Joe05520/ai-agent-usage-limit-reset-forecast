@@ -16,13 +16,13 @@ def weight(source):
     return .85 if author == 'thsottiaux' else .75
 
 def classify_watch(source):
-    from .semantic import factor
+    from .semantic import factor, assess
     if factor(source)==0:return None
     if weight(source) is None: return None
     text = source.get('snippet','').lower().replace('’',"'"); context = source.get('watchContext','').lower()
     if not ('reset' in text or 'reset' in context and any(k in text for k in ('vote','poll'))): return None
     if any(k in text for k in ('password','factory reset','no reset','not reset',"won't reset","can't really give a reset","didn't get the reset","did not get the reset")): return None
-    completed = any(k in text for k in ('reset all propagated','resets all propagated','reset has been processed','limits have been reset','all reset for everyone','reset is complete'))
+    completed = (assess(text) or {}).get("label")=="completed" or any(k in text for k in ('reset all propagated','resets all propagated','reset has been processed','limits have been reset','all reset for everyone','reset is complete'))
     kind = 'banked' if 'banked' in text else 'suspectedGlobal' if completed else 'poll' if any(k in text for k in ('vote','voting','poll','choose','how was day')) else 'forecast'
     source = dict(source)
     if kind in ('poll','forecast'): source.setdefault('expiresAt', (source.get('publishedAt') or source['fetchedAt'])+86400)
