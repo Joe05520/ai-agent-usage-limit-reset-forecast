@@ -1937,5 +1937,75 @@
     "zh-Hans": "在日历中查看",
     "ja": "カレンダーで表示",
     "ko": "달력에서 보기"
+  },
+  "Local decision tree": {
+    "en": "Local decision tree",
+    "zh-Hant": "本機決策樹",
+    "zh-Hans": "本地决策树",
+    "ja": "ローカル決定木",
+    "ko": "로컬 결정 트리"
+  },
+  "Evidence multiplier": {
+    "en": "Evidence multiplier",
+    "zh-Hant": "證據倍率",
+    "zh-Hans": "证据倍率",
+    "ja": "証拠の倍率",
+    "ko": "증거 배율"
+  },
+  "Semantic completed": {
+    "en": "Completed claim",
+    "zh-Hant": "宣稱已完成",
+    "zh-Hans": "声称已完成",
+    "ja": "完了の主張",
+    "ko": "완료 주장"
+  },
+  "Semantic accountReport": {
+    "en": "Account report",
+    "zh-Hant": "帳號回報",
+    "zh-Hans": "账户回报",
+    "ja": "アカウント報告",
+    "ko": "계정 보고"
+  },
+  "Semantic forecast": {
+    "en": "Forecast",
+    "zh-Hant": "預告",
+    "zh-Hans": "预告",
+    "ja": "予告",
+    "ko": "예고"
+  },
+  "Semantic poll": {
+    "en": "Poll",
+    "zh-Hant": "投票",
+    "zh-Hans": "投票",
+    "ja": "投票",
+    "ko": "투표"
+  },
+  "Semantic uncertain": {
+    "en": "Uncertain",
+    "zh-Hant": "猜測",
+    "zh-Hans": "猜测",
+    "ja": "推測",
+    "ko": "추측"
+  },
+  "Semantic negative": {
+    "en": "Denied",
+    "zh-Hant": "否定",
+    "zh-Hans": "否定",
+    "ja": "否定",
+    "ko": "부정"
+  },
+  "Semantic regular": {
+    "en": "Scheduled",
+    "zh-Hant": "例行",
+    "zh-Hans": "例行",
+    "ja": "定期",
+    "ko": "정기"
+  },
+  "Semantic irrelevant": {
+    "en": "Unrelated",
+    "zh-Hant": "無關",
+    "zh-Hans": "无关",
+    "ja": "無関係",
+    "ko": "무관"
   }
 }

@@ -51,7 +51,8 @@ struct ResetWatchView: View {
                     HStack { Text(signal.behavior.label).font(.subheadline.bold()); Spacer(); Text(signal.source.publishedAt?.localizedFormatted() ?? L10n.t("unknown")).font(.caption).foregroundStyle(.secondary) }
                     let confidence = EventEngine.score(sources: [signal.source], ownReset: false, now: Date())
                     MessageConfidenceBar(value: confidence)
-                    SourceTranslationView(source: signal.source)
+                    if let explanation = ResetSemanticModel.explanation(signal.source) { Text(explanation).font(.caption).foregroundStyle(.secondary) }
+                        SourceTranslationView(source: signal.source)
                     HStack {
                         Link(L10n.t("Original X post ↗"), destination: signal.source.url)
                         if let via = signal.source.viaURL { Link("Data · " + (via.host ?? ""), destination: via) }
@@ -134,6 +135,7 @@ struct ResetAnnouncementCalendar: View {
                     ForEach(entries, id: \.source.id) { signal in
                         Text(signal.behavior.label).font(.caption.bold())
                         MessageConfidenceBar(value: EventEngine.score(sources: [signal.source], ownReset: false, now: Date()))
+                        if let explanation = ResetSemanticModel.explanation(signal.source) { Text(explanation).font(.caption).foregroundStyle(.secondary) }
                         SourceTranslationView(source: signal.source)
                         Link(L10n.t("Original X post ↗"), destination: signal.source.url)
                         if let via = signal.source.viaURL { Link(L10n.t("Data attribution ↗") + " · " + (via.host ?? ""), destination: via) }

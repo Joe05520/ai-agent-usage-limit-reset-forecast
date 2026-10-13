@@ -1,0 +1,12 @@
+const resetSemanticModel={"schema":1,"version":"pilot-1","features":{"unrelated":"password|api key|factory reset|reset your browser","negative":"no (global )?reset|not (been )?reset|not been processed|not processed|not yet processed|never received|did not (get|receive)|hasn.t reset|won.t reset|reset (is |was )?cancelled","regular":"scheduled reset|regular reset|weekly window ended|resets every week","exception":"unexpected|suddenly|early reset|global reset","poll":"vote|voting|poll|choose|update or (a )?reset|updates or (a )?reset","wish":"hope|hopefully|wish|maybe|rumou?r","future":"tomorrow|next week|coming|will reset|landing|\u5373\u5c07|\u660e\u5929","completed":"processed|propagated|reset is complete|limits (have been|were) reset|returned to 100|back to 100|allowance restored","firsthand":"my |mine |i got|i received|\u6211","reset":"reset|quota|allowance|\u91cd\u7f6e"},"tree":{"feature":"unrelated","yes":{"label":"irrelevant","support":18,"purity":1.0},"no":{"feature":"regular","yes":{"label":"regular","support":18,"purity":1.0},"no":{"feature":"negative","yes":{"label":"negative","support":18,"purity":1.0},"no":{"feature":"wish","yes":{"label":"uncertain","support":18,"purity":1.0},"no":{"feature":"completed","yes":{"feature":"firsthand","yes":{"label":"accountReport","support":9,"purity":1.0},"no":{"label":"completed","support":9,"purity":1.0}},"no":{"feature":"poll","yes":{"label":"poll","support":9,"purity":1.0},"no":{"label":"forecast","support":9,"purity":1.0}}}}}}},"factors":{"completed":1,"accountReport":1,"forecast":0.65,"poll":0.45,"uncertain":0.25,"negative":0,"regular":0,"irrelevant":0},"training":"108 synthetic examples; 36 grouped held-out synthetic examples; English pilot only"};
+function assessResetText(text){
+ if(text.length>100000)return null;
+ text=text.toLowerCase().replaceAll('’',"'");
+ const f=Object.fromEntries(Object.entries(resetSemanticModel.features).map(([k,v])=>[k,new RegExp(v).test(text)]));
+ if(!Object.entries(f).some(([k,v])=>k!=='reset'&&v))return null;
+ let n=resetSemanticModel.tree,reasons=[];
+ for(let i=0;i<16&&n.feature;i++){if(f[n.feature])reasons.push(n.feature);n=n[f[n.feature]?'yes':'no'];}
+ const required={forecast:'future',poll:'poll',completed:'completed',accountReport:'completed',uncertain:'wish',regular:'regular',negative:'negative',irrelevant:'unrelated'};
+ if(!f[required[n.label]]||(n.label==='regular'&&f.exception))return null;
+ return {label:n.label,factor:resetSemanticModel.factors[n.label],reasons};
+}

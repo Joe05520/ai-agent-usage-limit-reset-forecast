@@ -16,6 +16,8 @@ def weight(source):
     return .85 if author == 'thsottiaux' else .75
 
 def classify_watch(source):
+    from .semantic import factor
+    if factor(source)==0:return None
     if weight(source) is None: return None
     text = source.get('snippet','').lower().replace('’',"'"); context = source.get('watchContext','').lower()
     if not ('reset' in text or 'reset' in context and any(k in text for k in ('vote','poll'))): return None

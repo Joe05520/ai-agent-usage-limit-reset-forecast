@@ -5,6 +5,7 @@ import math
 import re
 import time
 import uuid
+from .semantic import assess, factor
 from datetime import datetime, timezone
 
 
@@ -138,6 +139,7 @@ def level(score):
 
 
 def classify(source):
+    if factor(source)==0: return None
     from .reset_watch import classify_watch
     watched = classify_watch(source)
     if watched: return watched
@@ -168,21 +170,21 @@ def dedup(sources):
 
 
 def confidence(sources, own, now, own_confidence=.6):
-    sources = dedup(sources)
+    sources = [s for s in dedup(sources) if factor(s)>0]
     official = [s for s in sources if s["official"]]
     if official:
-        return .95
+        return max(own_confidence if own else 0,.95*max(factor(s) for s in official))
     reports = [s for s in sources if not s["platform"].startswith("Local ") and not s["official"]]
     from .reset_watch import weight
     watched = [s for s in reports if weight(s) is not None]
-    watch_score = max(((weight(s) or 0) * (1 if now-(s.get("publishedAt") or 0) <= 3600 else .9 if now-(s.get("publishedAt") or 0) <= 10800 else .7 if now-(s.get("publishedAt") or 0) <= 43200 else .5 if now-(s.get("publishedAt") or 0) <= 86400 else .25) for s in watched if s.get("expiresAt",float("inf")) > now), default=0)
+    watch_score = max(((weight(s) or 0) * factor(s) * (1 if now-(s.get("publishedAt") or 0) <= 3600 else .9 if now-(s.get("publishedAt") or 0) <= 10800 else .7 if now-(s.get("publishedAt") or 0) <= 43200 else .5 if now-(s.get("publishedAt") or 0) <= 86400 else .25) for s in watched if s.get("expiresAt",float("inf")) > now), default=0)
     reports = [s for s in reports if weight(s) is None]
     score = (own_confidence if own else 0)+watch_score
     for s in reports:
         age = max(0, now-(s.get("publishedAt") or s["fetchedAt"])) / 3600
         decay = 1 if age <= 1 else .9 if age <= 3 else .7 if age <= 12 else .5 if age <= 24 else .25
-        score += {"GitHub": .20, "Reddit": .12, "Hacker News": .10}.get(s["platform"], .08)*decay
-    authors = {(s["platform"], s["author"]) for s in reports if s.get("author")}
+        score += {"GitHub": .20, "Reddit": .12, "Hacker News": .10}.get(s["platform"], .08)*decay*factor(s)
+    authors = {(s["platform"], s["author"]) for s in reports if s.get("author") and factor(s)==1}
     if len(authors) >= 3: score += .15
     elif len(authors) >= 2: score += .04
     if len(authors) >= 10: score += .20

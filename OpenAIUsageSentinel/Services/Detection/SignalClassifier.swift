@@ -3,6 +3,7 @@ import CryptoKit
 
 public enum SignalClassifier {
     public static func classify(_ source: SignalSource) -> ResetSignal? {
+        if let result = ResetSemanticModel.assess(source.title + " " + source.snippet), result.factor == 0 { return nil }
         if let watched = ResetWatchPolicy.classify(source) { return watched }
         let text = (source.title + " " + source.snippet).lowercased()
         let context = ["claude", "gemini", "grok", "codex", "chatgpt", "openai", "astra", "work", "quota", "usage", "allowance", "weekly", "limit"].contains { text.contains($0) }
@@ -23,7 +24,7 @@ public enum SignalClassifier {
         let firsthand = !deniedAccountReset && ["my ", "i got", "mine ", "just reset", "returned to", "back to 100", "suddenly", "anyone else"].contains { text.contains($0) }
         var enriched = source
         enriched.reportedPlan = plan; enriched.reportedModel = model
-        return ResetSignal(source: enriched, product: product, model: model, plan: plan, behavior: type, isFirsthand: firsthand)
+        return ResetSignal(source: enriched, product: product, model: model, plan: plan, behavior: ResetSemanticModel.assess(text)?.label == "poll" ? .poll : ResetSemanticModel.assess(text)?.label == "forecast" ? .forecast : type, isFirsthand: firsthand)
     }
     public static func normalized(_ text: String) -> String {
         text.lowercased().replacingOccurrences(of: "https?://\\S+", with: "", options: .regularExpression).replacingOccurrences(of: "[^a-z0-9]+", with: " ", options: .regularExpression).trimmingCharacters(in: .whitespaces)

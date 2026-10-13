@@ -269,6 +269,9 @@ class SentinelWindow(QMainWindow):
         for s in event["sources"]:
             if s.get("viaURL"):
                 pieces.append(f"<p>Data from <a href='{escaped(s["viaURL"],quote=True)}'>{escaped(s["viaURL"])}</a> · source weight is not a reset probability.</p>")
+            semantic = core.assess(s['title']+' '+s['snippet']) if not s['platform'].startswith(('Local','Manual')) else None
+            if semantic:
+                pieces.append(f"<p>{escaped(self.t('Local decision tree'))} · {escaped(self.t('Semantic '+semantic['label']))} · {escaped(self.t('Evidence multiplier'))} ×{semantic['factor']:.2f}</p>")
             stamp = datetime.fromtimestamp(s["publishedAt"]).astimezone().isoformat() if s.get("publishedAt") else "unknown"
             pieces.append(f"<hr><p><b>{escaped(s['platform'])}</b> · {escaped(stamp)}<br><a href='{escaped(s['url'],quote=True)}'>{escaped(s['title'])}</a></p><p>{escaped(s['snippet'])}</p><p>Fetched: {datetime.fromtimestamp(s['fetchedAt']).astimezone().isoformat()} · {escaped(s.get('author') or '')}</p>")
             if not s['platform'].startswith('Local ') and s['platform'] != 'Manual':

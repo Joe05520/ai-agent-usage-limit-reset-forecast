@@ -21,7 +21,7 @@ public enum ResetWatchPolicy {
         return handle == "codex_resets" ? 0.75 : 0.85
     }
     public static func classify(_ source: SignalSource) -> ResetSignal? {
-        guard weight(source) != nil else { return nil }
+        guard weight(source) != nil, ResetSemanticModel.factor(source) > 0 else { return nil }
         let text = source.snippet.lowercased().replacingOccurrences(of: "’", with: "'")
         let context = (source.watchContext ?? "").lowercased()
         guard text.contains("reset") || (context.contains("reset") && (text.contains("vote") || text.contains("poll"))) else { return nil }

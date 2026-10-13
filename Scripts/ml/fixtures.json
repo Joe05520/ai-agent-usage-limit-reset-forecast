@@ -1,0 +1,1010 @@
+[
+  {
+    "text": "Codex Reset your API key for security",
+    "label": "irrelevant",
+    "group": "irrelevant:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Reset your API key for security",
+    "label": "irrelevant",
+    "group": "irrelevant:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Reset your API key for security",
+    "label": "irrelevant",
+    "group": "irrelevant:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Factory reset the laptop",
+    "label": "irrelevant",
+    "group": "irrelevant:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Factory reset the laptop",
+    "label": "irrelevant",
+    "group": "irrelevant:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Factory reset the laptop",
+    "label": "irrelevant",
+    "group": "irrelevant:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Password reset instructions",
+    "label": "irrelevant",
+    "group": "irrelevant:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Password reset instructions",
+    "label": "irrelevant",
+    "group": "irrelevant:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Password reset instructions",
+    "label": "irrelevant",
+    "group": "irrelevant:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Reset your browser preferences",
+    "label": "irrelevant",
+    "group": "irrelevant:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Reset your browser preferences",
+    "label": "irrelevant",
+    "group": "irrelevant:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Reset your browser preferences",
+    "label": "irrelevant",
+    "group": "irrelevant:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex No global reset is planned",
+    "label": "negative",
+    "group": "negative:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT No global reset is planned",
+    "label": "negative",
+    "group": "negative:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI No global reset is planned",
+    "label": "negative",
+    "group": "negative:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex My quota has not been reset",
+    "label": "negative",
+    "group": "negative:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT My quota has not been reset",
+    "label": "negative",
+    "group": "negative:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI My quota has not been reset",
+    "label": "negative",
+    "group": "negative:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex I never received a reset",
+    "label": "negative",
+    "group": "negative:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT I never received a reset",
+    "label": "negative",
+    "group": "negative:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI I never received a reset",
+    "label": "negative",
+    "group": "negative:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex The reset was cancelled",
+    "label": "negative",
+    "group": "negative:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT The reset was cancelled",
+    "label": "negative",
+    "group": "negative:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI The reset was cancelled",
+    "label": "negative",
+    "group": "negative:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex My scheduled reset arrived",
+    "label": "regular",
+    "group": "regular:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT My scheduled reset arrived",
+    "label": "regular",
+    "group": "regular:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI My scheduled reset arrived",
+    "label": "regular",
+    "group": "regular:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex The weekly window ended and quota reset",
+    "label": "regular",
+    "group": "regular:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT The weekly window ended and quota reset",
+    "label": "regular",
+    "group": "regular:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI The weekly window ended and quota reset",
+    "label": "regular",
+    "group": "regular:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Usage resets every week",
+    "label": "regular",
+    "group": "regular:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Usage resets every week",
+    "label": "regular",
+    "group": "regular:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Usage resets every week",
+    "label": "regular",
+    "group": "regular:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex A regular reset restored my limit",
+    "label": "regular",
+    "group": "regular:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT A regular reset restored my limit",
+    "label": "regular",
+    "group": "regular:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI A regular reset restored my limit",
+    "label": "regular",
+    "group": "regular:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Vote for an update or a reset",
+    "label": "poll",
+    "group": "poll:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Vote for an update or a reset",
+    "label": "poll",
+    "group": "poll:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Vote for an update or a reset",
+    "label": "poll",
+    "group": "poll:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Choose updates or a reset",
+    "label": "poll",
+    "group": "poll:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Choose updates or a reset",
+    "label": "poll",
+    "group": "poll:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Choose updates or a reset",
+    "label": "poll",
+    "group": "poll:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex A reset poll is open",
+    "label": "poll",
+    "group": "poll:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT A reset poll is open",
+    "label": "poll",
+    "group": "poll:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI A reset poll is open",
+    "label": "poll",
+    "group": "poll:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Voting: global reset or new tools",
+    "label": "poll",
+    "group": "poll:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Voting: global reset or new tools",
+    "label": "poll",
+    "group": "poll:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Voting: global reset or new tools",
+    "label": "poll",
+    "group": "poll:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex I hope we get a reset",
+    "label": "uncertain",
+    "group": "uncertain:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT I hope we get a reset",
+    "label": "uncertain",
+    "group": "uncertain:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI I hope we get a reset",
+    "label": "uncertain",
+    "group": "uncertain:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Maybe a global reset happens",
+    "label": "uncertain",
+    "group": "uncertain:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Maybe a global reset happens",
+    "label": "uncertain",
+    "group": "uncertain:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Maybe a global reset happens",
+    "label": "uncertain",
+    "group": "uncertain:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Hopefully my quota resets",
+    "label": "uncertain",
+    "group": "uncertain:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Hopefully my quota resets",
+    "label": "uncertain",
+    "group": "uncertain:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Hopefully my quota resets",
+    "label": "uncertain",
+    "group": "uncertain:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex A reset rumor is spreading",
+    "label": "uncertain",
+    "group": "uncertain:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT A reset rumor is spreading",
+    "label": "uncertain",
+    "group": "uncertain:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI A reset rumor is spreading",
+    "label": "uncertain",
+    "group": "uncertain:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Global reset landing tomorrow",
+    "label": "forecast",
+    "group": "forecast:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Global reset landing tomorrow",
+    "label": "forecast",
+    "group": "forecast:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Global reset landing tomorrow",
+    "label": "forecast",
+    "group": "forecast:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex The quota reset is coming",
+    "label": "forecast",
+    "group": "forecast:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT The quota reset is coming",
+    "label": "forecast",
+    "group": "forecast:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI The quota reset is coming",
+    "label": "forecast",
+    "group": "forecast:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Limits will reset next week",
+    "label": "forecast",
+    "group": "forecast:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Limits will reset next week",
+    "label": "forecast",
+    "group": "forecast:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Limits will reset next week",
+    "label": "forecast",
+    "group": "forecast:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Tomorrow we will reset allowance",
+    "label": "forecast",
+    "group": "forecast:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Tomorrow we will reset allowance",
+    "label": "forecast",
+    "group": "forecast:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Tomorrow we will reset allowance",
+    "label": "forecast",
+    "group": "forecast:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex The reset has been processed",
+    "label": "completed",
+    "group": "completed:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT The reset has been processed",
+    "label": "completed",
+    "group": "completed:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI The reset has been processed",
+    "label": "completed",
+    "group": "completed:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Reset all propagated",
+    "label": "completed",
+    "group": "completed:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Reset all propagated",
+    "label": "completed",
+    "group": "completed:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Reset all propagated",
+    "label": "completed",
+    "group": "completed:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex The reset is complete",
+    "label": "completed",
+    "group": "completed:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT The reset is complete",
+    "label": "completed",
+    "group": "completed:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI The reset is complete",
+    "label": "completed",
+    "group": "completed:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex All limits have been reset",
+    "label": "completed",
+    "group": "completed:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT All limits have been reset",
+    "label": "completed",
+    "group": "completed:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI All limits have been reset",
+    "label": "completed",
+    "group": "completed:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex My quota returned to 100%",
+    "label": "accountReport",
+    "group": "accountReport:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT My quota returned to 100%",
+    "label": "accountReport",
+    "group": "accountReport:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI My quota returned to 100%",
+    "label": "accountReport",
+    "group": "accountReport:0",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex Mine is back to 100% suddenly",
+    "label": "accountReport",
+    "group": "accountReport:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT Mine is back to 100% suddenly",
+    "label": "accountReport",
+    "group": "accountReport:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI Mine is back to 100% suddenly",
+    "label": "accountReport",
+    "group": "accountReport:1",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex I got my allowance restored",
+    "label": "accountReport",
+    "group": "accountReport:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT I got my allowance restored",
+    "label": "accountReport",
+    "group": "accountReport:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI I got my allowance restored",
+    "label": "accountReport",
+    "group": "accountReport:2",
+    "split": "train",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex I received a reset, back to 100%",
+    "label": "accountReport",
+    "group": "accountReport:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "ChatGPT I received a reset, back to 100%",
+    "label": "accountReport",
+    "group": "accountReport:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "OpenAI I received a reset, back to 100%",
+    "label": "accountReport",
+    "group": "accountReport:3",
+    "split": "test",
+    "provenance": "author-written synthetic fixture"
+  },
+  {
+    "text": "Codex No global reset; quota returned to 100% was just a rumor",
+    "label": "negative",
+    "group": "mixed:negative:0",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT No global reset; quota returned to 100% was just a rumor",
+    "label": "negative",
+    "group": "mixed:negative:0",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI No global reset; quota returned to 100% was just a rumor",
+    "label": "negative",
+    "group": "mixed:negative:0",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex The reset has not been processed",
+    "label": "negative",
+    "group": "mixed:negative:1",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT The reset has not been processed",
+    "label": "negative",
+    "group": "mixed:negative:1",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI The reset has not been processed",
+    "label": "negative",
+    "group": "mixed:negative:1",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex My quota has not been reset to 100%",
+    "label": "negative",
+    "group": "mixed:negative:2",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT My quota has not been reset to 100%",
+    "label": "negative",
+    "group": "mixed:negative:2",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI My quota has not been reset to 100%",
+    "label": "negative",
+    "group": "mixed:negative:2",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex No reset was processed despite the vote",
+    "label": "negative",
+    "group": "mixed:negative:3",
+    "split": "test",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT No reset was processed despite the vote",
+    "label": "negative",
+    "group": "mixed:negative:3",
+    "split": "test",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI No reset was processed despite the vote",
+    "label": "negative",
+    "group": "mixed:negative:3",
+    "split": "test",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex My scheduled reset returned to 100%",
+    "label": "regular",
+    "group": "mixed:regular:0",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT My scheduled reset returned to 100%",
+    "label": "regular",
+    "group": "mixed:regular:0",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI My scheduled reset returned to 100%",
+    "label": "regular",
+    "group": "mixed:regular:0",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex My regular reset has been processed",
+    "label": "regular",
+    "group": "mixed:regular:1",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT My regular reset has been processed",
+    "label": "regular",
+    "group": "mixed:regular:1",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI My regular reset has been processed",
+    "label": "regular",
+    "group": "mixed:regular:1",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex The weekly window ended and mine is back to 100%",
+    "label": "regular",
+    "group": "mixed:regular:2",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT The weekly window ended and mine is back to 100%",
+    "label": "regular",
+    "group": "mixed:regular:2",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI The weekly window ended and mine is back to 100%",
+    "label": "regular",
+    "group": "mixed:regular:2",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex Scheduled reset: all limits have been reset",
+    "label": "regular",
+    "group": "mixed:regular:3",
+    "split": "test",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT Scheduled reset: all limits have been reset",
+    "label": "regular",
+    "group": "mixed:regular:3",
+    "split": "test",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI Scheduled reset: all limits have been reset",
+    "label": "regular",
+    "group": "mixed:regular:3",
+    "split": "test",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex I hope the reset has been processed",
+    "label": "uncertain",
+    "group": "mixed:uncertain:0",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT I hope the reset has been processed",
+    "label": "uncertain",
+    "group": "mixed:uncertain:0",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI I hope the reset has been processed",
+    "label": "uncertain",
+    "group": "mixed:uncertain:0",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex Hopefully my quota returned to 100%",
+    "label": "uncertain",
+    "group": "mixed:uncertain:1",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT Hopefully my quota returned to 100%",
+    "label": "uncertain",
+    "group": "mixed:uncertain:1",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI Hopefully my quota returned to 100%",
+    "label": "uncertain",
+    "group": "mixed:uncertain:1",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex Maybe reset all propagated",
+    "label": "uncertain",
+    "group": "mixed:uncertain:2",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT Maybe reset all propagated",
+    "label": "uncertain",
+    "group": "mixed:uncertain:2",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI Maybe reset all propagated",
+    "label": "uncertain",
+    "group": "mixed:uncertain:2",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex I wish my allowance was back to 100%",
+    "label": "uncertain",
+    "group": "mixed:uncertain:3",
+    "split": "test",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT I wish my allowance was back to 100%",
+    "label": "uncertain",
+    "group": "mixed:uncertain:3",
+    "split": "test",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI I wish my allowance was back to 100%",
+    "label": "uncertain",
+    "group": "mixed:uncertain:3",
+    "split": "test",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex Reset your API key: processed",
+    "label": "irrelevant",
+    "group": "mixed:irrelevant:0",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT Reset your API key: processed",
+    "label": "irrelevant",
+    "group": "mixed:irrelevant:0",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI Reset your API key: processed",
+    "label": "irrelevant",
+    "group": "mixed:irrelevant:0",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex Password reset is complete",
+    "label": "irrelevant",
+    "group": "mixed:irrelevant:1",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT Password reset is complete",
+    "label": "irrelevant",
+    "group": "mixed:irrelevant:1",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI Password reset is complete",
+    "label": "irrelevant",
+    "group": "mixed:irrelevant:1",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex Factory reset processed",
+    "label": "irrelevant",
+    "group": "mixed:irrelevant:2",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT Factory reset processed",
+    "label": "irrelevant",
+    "group": "mixed:irrelevant:2",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI Factory reset processed",
+    "label": "irrelevant",
+    "group": "mixed:irrelevant:2",
+    "split": "train",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "Codex Reset your browser: back to 100%",
+    "label": "irrelevant",
+    "group": "mixed:irrelevant:3",
+    "split": "test",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "ChatGPT Reset your browser: back to 100%",
+    "label": "irrelevant",
+    "group": "mixed:irrelevant:3",
+    "split": "test",
+    "provenance": "author-written adversarial fixture"
+  },
+  {
+    "text": "OpenAI Reset your browser: back to 100%",
+    "label": "irrelevant",
+    "group": "mixed:irrelevant:3",
+    "split": "test",
+    "provenance": "author-written adversarial fixture"
+  }
+]

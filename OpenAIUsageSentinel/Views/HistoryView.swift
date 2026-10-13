@@ -99,6 +99,7 @@ struct EventDetailView: View {
                         if let target = source.announcedTarget { Text(L10n.t("Announced target · execution unverified") + ": " + target.localizedFormatted()).font(.caption) }
                         Text(source.title).font(.subheadline.weight(.medium))
                         if let author = source.author { Text(author).font(.caption).foregroundStyle(.secondary) }
+                        if let explanation = ResetSemanticModel.explanation(source) { Text(explanation).font(.caption).foregroundStyle(.secondary) }
                         SourceTranslationView(source: source)
                         if let modified = source.modifiedAt { Text(L10n.t("Document updated: ") + modified.localizedFormatted()).font(.caption2).foregroundStyle(.secondary) }
                         Text(L10n.f("Published: %@\nFetched: %@", source.publishedAt?.localizedFormatted() ?? L10n.t("unknown"), source.fetchedAt.localizedFormatted())).font(.caption2).foregroundStyle(.secondary)

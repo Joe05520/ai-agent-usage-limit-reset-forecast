@@ -1,8 +1,9 @@
-AI Usage Sentinel 1.8.3 makes the announcement calendar easy to find from Event History.
+AI Usage Sentinel 1.9.0 adds a small offline decision-tree semantic classifier for public reset evidence.
 
-- Persistent Announcement Calendar button above the history list.
-- View in Calendar in every event detail opens its detection month and lists events on that date.
-- Calendar navigation and original announcement dates remain available; no reset dates are invented.
-- Local data, update signing trust, notification preferences and privacy remain unchanged.
+- Shared CART model in macOS, Windows/Linux and website; no paid inference API or account uploads.
+- Recognizes completed claims, personal reports, forecasts, polls, speculation, denial, scheduled resets and unrelated reset text.
+- Semantic multipliers can only reduce public-source scores, never increase them. Local quota evidence stays independent. Forecast wording is not proof of completion.
+- Each source shows the semantic interpretation and evidence multiplier. Unknown wording falls back to existing rules.
+- Reproducible pilot training: 108 author-written synthetic training examples and 36 grouped held-out synthetic examples, not a real-world accuracy claim. English pilot, multilingual UI. Existing language rules remain fallback.
 
-macOS 14+, universal Apple Silicon/Intel. Ad-hoc signed, not notarized. Windows/Linux remain beta ports; this native calendar navigation enhancement applies to macOS.
+macOS 14+, universal Apple Silicon/Intel. Ad-hoc signed, not notarized. Windows/Linux beta ports have CI coverage, not full physical desktop validation.

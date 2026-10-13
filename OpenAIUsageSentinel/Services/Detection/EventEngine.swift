@@ -19,22 +19,22 @@ public enum EventEngine {
         }
     }
     public static func score(sources: [SignalSource], ownReset: Bool, now: Date, ownConfidence: Double = 0.60) -> Double {
-        let sources = uniqueSources(sources)
-        if sources.contains(where: { $0.official }) { return 0.95 }
+        let sources = uniqueSources(sources).filter { ResetSemanticModel.factor($0) > 0 }
+        if sources.contains(where: { $0.official }) { return max(ownReset ? ownConfidence : 0, 0.95 * (sources.filter { $0.official }.map { ResetSemanticModel.factor($0) }.max() ?? 1)) }
         let watched = sources.filter { ResetWatchPolicy.weight($0) != nil }
-        let watchScore = watched.map { (ResetWatchPolicy.weight($0) ?? 0) * ageWeight($0.publishedAt, now: now) * (($0.expiresAt.map { $0 <= now } ?? false) ? 0 : 1) }.max() ?? 0
+        let watchScore = watched.map { (ResetWatchPolicy.weight($0) ?? 0) * ResetSemanticModel.factor($0) * ageWeight($0.publishedAt, now: now) * (($0.expiresAt.map { $0 <= now } ?? false) ? 0 : 1) }.max() ?? 0
         var score = (ownReset ? ownConfidence : 0.0) + watchScore
         let community = sources.filter { !$0.official && !$0.isAccountEvidence && ResetWatchPolicy.weight($0) == nil }
         for source in community {
             let base = source.platform == "GitHub" ? 0.20 : source.platform == "Reddit" ? 0.12 : 0.08
             // Unknown authors / hearsay do not count as full independent account evidence.
             let independent = source.author != nil && SignalClassifier.classify(source)?.isFirsthand == true
-            score += base * ageWeight(source.publishedAt, now: now) * (independent ? 1 : 0.5)
+            score += base * ResetSemanticModel.factor(source) * ageWeight(source.publishedAt, now: now) * (independent ? 1 : 0.5)
         }
-        let independent = community.filter { $0.author != nil && SignalClassifier.classify($0)?.isFirsthand == true && ($0.publishedAt.map { now.timeIntervalSince($0) <= 86400 } ?? false) }
+        let independent = community.filter { ResetSemanticModel.factor($0) == 1 && $0.author != nil && SignalClassifier.classify($0)?.isFirsthand == true && ($0.publishedAt.map { now.timeIntervalSince($0) <= 86400 } ?? false) }
         if independent.count >= 3 { score += 0.15 }
         if independent.count >= 10 { score += 0.20 }
-        if community.contains(where: { $0.screenshotEvidence }) { score += 0.10 }
+        if community.contains(where: { $0.screenshotEvidence && ResetSemanticModel.factor($0) == 1 }) { score += 0.10 }
         // Two fresh independent reports meet the user's Early threshold without claiming Likely.
         if independent.count >= 2 { score += 0.08 }
         return min(0.89, score) // Community + account evidence never become Official/Confirmed.
@@ -62,7 +62,7 @@ public enum EventEngine {
                 events[index].explanation = incoming.explanation + " Public reports are also attached; product matches, account eligibility is unverified."
             } else { events.insert(incoming, at: 0) }
         }
-        for signal in signals.sorted(by: { (ResetWatchPolicy.weight($0.source) ?? 0) > (ResetWatchPolicy.weight($1.source) ?? 0) }) {
+        for signal in signals.filter({ ResetSemanticModel.factor($0.source) > 0 }).sorted(by: { (ResetWatchPolicy.weight($0.source) ?? 0) > (ResetWatchPolicy.weight($1.source) ?? 0) }) {
             if [.forecast, .poll].contains(signal.behavior), let completed = latestCompletion, let date = signal.source.publishedAt, date < completed { continue }
             guard let published = signal.source.publishedAt ?? (signal.source.official ? signal.source.modifiedAt : nil), now.timeIntervalSince(published) <= 86400, published <= now.addingTimeInterval(300), signal.source.expiresAt.map({ $0 > now }) ?? true else { continue }
             if let eventIndex = events.firstIndex(where: { $0.sources.contains(where: { $0.id == signal.source.id }) }),

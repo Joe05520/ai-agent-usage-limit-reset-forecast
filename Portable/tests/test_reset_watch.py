@@ -18,8 +18,8 @@ class ResetWatchTests(unittest.TestCase):
     def test_mirror_dedup_decay(self):
         a=self.source(via='https://codex-resets.com');b=self.source(via='https://codex-reset.com')
         self.assertEqual(len(core.dedup([a,b])),1)
-        self.assertEqual(core.confidence([a,b],False,100000),.85)
-        self.assertLess(core.confidence([a,b],False,107200),.85)
+        self.assertEqual(core.confidence([a,b],False,100000),.85*.45)
+        self.assertLess(core.confidence([a,b],False,107200),.85*.45)
     def test_expired_poll(self):
         signal=core.classify(self.source());self.assertEqual(core.merge([], [signal],[],186401),[])
         event=core.merge([], [signal],[],100000)[0]
